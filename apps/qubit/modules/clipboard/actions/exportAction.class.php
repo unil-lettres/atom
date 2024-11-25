@@ -128,8 +128,8 @@ class ClipboardExportAction extends DefaultEditAction
         // options enabled
         // and, user is authenticated
         $this->nonVisibleElementsIncluded = $this->showOptions
-        && $this->context->user->isAdministrator()
-        && 'on' == $request->getParameter('includeNonVisibleElements');
+            && $this->context->user->isAdministrator()
+            && 'on' == $request->getParameter('includeNonVisibleElements');
 
         parent::execute($request);
 
