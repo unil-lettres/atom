@@ -357,6 +357,7 @@ class QubitFlatfileExport
                 if (
                     (false !== strpos($setting, 'app_element_visibility_'.$template))
                     && (!strpos($setting, '__source'))
+                    && str_ends_with('_area', $setting) // Ignore hidden element headers
                     && (0 == sfConfig::get($setting))
                 ) {
                     array_push($nonVisibleElements, $setting);
