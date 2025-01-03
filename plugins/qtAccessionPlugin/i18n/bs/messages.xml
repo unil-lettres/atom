@@ -293,7 +293,7 @@
         <target>Broj akcesije trebao bi biti kombinacija vrijednosti zabilježenih u polju i trebao bi biti jedinstveni broj akcesije za repozitorij</target>
       </trans-unit>
       <trans-unit id="74">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Serverska greška prilikom provjere dostupnosti identifikatora.</target>
       </trans-unit>
       <trans-unit id="75">
@@ -569,7 +569,7 @@
         <target>&lt;strong&gt;Vrsta:&lt;/strong&gt;Upiši ime polja alternativnog identifikatora koji ukazuje na njegovu svrhu i upotrebu.&lt;br/&gt;&lt;strong&gt;Identifikator:&lt;/strong&gt;Upiši staru signaturu, alternativni identifikator ili bilo koji drugi alfanumerički niz povezan sa zapisom.</target>
       </trans-unit>
       <trans-unit id="141">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Ovaj se identifikator već koristi.</target>
       </trans-unit>
       <trans-unit id="142">

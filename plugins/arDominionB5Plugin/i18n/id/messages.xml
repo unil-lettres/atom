@@ -4797,7 +4797,7 @@
         <target>Nomor akuisisi</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Server error saat mengecek ketersediaan kode unik.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Gunakan dua field ini untuk menambahkan koleksi dengan level deskripsi yang lebih rendah. Klik Tambah utnuk menambahkan level yang lebih rendah dibawahnya sesuai keinginan. Identifier: berikan nomor standar yang unik atau kode yang secara istimewa membedakan sumber informasi arsip. Judul: berikan informasi berupa kata, frase, karakter, atau kumpulan karakter, yang tercantum pada sumber informasi arsip, yang ada atau merupakan bagian dari sumber informasi tersebut.</target>
       </trans-unit>
       <trans-unit id="1375">

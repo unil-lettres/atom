@@ -477,11 +477,11 @@
         <target>Laddar...</target>
       </trans-unit>
       <trans-unit id="125">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Serverfel vid kontroll av signumtillgänglighet</target>
       </trans-unit>
       <trans-unit id="126">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Detta signum är redan i bruk.</target>
       </trans-unit>
       <trans-unit id="127">

@@ -65,7 +65,7 @@
         <target>标题</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>使用这两栏将低层级添加到收藏集层级的著录中. 点击添加新内容以添加所需要增添的子层级. 标识符: 输入一个可以明确标识该资源的唯一标准号码或代码. 标题: 输入一个常出现并提及该资源或其包含的内容的单词, 词组, 字母, 或是一组字母.</target>
       </trans-unit>
       <trans-unit id="17">

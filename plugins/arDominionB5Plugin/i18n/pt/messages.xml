@@ -4797,7 +4797,7 @@
         <target>Número de ingresso</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Erro do servidor ao verificar a disponibilidade do identificador.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target>Um slug baseado neste nome já existe. Logo, um número foi adicionado para adequar o slug.</target>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Use esses dois campos para adicionar níveis mais baixos de uma descrição em nível de coleção. Clique em Adicionar para adicionar novos níveis como muitas crianças, se necessário. Identificador: digite um número único padrão ou código que identifica o recurso distintamente. Título: Introduza uma palavra, frase, caractere, ou grupo de caracteres, normalmente aparecendo como um recurso, de que os nomes ou o trabalho nele contidos.</target>
       </trans-unit>
       <trans-unit id="1375">

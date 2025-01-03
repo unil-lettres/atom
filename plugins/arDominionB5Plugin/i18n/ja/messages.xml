@@ -4798,7 +4798,7 @@
         <target>受入番号</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5280,7 +5280,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>低いコレクションレベルの記述するにはこの２つのフィールドを使用してください。必要な数だけ低いレベルを追加するには新規作成をクリックしてください。識別子：特定のリソースを識別する固有の標準番号またはコードを入力します。タイトル：通常はリソースに表示されている言葉、フレーズ、文字、または文字のグループをを入力します。</target>
       </trans-unit>
       <trans-unit id="1375">

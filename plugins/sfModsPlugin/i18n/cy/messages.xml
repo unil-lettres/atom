@@ -65,7 +65,7 @@
         <target>Teitl</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Defnyddiwch y ddau faes i ychwanegu lefelau is i ddisgrifiad ar lefel casgliad. Cliciwch Ychwanegu newydd i ychwanegu cymaint ag sydd angen o lefelau plant. Dynodwr: rhowch rif safonol unigryw neu god sy'n dynodi'r adnodd. Teitl: rhowch Air, ymadrodd, cymeriad, neu grŵp o gymeriadau, sydd fel arfer yn ymddangos mewn adnodd, sydd yn ei enwi neu'r gwaith a gynhwysir ynddo.</target>
       </trans-unit>
       <trans-unit id="17">

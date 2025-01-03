@@ -385,11 +385,11 @@
         <target>Carregando...</target>
       </trans-unit>
       <trans-unit id="119">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Erro do servidor ao verificar a disponibilidade do identificador.</target>
       </trans-unit>
       <trans-unit id="120">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Esse identificador já está em uso.</target>
       </trans-unit>
       <trans-unit id="121">

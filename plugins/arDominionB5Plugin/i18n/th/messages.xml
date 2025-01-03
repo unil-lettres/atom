@@ -4797,7 +4797,7 @@
         <target>เลขการเข้าถึงเอกสาร</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5279,8 +5279,8 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
-        <target>ใช้สองเขตข้อมูลนี้เพื่อเพิ่มระดับที่ต่ำกว่าในคำอธิบายระดับ-กลุ่มคลิกADD newเพื่อเพิ่child levelsเท่าที่จำเป็น Identifer: ใส่unique standard number หรือรหัสที่ชัดเจนสำหรับการระบุทรัพยากร หัวข้อ: enter คำ, วลี, ตัวอักษร, หรือกลุ่มของตัวอักษร ที่ปกติปรากฏในทรัพยากร.</target>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <target>ใช้สองเขตข้อมูลนี้เพื่อเพิ่มระดับที่ต่ำกว่าในคำอธิบายระดับ-กลุ่มคลิกADD newเพื่อเพิ่child levelsเท่าที่จำเป็น Identifier: ใส่unique standard number หรือรหัสที่ชัดเจนสำหรับการระบุทรัพยากร หัวข้อ: enter คำ, วลี, ตัวอักษร, หรือกลุ่มของตัวอักษร ที่ปกติปรากฏในทรัพยากร.</target>
       </trans-unit>
       <trans-unit id="1375">
         <source>A designation of the language in which the content of a resource is expressed. Select as many languages as required.</source>

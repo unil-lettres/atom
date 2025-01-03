@@ -4803,7 +4803,7 @@ Szabály: Az azonosító leírást létrehozó intézmény által alkalmazott ne
         <target>Gyarapodási szám</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Szerverhiba az azonosító rendelkezésre állásának vizsgálata közben.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5286,7 +5286,7 @@ Publikációt meghatározó kifejezéseket illetően:
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Ezt a két mezőt arra használja, hogy alsóbb szinteket adjon egy gyűjteményi szintű leíráshoz. Kattintson az Új hozzáadása gombra, hogy annyi alárendelt egységet adjon hozzá, amennyi szükséges. Azonosító: adjon meg egy egyedi szabványszámot vagy kódot, ami egyedileg megkülönbözteti a forrást. Cím: írjon be egy szót, kifejezést, betűt vagy betűcsoportot, ami megjelenik a forrásban, és megnevezi azt vagy a benne szereplő munkát.</target>
       </trans-unit>
       <trans-unit id="1375">

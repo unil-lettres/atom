@@ -4797,7 +4797,7 @@
         <target>Broj akcesije</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Greška poslužitelja prilikom provjere dostupnosti identifikatora.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Koristi ova dva polja za dodavanje nižih razina opisu na razini zbirke. Pritisni „Dodaj novo” za dodavanje potrebnih podređenih razina. Identifikator: upiši jedinstveni standardni broj ili kôd koji identificira resurs. Naslov: upiši riječ, izraz, znak ili grupu znakova koji se obično pojavljuju u resursu, koji određuju njegovo ime ili djelo koje se u njemu nalazi.</target>
       </trans-unit>
       <trans-unit id="1375">

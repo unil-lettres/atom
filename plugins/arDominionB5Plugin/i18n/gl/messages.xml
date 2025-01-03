@@ -4797,7 +4797,7 @@
         <target>Número de acceso</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Use eses dous campos para engadir niveis inferiores a unha descrición a nivel de colección. Premer engadir novo para engadir tantos niveis fillos como sexa necesario. Identificador: ingrese un número único estandar ou código que identififique distintivamente ao recurso. Título: ingrese unha palabra, frase, caracter, ou grupo de caracteres, que normalmente aparece nun recurso, que o nomée ou ao traballo contido nel.</target>
       </trans-unit>
       <trans-unit id="1375">

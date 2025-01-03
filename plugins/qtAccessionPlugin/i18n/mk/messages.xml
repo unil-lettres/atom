@@ -293,7 +293,7 @@
         <target>Пристапниот/инвентарниот број треба да биде комбинација од вредности запишани во полето и треба да биде единствен инвентарен број за депото (Регистар на фондови/збирки)</target>
       </trans-unit>
       <trans-unit id="74">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Грешка на серверот при проверка на достапноста на идентификаторот/сигнатурата.</target>
       </trans-unit>
       <trans-unit id="75">
@@ -569,7 +569,7 @@
         <target>&lt;strong&gt;Тип:&lt;/strong&gt; Внесете име за поле на алтернативен идентификатор што ја означува неговата намена и употреба.&lt;br/&gt;&lt;strong&gt;Идентификатор:&lt;/strong&gt; Внесете ја старата сигнатура, алтернативен идентификатор или било која друга алфа-нумеричка низа поврзана со записот.</target>
       </trans-unit>
       <trans-unit id="141">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Овој идентификатор веќе се користи.</target>
       </trans-unit>
       <trans-unit id="142">

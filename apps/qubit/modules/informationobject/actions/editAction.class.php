@@ -717,7 +717,7 @@ class InformationObjectEditAction extends DefaultEditAction
         // Pass if we're using mask or not to template, fill in identifier with generated
         // identifier if so.
         if ($this->mask) {
-            $this->resource->identifier = QubitInformationObject::generateIdentiferFromMask();
+            $this->resource->identifier = QubitInformationObject::generateIdentifierFromMask();
         }
     }
 

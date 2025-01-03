@@ -477,11 +477,11 @@
         <target>Llwytho...</target>
       </trans-unit>
       <trans-unit id="125">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Gwall gweinydd tra'n gwirio a yw'r dynodwr ar gael.</target>
       </trans-unit>
       <trans-unit id="126">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Mae'r dynodwr yma mewn defnydd eisoes.</target>
       </trans-unit>
       <trans-unit id="127">

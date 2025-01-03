@@ -69,7 +69,7 @@
         <target>Додади ново</target>
       </trans-unit>
       <trans-unit id="17">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Користете ги овие две полиња за да додадете пониски нивоа на опис на ниво на збирка/колекција. Кликнете Додај ново за да додадете онолку подредени/пониски нивоа колку што е потребно. Идентификатор: внесете единствен стандарден број или код што карактеристично го идентификува изворот. Наслов: внесете збор, фраза, знак или група знаци, кои обично се појавуваат во изворот, што го именува или делото содржано во него.</target>
       </trans-unit>
       <trans-unit id="18">

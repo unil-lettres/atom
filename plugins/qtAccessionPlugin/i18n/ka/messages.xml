@@ -477,11 +477,11 @@
         <target/>
       </trans-unit>
       <trans-unit id="136">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="137">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target/>
       </trans-unit>
       <trans-unit id="138">

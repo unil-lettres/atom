@@ -4817,7 +4817,7 @@
         <target>Numéro d'entrée</target>
       </trans-unit>
       <trans-unit id="1253">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Erreur serveur lors de la vérification de la disponibilité de l'identifiant.</target>
       </trans-unit>
       <trans-unit id="1254">
@@ -5277,7 +5277,7 @@
         <target>Langage d'écriture de la description</target>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Utiliser ces deux champs pour ajouter les niveaux inférieurs d'une description de niveau collection. Cliquer sur Ajouter pour créer autant de niveaux enfants que nécessaire. Identifiant : saisir un numéro ou un code normalisé unique qui identifie la ressource distinctement. Intitulé : saisir un mot, une phrase, un caractère ou un groupe de caractères apparaissant normalement dans une ressource, qui dénomme cette ressource ou son contenu.</target>
       </trans-unit>
       <trans-unit id="1375">

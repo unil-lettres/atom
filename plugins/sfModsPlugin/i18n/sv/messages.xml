@@ -65,7 +65,7 @@
         <target>Titel</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Använd dessa två fält för att lägga till lägre nivåer till en beskrivning på samlingsnivå. Tryck på Lägg till ny för att lägga till så många underordnade nivåer som nödvändigt. Signum: ange ett unikt standardnummer eller kod som identifierar just den resursen. Titel: Ange ett ord, fras, tecken eller grupp av tecken som förekommer i en resurs, som namnger den eller informationen som ingår i den.</target>
       </trans-unit>
       <trans-unit id="17">

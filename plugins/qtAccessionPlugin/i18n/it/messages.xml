@@ -477,11 +477,11 @@
         <target>In carica...</target>
       </trans-unit>
       <trans-unit id="144">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Errore del server durante il controllo della disponibilità di un identificatore.</target>
       </trans-unit>
       <trans-unit id="145">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Questo identificatore è già utilizzato.</target>
       </trans-unit>
       <trans-unit id="146">

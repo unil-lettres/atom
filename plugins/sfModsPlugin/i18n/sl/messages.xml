@@ -61,7 +61,7 @@
         <target>Naslov</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Uporabite ti dve polji za dodajanje nižjih nivojev k popisu na ravni zbirke. Kliknite "dodaj novega" za dodajanje poljubnega števila nižjih nivojev. Identifikator: dodajte edinstveno standardno številko ali kodo, ki točno identificira vir. Naslov: vnesite besedo, frazo, znak ali skupino znakov, ki se ponavadi pojavljajo v viru, ki vir poimenuje ali delo, ki ga vsebuje.</target>
       </trans-unit>
       <trans-unit id="17">

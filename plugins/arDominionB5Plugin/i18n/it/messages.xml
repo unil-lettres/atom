@@ -4798,7 +4798,7 @@
         <target>Numero di registrazione dell'acquisizione</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Errore del server durante il controllo della disponibilità di un identificatore.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5278,7 +5278,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Usare questi due campi per aggiungere livelli inferiori a una descrizione al livello di raccolta. Cliccare Aggiungi nuovo per aggiungere tanti nodi figli quanti necessari. Identificativo: inserire un numero o un codice identificativo standard univoco che identifichi precisamente la risorsa. Titolo: inserire una parola, una frase, un carattere o un gruppo di caratteri, solitamente presenti nella risorsa, che danno il titolo alla risorsa stessa o all'opera che contiene.</target>
       </trans-unit>
       <trans-unit id="1375">

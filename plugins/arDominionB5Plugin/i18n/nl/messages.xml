@@ -4801,7 +4801,7 @@ Beschrijf de genealogie van een familie (bijvoorbeeld door middel van een stambo
         <target/>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5281,7 +5281,7 @@ Beschrijf de genealogie van een familie (bijvoorbeeld door middel van een stambo
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Gebruik deze twee velden om lagere niveau's aan een collectieniveau beschrijving toe te voegen. Klik Nieuw Toevoegen om zoveel lagere niveaus toe te voegen als noodzakelijk. Identifier: voer een uniek standaardnummer of code in, die de bron uniek onderscheidt. Titel: voer een woord, zin, teken of groep tekens in, die normaal gesproken in een bron verschijnen, die het benoemen of het werk dat het bevat.</target>
       </trans-unit>
       <trans-unit id="1375">

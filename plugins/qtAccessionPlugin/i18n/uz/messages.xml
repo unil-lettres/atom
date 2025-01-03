@@ -293,7 +293,7 @@
         <target>Jamlov raqami maydonga kiritilgan qiymatlardan hosil bo`lishi kerak va muassasa uchun unikal xarakterga ega bo`lishi lozim</target>
       </trans-unit>
       <trans-unit id="78">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Kodni tekshirishda server xatoligi yuz berdi.</target>
       </trans-unit>
       <trans-unit id="79">
@@ -481,7 +481,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="126">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Siz kiritgan kod allaqachon tizimda mavjud.</target>
       </trans-unit>
       <trans-unit id="127">

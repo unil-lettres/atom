@@ -89,7 +89,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="25">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="26">
@@ -505,7 +505,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="131">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target/>
       </trans-unit>
       <trans-unit id="133">

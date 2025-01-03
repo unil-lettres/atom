@@ -83,7 +83,7 @@
         <target>Ein Begriff der die Charakteristik und den allgemeinen Typ des Inhalts der Ressource bestimmt. Ordnen Sie so viele Typen wie sinnvoll zu. Die Optionen "Typ der Ressource" sind auf die Werte des MODS-Elementes "typeOfResource" auf der obersten Ebene  beschränkt.</target>
       </trans-unit>
       <trans-unit id="912">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target/>
       </trans-unit>
       <trans-unit id="913">

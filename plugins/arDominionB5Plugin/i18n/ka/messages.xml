@@ -4797,7 +4797,7 @@
         <target>დაშვების ნომერი</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target> გამოიყენეთ ეს ორი ველი დაბალი დონეების დასამატებლად  დონეების კრებულთან. დააჭირეთ დამატებას (Add new) რომ დაამატოს როგორც ბევრი ახალი დონე, როგორც შესაძლებელია . იდენთიფიკატორი: შეიყვანეთ უნიკალური სტანდარტული ნომერი ან კოდი რომელიც ნათლად გააკეთებს იდეტიფიკაციას შედეგისა. სათაური: შეიყვანეთ სიტყვა, ფრაზა, ხასიათი, ან ხასიათთა ჯგუფი,  ნორმალურად გამოაჩენს რესურსში , რომ სახელები ან მუშაობა შეიცავს ამას.</target>
       </trans-unit>
       <trans-unit id="1375">

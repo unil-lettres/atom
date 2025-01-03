@@ -61,7 +61,7 @@
         <target>Título</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Use esos dos campos para agregar niveles inferiores a una descripción a nivel de colección. Presionar Agregar nuevo para agregar tantos niveles hijos como sea necesario. Identificador: ingrese un número único estándar o código que identififique distintivamente al recurso. Título: ingrese una palabra, frase, caracter, o grupo de caracteres, que normalmente aparece en un recurso, que lo nombre o al trabajo contenido en él.</target>
       </trans-unit>
       <trans-unit id="17">

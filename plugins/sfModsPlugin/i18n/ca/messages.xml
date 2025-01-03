@@ -101,7 +101,7 @@
         <target>Afegeix nous nivells descendents (si es descriu una col·lecció)</target>
       </trans-unit>
       <trans-unit id="30">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Utilitze aquests dos camps per a agregar nivells inferiors a una descripció a nivell de col·lecció. Pressionar Agregar nou per a agregar tants nivells descendents com siga necessari. Identificador: ingresse un número únic estàndard o codi que identifique distintivament al recurs. Títol: ingresse una paraula, frase, caràcter, o grup de caràcters, que normalment apareix en un recurs, que ho nomene o al treball contingut en ell.</target>
       </trans-unit>
       <trans-unit id="31">

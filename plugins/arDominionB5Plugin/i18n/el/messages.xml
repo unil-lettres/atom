@@ -4797,7 +4797,7 @@
         <target>Αριθμός εισαγωγής</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target/>
       </trans-unit>
       <trans-unit id="1249">
@@ -5277,7 +5277,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Χρησιμοποιήστε τα παρακάτω δύο πεδία για να εισάγετε κατώτερα επίπεδα σε μια περιγραφή επιπέδου συλλογής. Επιλέξτε Εισαγωγή νέου για να δημιουργήσετε όσα επίπεδα είναι απαραίτητο. Κωδικός Αναγνώρισης: Εισάγετε έναν μοναδικό πρότυπο αριθμό ή έναν κωδικό που προσδιορίζει το περιγραφόμενο επίπεδο. Τίτλος: εισάγετε μια λέξη, φράση, χαρακτήρα ή ομάδα χαρακτήρων, συνήθως περιλαμβάνεται στην περιγραφή και το ονοματίζει ή περιέχεται στο έργο.</target>
       </trans-unit>
       <trans-unit id="1375">

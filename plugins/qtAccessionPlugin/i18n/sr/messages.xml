@@ -477,11 +477,11 @@
         <target>Учитавање...</target>
       </trans-unit>
       <trans-unit id="125">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Грешка на серверу током провере доступности идентификатора.</target>
       </trans-unit>
       <trans-unit id="126">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Овај идентификатор је већ у употреби.</target>
       </trans-unit>
       <trans-unit id="127">

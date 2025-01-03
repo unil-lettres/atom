@@ -458,7 +458,7 @@ class DefaultFullTreeViewAction extends sfAction
      */
     protected function addIdentifier($text, $record)
     {
-        $identifer = null;
+        $identifier = null;
 
         // If show identifier setting is "no" return the input text unaltered
         if ('no' === $this->showIdentifier) {

@@ -4798,7 +4798,7 @@
         <target>Инвентарни број</target>
       </trans-unit>
       <trans-unit id="1248">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Грешка на серверу током провере доступности идентификатора.</target>
       </trans-unit>
       <trans-unit id="1249">
@@ -5278,7 +5278,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1374">
-        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifier: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
         <target>Употребити ова два поља за додавање нижих нивоа описа за опис колекције. Кликни Додај нови да би додали онолико нижих нивоа колико је потребно. Идентификатор: унети стандардни број или код који недвосмислено идентификује извор. Назив јединице описа: унети реч, фразу, карактер или групу карактера, који се обично појављују у извору и који именује извор или његов садржај</target>
       </trans-unit>
       <trans-unit id="1375">

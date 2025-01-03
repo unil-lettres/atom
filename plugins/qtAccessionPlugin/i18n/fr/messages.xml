@@ -293,7 +293,7 @@
         <target>Le numéro d'entrée devrait être une combinaison de valeurs enregistrées dans ce champ et devrait correspondre à un numéro unique pour l'institution de conservation</target>
       </trans-unit>
       <trans-unit id="74">
-        <source>Server error while checking identifer availability.</source>
+        <source>Server error while checking identifier availability.</source>
         <target>Erreur serveur lors de la vérification de la disponibilité de l'identifiant.</target>
       </trans-unit>
       <trans-unit id="75">
@@ -565,7 +565,7 @@
         <target>&lt;strong&gt;Type:&lt;/strong&gt; Entrez un nom pour le champ d'identifiant alternatif qui indique son but et son utilisation.&lt;br/&gt;&lt;strong&gt;Identifiant :&lt;/strong&gt; Saisissez un code de référence hérité, un autre identifiant ou toute autre chaîne alphanumérique associée à l'enregistrement.</target>
       </trans-unit>
       <trans-unit id="141">
-        <source>This identifer is already in use.</source>
+        <source>This identifier is already in use.</source>
         <target>Cet identifiant est déjà utilisé.</target>
       </trans-unit>
       <trans-unit id="142">
