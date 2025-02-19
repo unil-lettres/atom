@@ -2162,34 +2162,59 @@ class QubitInformationObject extends BaseInformationObject
      *
      * @return int InfoObj id
      */
-    public static function getByTitleIdentifierAndRepo($identifier, $title, $repoName)
+    public static function getByTitleIdentifierAndRepo($identifier, $title, $repoName): ?int
     {
+        // Proceed only if both identifier and title are provided.
         if (null !== $identifier && null !== $title) {
-            $sf_user = sfContext::getInstance()->user;
-            $currentCulture = $sf_user->getCulture();
+            // Get the current culture from the user session.
+            $sf_user = sfContext::getInstance()->getUser();
+            $culture = $sf_user->getCulture();
 
-            $queryBool = new \Elastica\Query\BoolQuery();
+            $selectClause = '
+                SELECT io.id
+                FROM information_object io
+                INNER JOIN information_object_i18n io_i18n 
+                    ON io_i18n.id = io.id 
+                AND io_i18n.culture = :culture
+            ';
+            $whereClause = '
+                WHERE io.identifier = :identifier
+                AND io_i18n.title = :title
+            ';
+            // Parameters for the query.
+            $params = [
+                ':identifier' => $identifier,
+                ':title' => $title,
+                ':culture' => $culture,
+            ];
 
-            // Use match query for exact matches.
-            $queryText = new \Elastica\Query\MatchQuery();
-            $queryBool->addMust($queryText->setFieldQuery('identifier', $identifier));
-
-            $queryText = new \Elastica\Query\MatchQuery();
-            $queryBool->addMust($queryText->setFieldQuery(sprintf('i18n.%s.title.untouched', $currentCulture), $title));
-
+            // If a repository name is provided, add joins and condition on the repository authorized name.
             if (null !== $repoName) {
-                $queryText = new \Elastica\Query\MatchQuery();
-                $queryBool->addMust($queryText->setFieldQuery(sprintf('repository.i18n.%s.authorizedFormOfName.untouched', $currentCulture), $repoName));
+                $selectClause .= '
+                    INNER JOIN repository r 
+                        ON r.id = io.repository_id
+                    INNER JOIN actor a 
+                        ON a.id = io.repository_id
+                    INNER JOIN actor_i18n a_i18n 
+                        ON a_i18n.id = a.id 
+                    AND a_i18n.culture = :culture
+                ';
+                $whereClause .= '
+                    AND a_i18n.authorized_form_of_name = :repoName
+                ';
+                $params[':repoName'] = $repoName;
             }
 
-            $query = new \Elastica\Query($queryBool);
-            $query->setSize(1);
-            $resultSet = QubitSearch::getInstance()->index->getIndex('QubitInformationObject')->search($query);
+            $sql = $selectClause.$whereClause.' LIMIT 1';
 
-            if ($resultSet->count()) {
-                return $resultSet[0]->getId();
+            // If a matching record is found, return its ID.
+            if ($row = QubitPdo::fetchOne($sql, $params)) {
+                return $row->id;
             }
         }
+
+        // Return null if no match is found.
+        return null;
     }
 
     // Publication Status
