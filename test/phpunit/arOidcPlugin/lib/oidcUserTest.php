@@ -76,7 +76,6 @@ class OidcUserTest extends TestCase
      */
     public function testAuthenticateSuccess($redirectUrl, $providerId, $providers, $expected)
     {
-        // $client = $this->getMockBuilder(OpenIDConnectClient::class)->setMethods(['authenticate', 'requestUserInfo', 'getIdToken', 'getVerifiedClaims'])->getMock();
         $oidcClientMock = $this->getMockBuilder(OpenIDConnectClient::class)
             ->disableOriginalConstructor()
             ->getMock();

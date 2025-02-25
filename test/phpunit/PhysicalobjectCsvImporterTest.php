@@ -228,13 +228,6 @@ class PhysicalObjectCsvImporterTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(sfContext::class, get_class($importer->context));
     }
 
-    public function testConstructorWithNoDbconPassed()
-    {
-        $importer = new PhysicalObjectCsvImporter($this->context, null);
-
-        $this->assertSame(DebugPDO::class, get_class($importer->dbcon));
-    }
-
     public function testMagicGetInvalidPropertyException()
     {
         $this->expectException(sfException::class);

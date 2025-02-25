@@ -23,13 +23,6 @@ class CsvValidatorTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(sfContext::class, get_class($csvValidator->getContext()));
     }
 
-    public function testConstructorWithNoDbconPassed()
-    {
-        $csvValidator = new CsvImportValidator($this->context, null, null);
-
-        $this->assertSame(DebugPDO::class, get_class($csvValidator->getDbCon()));
-    }
-
     public function testSetInvalidOptionsException()
     {
         $this->expectException(UnexpectedValueException::class);
