@@ -102,7 +102,7 @@ function render_b5_field($field, $translation = null, $options = [])
     $widget = $field->getWidget();
 
     if (
-        in_array($field->type, ['checkbox', 'radio'])
+        in_array($widget->getOption('type'), ['checkbox', 'radio'])
         || $widget instanceof sfWidgetFormSelectRadio
         || (
             $widget instanceof sfWidgetFormChoice
@@ -113,7 +113,7 @@ function render_b5_field($field, $translation = null, $options = [])
         $isFormCheck = true;
         $inputClass = 'form-check-input';
         $labelClass = 'form-check-label';
-    } elseif ('color' == $field->type) {
+    } elseif ('color' == $widget->getOption('type')) {
         $inputClass .= ' form-control-color';
     }
 
@@ -773,7 +773,7 @@ function render_autocomplete_string($hit)
     }
 
     if (0 < count($levelOfDescriptionAndIdentifier)) {
-        $string[] = implode($levelOfDescriptionAndIdentifier, ' ');
+        $string[] = implode(' ', $levelOfDescriptionAndIdentifier);
     }
 
     $titleAndPublicationStatus = [];
@@ -787,7 +787,7 @@ function render_autocomplete_string($hit)
     }
 
     if (0 < count($titleAndPublicationStatus)) {
-        $string[] = implode($titleAndPublicationStatus, ' ');
+        $string[] = implode(' ', $titleAndPublicationStatus);
     }
 
     return implode(' - ', $string);
