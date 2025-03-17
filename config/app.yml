@@ -80,3 +80,28 @@ all:
 
   ldap:
       enable_tls_encryption: true
+
+  # Javascript browser verification configuration. Js challenge will be run
+  # when 'activated' setting is 'true'.
+  # IMPORTANT: The 'salt' value must be changed to a new secret string before
+  # activating this feature.
+  #
+  # user_challenge:
+  #   activated: true
+  #   test_headless: false
+  #   cookiename_visited: atom_visited
+  #   cookiename_headless: atom_headless
+  #   cookiename_js: atom_js
+  #   salt: 'REPLACE_WITH_SECRET'
+  #   delay_seconds: 5
+  #   cookie_days: 90
+  #   cidr_exceptions:
+  #     - '192.168.1.0/24'
+  #     - '10.0.0.0/8'
+
+  # GeoIp configuration settings. GeoIp is required for user_challenge features.
+  # The country and asn filters both require GeoIp to be set up.
+  #
+  # geoip:
+  #   asn_db_path: %SF_ROOT_DIR%/geoip/GeoLite2-ASN.mmdb
+  #   city_db_path: %SF_ROOT_DIR%/geoip/GeoLite2-City.mmdb

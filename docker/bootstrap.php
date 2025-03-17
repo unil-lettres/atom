@@ -116,6 +116,18 @@ all:
       worker-src 'self' blob:;
       connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googleapis.com *.google.com https://*.gstatic.com  data: blob:;
       frame-ancestors 'self';
+  user_challenge:
+    activated: false
+    test_headless: true
+    cookiename_visited: atom_visited
+    cookiename_headless: atom_headless
+    cookiename_js: atom_js
+    salt: 'REPLACE_WITH_SECRET'
+    delay_seconds: 5
+    cookie_days: 3
+    cidr_exceptions:
+      - '192.168.1.0/24'
+      - '10.0.0.0/8'
 
 EOT;
 
