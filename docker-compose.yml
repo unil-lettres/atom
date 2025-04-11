@@ -1,0 +1,125 @@
+services:
+  ###################################################################
+  # MySQL Database
+  ###################################################################
+  mysql:
+    image: mysql:8.0
+    container_name: atom_mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: atom
+      MYSQL_USER: atom
+      MYSQL_PASSWORD: atompass
+    restart: always
+    networks:
+      - atom_network
+
+  ###################################################################
+  # Elasticsearch
+  ###################################################################
+  elasticsearch:
+    image: elasticsearch:7.17.28
+    container_name: atom_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    restart: always
+    networks:
+      - atom_network
+
+  ###################################################################
+  # Gearman
+  ###################################################################
+  gearman:
+    image: artefactual/gearmand:1.1.21.2-alpine
+    container_name: atom_gearman
+    restart: always
+    ports:
+      - "4730:4730"
+    networks:
+      - atom_network
+
+  ###################################################################
+  # AtoM App (PHP-FPM only)
+  ###################################################################
+  app:
+    build:
+      context: .
+      dockerfile: ./init/Dockerfile
+    container_name: atom_app
+    depends_on:
+      - mysql
+      - elasticsearch
+      - gearman
+    volumes:
+      - atom_app:/usr/share/nginx/atom
+
+      # Optional local folder mounts for dev-time "watch":
+      - ./watched/uploads:/usr/share/nginx/atom/uploads
+      - ./watched/log:/usr/share/nginx/atom/log
+      - ./watched/cache:/usr/share/nginx/atom/cache
+
+    # Expose port 9000 for PHP-FPM
+    expose:
+      - "9000"
+    env_file:
+      - .env
+    networks:
+      - atom_network
+
+  ###################################################################
+  # Nginx Container
+  ###################################################################
+  nginx:
+    image: nginx:1.27.4
+    container_name: atom_nginx
+    depends_on:
+      - app
+    volumes:
+      - atom_app:/usr/share/nginx/atom:ro
+      - ./watched/uploads:/usr/share/nginx/atom/uploads:ro
+      - ./init/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"
+    networks:
+      - atom_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  ###################################################################
+  # Memcached
+  ###################################################################
+  memcached:
+    image: memcached:1.6
+    container_name: atom_memcached
+    restart: always
+    ports:
+      - "11211:11211"
+    networks:
+      - atom_network
+
+networks:
+  atom_network:
+
+volumes:
+  db_data:
+  es_data:
+  atom_app:
+  db_backups:
+  uptime_data:

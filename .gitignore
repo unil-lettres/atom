@@ -1,0 +1,9 @@
+.DS_Store
+.vscode
+*.sql
+*.tar.gz
+*.xz
+uploads/
+.env
+watched/cache/
+watched/log/
