@@ -72,12 +72,38 @@ if [ ! -f "${ATOM_DIR}/symfony" ]; then
 fi
 
 # ----------------------
+# GENERATE databases.yml
+# ----------------------
+echo ">>> Writing config/databases.yml..."
+cat > "${ATOM_DIR}/config/databases.yml" <<EOF
+all:
+  default: propel
+  propel:
+    class: sfPropelDatabase
+    param:
+      dsn: "mysql:host=mysql;port=3306;dbname=atom"
+      username: atom
+      password: atompass
+      encoding: utf8
+      persistent: true
+      pooling: true
+      attributes:
+        1007: true     # PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+        1017: ""       # PDO::MYSQL_ATTR_UNIX_SOCKET (set to empty string to disable Unix socket)
+EOF
+
+# Clear symfony cache
+echo ">>> Clearing Symfony cache after writing databases.yml..."
+php "${ATOM_DIR}/symfony" cc
+
+
+# ----------------------
 # CONFIGURE MEMCACHED
 # ----------------------
 # Source the Memcached configuration script
-. /init/configure-memcached.sh
-configure_memcached
-validate_memcached_config
+# . /init/configure-memcached.sh
+# configure_memcached
+# validate_memcached_config
 
 echo ">>> Fixing permissions for AtoM directory..."
 chown -R www-data:www-data "${ATOM_DIR}"
@@ -88,8 +114,8 @@ cd "${ATOM_DIR}"
 retry_until_success "MySQL"         "mysql -h\"${DB_HOST}\" -u\"${DB_USER}\" -p\"${DB_PASS}\" -e 'SELECT 1'"
 retry_until_success "Elasticsearch" "curl -s http://${ES_HOST}:${ES_PORT}/"
 retry_until_success "Gearman"       "nc -z ${GEARMAND_HOST} 4730"
-wait_for_memcached ${MAX_RETRIES}
-check_memcached_version
+# wait_for_memcached ${MAX_RETRIES}
+# check_memcached_version
 
 # Check if the AtoM database is initialized
 echo ">>> Checking if AtoM database is initialized..."

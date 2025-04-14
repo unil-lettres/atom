@@ -9,39 +9,38 @@ ATOM_DIR="${ATOM_DIR:-/usr/share/nginx/atom}"
 configure_memcached() {
   echo ">>> Configuring Memcached in app.yml..."
   if [ -f "${ATOM_DIR}/config/app.yml" ]; then
-    # Check if already using sfMemcacheCache
     if grep -q "cache_engine: sfMemcacheCache" "${ATOM_DIR}/config/app.yml"; then
       echo ">>> Memcached already configured as cache engine."
     else
       echo ">>> Updating app.yml to use Memcached..."
-      # Backup the original file
       cp "${ATOM_DIR}/config/app.yml" "${ATOM_DIR}/config/app.yml.bak"
-      
-      # Replace cache_engine line
       sed -i 's/cache_engine: sfAPCCache/cache_engine: sfMemcacheCache/' "${ATOM_DIR}/config/app.yml"
       
-      # Add Memcached parameters if not present
-      if ! grep -q "cache:" "${ATOM_DIR}/config/app.yml"; then
-        # Find the line after cache_engine and insert cache parameters
-        sed -i "/cache_engine: sfMemcacheCache/a \  cache:\n    param:\n      host: ${MEMCACHED_HOST}\n      port: ${MEMCACHED_PORT}" "${ATOM_DIR}/config/app.yml"
+      # Insert param block if missing
+      if ! grep -q "param:" "${ATOM_DIR}/config/app.yml"; then
+        cat <<EOF >> "${ATOM_DIR}/config/app.yml"
+
+  param:
+    prefix: atom
+    servers:
+      - { host: ${MEMCACHED_HOST}, port: ${MEMCACHED_PORT}, persistent: true }
+EOF
       fi
-      
       echo ">>> Successfully updated app.yml to use Memcached."
     fi
   else
     echo ">>> app.yml not found. Creating template for installation..."
-    # Create a temp config to be used during the tools:install process
     mkdir -p "${ATOM_DIR}/config"
-    cat > "${ATOM_DIR}/config/app.yml.template" << EOF
+    cat > "${ATOM_DIR}/config/app.yml.template" <<EOF
 all:
+  cache_engine: sfMemcacheCache
+  param:
+    prefix: atom
+    servers:
+      - { host: ${MEMCACHED_HOST}, port: ${MEMCACHED_PORT}, persistent: true }
+  read_only: false
   upload_limit: -1
   download_timeout: 10
-  cache_engine: sfMemcacheCache
-  cache:
-    param:
-      host: ${MEMCACHED_HOST}
-      port: ${MEMCACHED_PORT}
-  read_only: false
   htmlpurifier_enabled: false
   workers_key:
   password_hash_algorithm: PASSWORD_ARGON2I
@@ -49,6 +48,7 @@ all:
 EOF
   fi
 }
+
 
 validate_memcached_config() {
   echo ">>> Checking app.yml for Memcached config..."
