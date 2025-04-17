@@ -76,7 +76,7 @@ db-export:
 	$(DOCKER_COMPOSE) exec $(MYSQL_CONTAINER) rm -f "/tmp/$(DB_DUMP_FILE)"
 	@echo "Export complete."
 
-## db-import: Load DB file `$(DB_DUMP_FILE)` into MySQL, then upgrade SQL and populate search index
+## db-import: Load DB file $(DB_DUMP_FILE) into MySQL, then upgrade SQL and populate search index
 db-import:
 	@echo "Importing '$(DB_DUMP_FILE)' into DB '$(DB_NAME)'..."
 	$(DOCKER_COMPOSE) cp "$(DB_DUMP_FILE)" "$(MYSQL_CONTAINER):/tmp/$(DB_DUMP_FILE)"

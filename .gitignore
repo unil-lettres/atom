@@ -5,5 +5,4 @@
 *.xz
 uploads/
 .env
-watched/cache/
-watched/log/
+/watched/

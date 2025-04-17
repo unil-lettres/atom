@@ -101,9 +101,9 @@ php "${ATOM_DIR}/symfony" cc
 # CONFIGURE MEMCACHED
 # ----------------------
 # Source the Memcached configuration script
-# . /init/configure-memcached.sh
-# configure_memcached
-# validate_memcached_config
+ . /init/configure-memcached.sh
+ configure_memcached
+ validate_memcached_config
 
 echo ">>> Fixing permissions for AtoM directory..."
 chown -R www-data:www-data "${ATOM_DIR}"
