@@ -18,14 +18,6 @@ DOCKER_COMPOSE := docker compose
 MYSQL_CONTAINER := mysql
 WEB_CONTAINER := app
 
-# DB_NAME := atom
-# DB_USER := atom
-# DB_PASS := atompass
-# DB_DUMP_FILE := atom_dump.sql
-
-# UPLOADS_HOST_DIR := ./watched/uploads
-# UPLOADS_TAR := uploads_backup.tar.gz
-
 # --------------------------------------------------------------------------
 # TARGETS
 # --------------------------------------------------------------------------

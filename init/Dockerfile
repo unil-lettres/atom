@@ -1,37 +1,45 @@
 # Use the official PHP 8.3 FPM base image
-FROM php:8.3-fpm
+FROM php:8.3-fpm-bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # --------------------------------------------------------
 # 1) Install system libraries and PHP dependencies
 # --------------------------------------------------------
-    RUN apt-get update -qq && \
-    apt-get install -y -qq \
-      build-essential \
-      pkg-config \
-      libjpeg-dev \
-      libpng-dev \
-      libtiff-dev \
-      libgif-dev \
-      libwebp-dev \
-      libxslt1-dev \
-      libpcre3-dev \
-      curl \
-      unzip \
-      netcat-openbsd \
-      sendmail \
-      mariadb-client \
-      ghostscript \
-      poppler-utils \
-      ffmpeg \
-      default-jre-headless \
-      rsync \
-      grep && \
-    pecl install apcu memcache && \
-    docker-php-ext-enable apcu memcache && \
-    docker-php-ext-install xsl pdo_mysql calendar && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    RUN set -eux; \
+    apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+        build-essential \
+        pkg-config \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+        libtiff-dev \
+        libwebp-dev \
+        libxslt1-dev \
+        libpcre2-dev \
+        libmemcached-dev \
+        libzstd-dev \
+        libssl-dev \
+        zlib1g-dev \
+        curl \
+        unzip \
+        netcat-openbsd \
+        mariadb-client \
+        ghostscript \
+        poppler-utils \
+        ffmpeg \
+        rsync \
+        grep \
+        git \
+        nodejs \
+        npm \
+    && npm install -g less@3.13.1 \
+    && pecl install apcu memcache \
+    && docker-php-ext-enable apcu memcache \
+    && docker-php-ext-install xsl pdo_mysql calendar \
+    && apt-get purge -y --auto-remove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 
 # --------------------------------------------------------
@@ -77,6 +85,18 @@ COPY init/configure-memcached.sh /init/configure-memcached.sh
 RUN chmod +x /init/configure-memcached.sh
 COPY init/atom-2.9.0.tar.gz  /init/atom-2.9.0.tar.gz
 RUN chmod +x /usr/local/bin/atom-entrypoint.sh
+
+##############################################################################
+# 5-bis)  Bake in the UNIL Lettres theme (arLettresPlugin)
+##############################################################################
+# copy the plugin source → image
+COPY plugins/arLettresPlugin /usr/share/nginx/atom/plugins/arLettresPlugin
+
+# compile its LESS → minified CSS
+RUN set -eux; \
+    cd /usr/share/nginx/atom/plugins/arLettresPlugin && \
+    make                                               \
+    && rm -rf node_modules .cache || true              # optional cleanup
 
 # --------------------------------------------------------
 # 6) Working dir, expose FPM port, set entrypoint

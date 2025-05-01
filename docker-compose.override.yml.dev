@@ -1,0 +1,38 @@
+# docker-compose.override.yml.dev
+services:
+  # -----------------------------------------------------------
+  # atom-app – dev-only PHP-FPM backend
+  # -----------------------------------------------------------
+  atom-app:
+    build:
+      context: .
+      dockerfile: ./init/Dockerfile
+    image: atom-dev
+    #container_name: atom-app
+    volumes:
+      - atom_app:/usr/share/nginx/atom
+      - ./plugins/arLettresPlugin:/usr/share/nginx/atom/plugins/arLettresPlugin
+    env_file: .env.dev
+    expose:
+      - "9000"
+    networks:
+      - atom-net
+
+  # ------------------------------------------------------------------
+  # nginx – dev-only web front end
+  # ------------------------------------------------------------------
+  atom-nginx:
+    image: nginx:1.27-alpine
+    container_name: atom-nginx
+    depends_on:
+      - atom-app
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - ./init/nginx.dev.conf:/etc/nginx/conf.d/default.conf:ro
+      - atom_app:/usr/share/nginx/atom:ro
+      - ./plugins/arLettresPlugin:/usr/share/nginx/atom/plugins/arLettresPlugin:ro
+
+    networks:
+      - atom-net
+

@@ -31,7 +31,7 @@ EOF
   else
     echo ">>> app.yml not found. Creating template for installation..."
     mkdir -p "${ATOM_DIR}/config"
-    cat > "${ATOM_DIR}/config/app.yml.template" <<EOF
+    cat > "${ATOM_DIR}/config/app.yml" <<EOF
 all:
   cache_engine: sfMemcacheCache
   param:

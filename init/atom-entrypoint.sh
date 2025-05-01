@@ -14,8 +14,8 @@ DB_PASS="${DB_PASS:-atompass}"
 ES_HOST="${ES_HOST:-elasticsearch}"
 ES_PORT="${ES_PORT:-9200}"
 GEARMAND_HOST="${GEARMAND_HOST:-gearman}"
-MEMCACHED_HOST="${MEMCACHED_HOST:-memcached}"
-MEMCACHED_PORT="${MEMCACHED_PORT:-11211}"
+# MEMCACHED_HOST="${MEMCACHED_HOST:-memcached}"
+# MEMCACHED_PORT="${MEMCACHED_PORT:-11211}"
 ATOM_VERSION="${ATOM_VERSION:-2.9.0}"
 ATOM_DIR="/usr/share/nginx/atom"
 TARBALL="/init/atom-${ATOM_VERSION}.tar.gz"
@@ -81,9 +81,9 @@ all:
   propel:
     class: sfPropelDatabase
     param:
-      dsn: "mysql:host=mysql;port=3306;dbname=atom"
-      username: atom
-      password: atompass
+      dsn: "mysql:host=${DB_HOST};port=3306;dbname=${DB_NAME}"
+      username: ${DB_USER}
+      password: ${DB_PASS}
       encoding: utf8
       persistent: true
       pooling: true
@@ -101,9 +101,9 @@ php "${ATOM_DIR}/symfony" cc
 # CONFIGURE MEMCACHED
 # ----------------------
 # Source the Memcached configuration script
- . /init/configure-memcached.sh
- configure_memcached
- validate_memcached_config
+#  . /init/configure-memcached.sh
+#  configure_memcached
+#  validate_memcached_config
 
 echo ">>> Fixing permissions for AtoM directory..."
 chown -R www-data:www-data "${ATOM_DIR}"
