@@ -1,23 +1,18 @@
-name: atom          # makes container names nicer (atom-app, …)
+# docker-compose.yml
+name: atom
 services:
+  
   atom-app:
-    container_name: atom-app
-    image: atom-dev
-    networks: [atom-net]
     depends_on:
       atom-mysql: {condition: service_healthy}
       atom-elasticsearch: {condition: service_started}
       atom-gearman: {condition: service_started}
-
+    networks: [atom-net]
+    env_file: .env
+  
   atom-mysql:
     image: mysql:8.0
-    container_name: atom-mysql
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: atom
-      MYSQL_USER: atom
-      MYSQL_PASSWORD: atompass
     healthcheck:
       test: ["CMD","mysqladmin","ping","-h","localhost"]
       interval: 10s
@@ -26,10 +21,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     networks: [atom-net]
-
+    env_file: .env
+    
   atom-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.23
-    container_name: atom-elasticsearch
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -47,7 +42,6 @@ services:
 
   atom-gearman:
     image: artefactual/gearmand:1.1.21.2-alpine
-    container_name: atom-gearman
     expose: ["4730"]
     networks: [atom-net]
 
@@ -55,8 +49,5 @@ networks:
   atom-net:
 
 volumes:
-  atom_app:
   db_data:
   es_data:
-  uploads_data:
-  logs_data:
