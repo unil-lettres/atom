@@ -1,0 +1,3 @@
+[submodule "plugins/arLettresPlugin"]
+	path = plugins/arLettresPlugin
+	url = https://github.com/unil-lettres/arLettresPlugin.git
