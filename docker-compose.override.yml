@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  atom-app:
+    build:
+      context: .
+      dockerfile: ./init/Dockerfile
+    # share the full AtoM install in a named volume, which
+    # Docker will initialize from the image on first run
+    volumes:
+      - atom_app:/usr/share/nginx/atom
+      # mount your local plugin for the entrypoint to copy in
+      - ./plugins/arLettresPlugin:/host-plugins/arLettresPlugin:ro
+    environment:
+      - APP_ENV=dev
+    networks:
+      - atom-net
+
+  atom-nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      - atom-app
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      # mount the same AtoM volume in read-only mode
+      - atom_app:/usr/share/nginx/atom:ro
+      # your custom dev nginx config
+      - ./init/nginx.dev.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - atom-net
+
+volumes:
+  atom_app:
+
+networks:
+  atom-net:
