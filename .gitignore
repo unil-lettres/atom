@@ -6,3 +6,4 @@
 uploads/
 .env*
 /watched/
+plugins.old/
