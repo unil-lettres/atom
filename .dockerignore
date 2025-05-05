@@ -1,0 +1,44 @@
+#--------------------#
+#  Core Git metadata #
+#--------------------#
+.git
+.gitmodules
+.gitignore
+
+# Submodule Git data — keeps the layer tiny
+plugins/arLettresPlugin/.git
+
+#--------------------#
+#  Local artefacts   #
+#--------------------#
+# Back-up of the old plugin copy
+plugins.old/
+
+# macOS / Windows noise
+.DS_Store
+Thumbs.db
+
+# IDE settings (VSCode, JetBrains, etc.)
+.vscode/
+.idea/
+
+# Python byte-code (if you have helper scripts)
+**/__pycache__/
+**/*.py[co]
+
+# Node build caches (only if you do local JS tooling)
+node_modules/
+
+# Logs & temp
+*.log
+tmp/
+.cache/
+dist/
+build/
+
+#--------------------#
+#  Docker internals  #
+#--------------------#
+.dockerignore        # yes, Docker ignores itself too
+Dockerfile*
+docker-compose*.yml
