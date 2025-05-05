@@ -71,6 +71,11 @@ if [ ! -f "${ATOM_DIR}/symfony" ]; then
   chmod -R 775 "${ATOM_DIR}/web/uploads"
 fi
 
+# Always ensure cache & log exist on every start
+echo ">>> Ensuring cache & log dirs exist on every start..."
+mkdir -p "${ATOM_DIR}/cache" "${ATOM_DIR}/log"
+chown -R www-data:www-data "${ATOM_DIR}/cache" "${ATOM_DIR}/log"
+
 # ----------------------
 # GENERATE databases.yml
 # ----------------------
