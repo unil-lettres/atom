@@ -1,8 +1,7 @@
-# docker-compose.override.yml.prod
+# docker-compose.prod.yml
 services:
-
   atom-app:
-    image: ghcr.io/your-org/atom:2.9.0-lettres
+    image: unillett/atom:${ATOM_VERSION}
     restart: unless-stopped
     volumes:
       - uploads_data:/usr/share/nginx/atom/uploads

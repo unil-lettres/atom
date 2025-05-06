@@ -39,6 +39,7 @@ build/
 #--------------------#
 #  Docker internals  #
 #--------------------#
-.dockerignore        # yes, Docker ignores itself too
+.dockerignore
 Dockerfile*
 docker-compose*.yml
+docker

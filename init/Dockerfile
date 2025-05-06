@@ -1,4 +1,3 @@
-# Use the official PHP 8.3 FPM base image
 FROM php:8.3-fpm-bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -23,18 +22,18 @@ RUN set -eux; \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# --------------------------------------------------------
-# 2) Install ImageMagick and FOP as before
-# --------------------------------------------------------
-COPY init/ImageMagick-6.9.11-60.tar.xz /tmp/
-RUN cd /tmp && \
+RUN set -eux; \
+    cd /tmp && \
+    curl -L https://download.imagemagick.org/ImageMagick/download/releases/ImageMagick-6.9.11-60.tar.xz \
+      -o ImageMagick-6.9.11-60.tar.xz && \
     tar -xf ImageMagick-6.9.11-60.tar.xz && \
     cd ImageMagick-6.9.11-60 && \
     ./configure --disable-dependency-tracking && \
     make -j"$(nproc)" && \
     make install && \
     ldconfig && \
-    cd .. && rm -rf ImageMagick-6.9.11-60*
+    cd /tmp && \
+    rm -rf ImageMagick-6.9.11-60 ImageMagick-6.9.11-60.tar.xz
 
 RUN mkdir -p /opt/fop && \
     curl -L https://archive.apache.org/dist/xmlgraphics/fop/binaries/fop-2.6-bin.tar.gz \
@@ -50,19 +49,21 @@ RUN printf "display_errors = Off\nlog_errors = On\nerror_reporting = E_ALL & ~E_
 
 COPY init/atom-entrypoint.sh /usr/local/bin/atom-entrypoint.sh
 COPY init/configure-memcached.sh  /init/configure-memcached.sh
-COPY init/atom-2.9.0.tar.gz       /init/atom-2.9.0.tar.gz
 RUN chmod +x /usr/local/bin/atom-entrypoint.sh /init/configure-memcached.sh
 
-# --------------------------------------------------------
-# 4) Extract and configure AtoM
-# --------------------------------------------------------
-WORKDIR /usr/share/nginx/atom
-RUN mkdir -p /usr/share/nginx && \
-    tar -xf /init/atom-2.9.0.tar.gz -C /usr/share/nginx && \
-    mv /usr/share/nginx/atom-2.9.0/* /usr/share/nginx/atom/ && \
-    rm -rf /usr/share/nginx/atom-2.9.0
+ARG ATOM_VERSION=2.9.0
+ENV ATOM_VERSION=${ATOM_VERSION}
 
-# (Your existing entrypoint logic will merge plugins, fix perms, etc.)
+# --------------------------------------------------------
+# 4) Download & extract AtoM
+# --------------------------------------------------------
+RUN set -eux; \
+    mkdir -p /usr/share/nginx; \
+    curl -L "https://storage.accesstomemory.org/releases/atom-${ATOM_VERSION}.tar.gz" \
+      -o "/tmp/atom-${ATOM_VERSION}.tar.gz"; \
+    tar -xf "/tmp/atom-${ATOM_VERSION}.tar.gz" -C /usr/share/nginx; \
+    mv "/usr/share/nginx/atom-${ATOM_VERSION}" "/usr/share/nginx/atom"; \
+    rm "/tmp/atom-${ATOM_VERSION}.tar.gz"
 
 # --------------------------------------------------------
 # 5) Bake in and compile the UNIL Lettres theme

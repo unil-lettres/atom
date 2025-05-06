@@ -18,7 +18,6 @@ GEARMAND_HOST="${GEARMAND_HOST:-gearman}"
 # MEMCACHED_PORT="${MEMCACHED_PORT:-11211}"
 ATOM_VERSION="${ATOM_VERSION:-2.9.0}"
 ATOM_DIR="/usr/share/nginx/atom"
-TARBALL="/init/atom-${ATOM_VERSION}.tar.gz"
 SITE_URL="${SITE_URL:-http://localhost:8080}"
 MAX_RETRIES=60
 
@@ -47,32 +46,8 @@ retry_until_success() {
   echo ">>> $name is online."
 }
 
-# Extract AtoM if not already present
-if [ ! -f "${ATOM_DIR}/symfony" ]; then
-  echo ">>> Extracting AtoM ${ATOM_VERSION}..."
-  mkdir -p /usr/share/nginx
-  tar -xf "${TARBALL}" -C /usr/share/nginx/
-  mkdir -p "${ATOM_DIR}"
-  shopt -s dotglob nullglob
-  mv /usr/share/nginx/atom-${ATOM_VERSION}/* "${ATOM_DIR}/" || true
-  shopt -u dotglob nullglob
-  rm -rf "/usr/share/nginx/atom-${ATOM_VERSION}"
-
-  # Ensure correct permissions for log/cache dirs
-  echo ">>> Creating and fixing permissions for log/cache dirs..."
-  mkdir -p "${ATOM_DIR}/log" "${ATOM_DIR}/cache"
-  chown -R www-data:www-data "${ATOM_DIR}/log" "${ATOM_DIR}/cache"
-  chmod -R 775 "${ATOM_DIR}/log" "${ATOM_DIR}/cache"
-
-  # Ensure correct permissions for uploads
-  echo ">>> Creating and fixing permissions for uploads..."
-  mkdir -p "${ATOM_DIR}/web/uploads/atom/objects"
-  chown -R www-data:www-data "${ATOM_DIR}/web/uploads"
-  chmod -R 775 "${ATOM_DIR}/web/uploads"
-fi
-
 # Always ensure cache & log exist on every start
-echo ">>> Ensuring cache & log dirs exist on every start..."
+echo ">>> Ensuring cache & log dirs exist..."
 mkdir -p "${ATOM_DIR}/cache" "${ATOM_DIR}/log"
 chown -R www-data:www-data "${ATOM_DIR}/cache" "${ATOM_DIR}/log"
 
@@ -100,7 +75,6 @@ EOF
 # Clear symfony cache
 echo ">>> Clearing Symfony cache after writing databases.yml..."
 php "${ATOM_DIR}/symfony" cc
-
 
 # ----------------------
 # CONFIGURE MEMCACHED
