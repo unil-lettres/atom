@@ -13,6 +13,17 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], $allowedIps)) {
     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
+// Handle challenge URL requests immediately.
+if (0 === strpos($_SERVER['REQUEST_URI'], '/challenge')) {
+    chdir(__DIR__.'/web/challenge');
+
+    require 'index.php';
+
+    exit;
+}
+
+require __DIR__.'/lib/challenge/filter.php';
+
 require_once dirname(__FILE__).'/config/ProjectConfiguration.class.php';
 
 $configuration = ProjectConfiguration::getApplicationConfiguration('qubit', 'dev', true);

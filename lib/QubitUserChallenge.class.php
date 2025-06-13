@@ -19,45 +19,219 @@
 
 class QubitUserChallenge
 {
-    protected $testHeadless;
-    protected $cookieNameHeadless;
-    protected $context;
-
-    public function __construct(bool $testHeadless, string $cookieNameHeadless)
-    {
-        $this->testHeadless = $testHeadless;
-        $this->cookieNameHeadless = $cookieNameHeadless;
-        $this->context = sfContext::getInstance();
-    }
+    protected bool $testHeadless;
+    protected string $cookieNameHeadless;
+    protected array $config;
+    protected QubitGeoIpHelper $geoIpHelper;
+    protected ?LoggerInterface $logger;
 
     /**
-     * Initiate js challenge.
+     * @param array                $config             Challenge configuration array
+     * @param QubitGeoIpHelper     $geoIpHelper        GeoIP helper for network checks
+     * @param bool                 $testHeadless       Whether to perform headless test
+     * @param string               $cookieNameHeadless Name of the headless-js cookie
+     * @param null|LoggerInterface $logger             Optional PSR-3 logger
      */
-    public function challenge()
-    {
-        return $this->context->getController()->redirect(['module' => 'admin', 'action' => 'challenge']);
+    public function __construct(
+        array $config,
+        QubitGeoIpHelper $geoIpHelper,
+        ?LoggerInterface $logger = null
+    ) {
+        $this->config = $config;
+        $this->geoIpHelper = $geoIpHelper;
+        $this->testHeadless = (bool) ($config['test_headless'] ?? false);
+        $this->cookieNameHeadless = $config['cookiename_headless'] ?? 'atom_headless';
+        $this->logger = $logger;
     }
 
     /**
      * Check to see if the browser reports if it is headless or not. Returns
      * true if is headless, otherwise false.
      *
-     * @param mixed $key
+     * @param string $key
+     *
+     * @return bool
      */
-    public function checkHeadless($key)
+    public function checkHeadless(string $key): bool
     {
         // Check if test is activated.
         if (empty($this->testHeadless)) {
             return true;
         }
 
-        // Parse cookie contents.
         if (isset($_COOKIE[$this->cookieNameHeadless])) {
-            $headless = explode(':', base64_decode($_COOKIE[$this->cookieNameHeadless]));
-            if (isset($headless[0], $headless[1])
-                && $headless[0] === $key
-                && 'false' === $headless[1]) {
+            $parts = explode(':', base64_decode($_COOKIE[$this->cookieNameHeadless]));
+            if (isset($parts[0], $parts[1]) && $parts[0] === $key && 'false' === $parts[1]) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the current request should bypass the JS challenge.
+     *
+     * @param string $remoteIp
+     * @param string $userAgent
+     *
+     * @return bool
+     */
+    public function shouldBypassChallenge(string $remoteIp, string $userAgent): bool
+    {
+        // Country code exception
+        $country = $this->geoIpHelper->getCountry($remoteIp);
+        if (null !== $country && $this->matchesCountryException($country)) {
+            return true;
+        }
+
+        // ASN + UA exception
+        $asn = $this->geoIpHelper->getAsn($remoteIp);
+        if (null !== $asn && $this->matchesAsnUserAgentException($asn, $userAgent)) {
+            return true;
+        }
+
+        // Network + UA exception
+        if ($this->matchesNetworkUserAgentException($remoteIp, $userAgent)) {
+            return true;
+        }
+
+        // ASN-only exception
+        if (null !== $asn && $this->matchesAsnException($asn)) {
+            return true;
+        }
+
+        // CIDR-only exception
+        if ($this->matchesCidrException($remoteIp)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function setCookie(
+        $name,
+        $value = '',
+        $expires = 0,
+        $path = '',
+        $domain = '',
+        $secure = true,
+        $httponly = true,
+        $samesite = 'strict'
+    ) {
+        if (headers_sent()) {
+            return;
+        }
+
+        $params = [
+            'expires' => $expires,
+            'path' => $path,
+            'domain' => $domain,
+            'secure' => $secure,
+            'httponly' => $httponly,
+        ];
+
+        if ($samesite) {
+            $params['samesite'] = $samesite;
+        }
+
+        setcookie($name, $value, $params);
+    }
+
+    /**
+     * Log informational message.
+     */
+    protected function logInfo(string $message = ''): void
+    {
+        if ($this->logger) {
+            $this->logger->info($message);
+        } else {
+            error_log($message);
+        }
+    }
+
+    /**
+     * @param mixed $clientAsn
+     * @param mixed $userAgent
+     */
+    protected function matchesAsnUserAgentException(int $clientAsn, string $userAgent): bool
+    {
+        $customAsnExceptions = $this->config['asn_user_agent_exceptions'] ?? [];
+        foreach ($customAsnExceptions as $name => $exception) {
+            if (isset($exception['asn'], $exception['user_agent'])) {
+                if ($clientAsn === $exception['asn']
+                    && preg_match('/'.$exception['user_agent'].'/i', $userAgent)) {
+                    // Exception matched; bypass the JS challenge.
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param mixed $remoteIp
+     * @param mixed $userAgent
+     */
+    protected function matchesNetworkUserAgentException(string $remoteIp, string $userAgent): bool
+    {
+        $customExceptions = $this->config['network_user_agent_exceptions'] ?? [];
+        foreach ($customExceptions as $name => $exception) {
+            if (isset($exception['src_net'], $exception['user_agent'])) {
+                if ($this->geoIpHelper->ipInCidr($remoteIp, $exception['src_net'])
+                    && preg_match('/'.$exception['user_agent'].'/i', $userAgent)) {
+                    // Exception matched; bypass the JS challenge.
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param mixed $clientAsn
+     */
+    protected function matchesAsnException($clientAsn): bool
+    {
+        $asnExceptions = $this->config['asn_exceptions'] ?? [];
+        if (!empty($asnExceptions) && in_array($clientAsn, $asnExceptions)) {
+            // Exception matched; bypass the JS challenge.
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param mixed $remoteIp
+     */
+    protected function matchesCidrException(string $remoteIp): bool
+    {
+        $cidrExceptions = $this->config['cidr_exceptions'] ?? [];
+        foreach ($cidrExceptions as $cidr) {
+            if ($this->geoIpHelper->ipInCidr($remoteIp, $cidr)) {
+                // Exception matched; bypass the JS challenge.
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    protected function matchesCountryException(string $country): bool
+    {
+        $countryExceptions = $this->config['country_exceptions'] ?? [];
+        if (!empty($countryExceptions)) {
+            foreach ($countryExceptions as $name => $exception) {
+                if (isset($exception['country']) && strtoupper($country) == strtoupper($exception['country'])) {
+                    // Exception matched; bypass the JS challenge.
+                    return true;
+                }
             }
         }
 

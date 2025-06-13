@@ -17,27 +17,27 @@
  * along with Access to Memory (AtoM).  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once __DIR__.'/../vendor/composer/autoload.php';
+
 use GeoIp2\Database\Reader;
+use Psr\Log\LoggerInterface;
 
 class QubitGeoIpHelper
 {
-    protected $asnDbPath;
-    protected $cityDbPath;
+    protected string $asnDbPath;
+    protected string $cityDbPath;
+    protected ?LoggerInterface $logger;
 
-    public function __construct($asnDbPath = null, $cityDbPath = null)
+    /**
+     * @param string               $asnDbPath  Path to ASN GeoIP database
+     * @param string               $cityDbPath Path to City GeoIP database
+     * @param null|LoggerInterface $logger     Optional PSR-3 logger
+     */
+    public function __construct(string $asnDbPath, string $cityDbPath, ?LoggerInterface $logger = null)
     {
-        $this->setAsnDbPath($asnDbPath ?: sfConfig::get('app_geoip_asn_db_path', ''));
-        $this->setCityDbPath($cityDbPath ?: sfConfig::get('app_geoip_city_db_path', ''));
-    }
-
-    public function setAsnDbPath($path)
-    {
-        $this->asnDbPath = $path;
-    }
-
-    public function setCityDbPath($path)
-    {
-        $this->cityDbPath = $path;
+        $this->asnDbPath = $asnDbPath;
+        $this->cityDbPath = $cityDbPath;
+        $this->logger = $logger;
     }
 
     /**
@@ -49,7 +49,7 @@ class QubitGeoIpHelper
      *
      * @return bool true if the IP is private/reserved, false otherwise
      */
-    public function isPrivateIP($ip)
+    public function isPrivateIP(string $ip): bool
     {
         // Check IPv4 addresses.
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
@@ -103,18 +103,19 @@ class QubitGeoIpHelper
      * @param string $ip   the IP address to check
      * @param string $cidr The CIDR block, e.g. "192.168.1.0/24" or "2001:db8::/32".
      *
-     * @return bool true if $ip is in the CIDR range, false otherwise
+     * @return null|bool true if in range, false if not, null if invalid input
      */
-    public function ipInCidr($ip, $cidr)
+    public function ipInCidr(string $ip, string $cidr): ?bool
     {
-        if (empty($ip) || empty($cidr)) {
+        if (empty($ip) || empty($cidr)
+        || (false === strpos($cidr, ':') && false === strpos($cidr, '/'))) {
             return null;
         }
 
         // Determine if CIDR is IPv4 or IPv6 based on presence of ":".
         if (false === strpos($cidr, ':')) {
             // IPv4 processing.
-            list($subnet, $mask) = explode('/', $cidr);
+            [$subnet, $mask] = explode('/', $cidr);
 
             if (empty($subnet) || empty($mask)) {
                 return null;
@@ -129,7 +130,7 @@ class QubitGeoIpHelper
         }
 
         // IPv6 processing.
-        list($subnet, $mask) = explode('/', $cidr);
+        [$subnet, $mask] = explode('/', $cidr);
         $mask = (int) $mask;
         $ipBin = inet_pton($ip);
         $subnetBin = inet_pton($subnet);
@@ -165,7 +166,7 @@ class QubitGeoIpHelper
      *
      * @return null|int
      */
-    public function getAsn($ip)
+    public function getAsn(string $ip): ?int
     {
         if ($this->isPrivateIP($ip)) {
             return null;
@@ -176,12 +177,8 @@ class QubitGeoIpHelper
             $record = $reader->asn($ip);
 
             return $record->autonomousSystemNumber;
-        } catch (Exception $e) {
-            sfContext::getInstance()->getLogger()->info(
-                sprintf(
-                    'GeoIP Error: can\'t find ASN. Ensure setting \'app_geoip_asn_db_path\' is set properly. %s', $e->getMessage()
-                )
-            );
+        } catch (\Exception $e) {
+            $this->logInfo('GeoIP Error: can\'t find ASN DB or lookup failed: '.$e->getMessage());
 
             return null;
         }
@@ -194,7 +191,7 @@ class QubitGeoIpHelper
      *
      * @return null|string
      */
-    public function getCountry($ip)
+    public function getCountry(string $ip): ?string
     {
         if ($this->isPrivateIP($ip)) {
             return null;
@@ -205,14 +202,22 @@ class QubitGeoIpHelper
             $record = $reader->city($ip);
 
             return $record->country->isoCode;
-        } catch (Exception $e) {
-            sfContext::getInstance()->getLogger()->info(
-                sprintf(
-                    'GeoIP Error: can\'t find Country. Ensure setting \'app_geoip_city_db_path\' is set properly. %s', $e->getMessage()
-                )
-            );
+        } catch (\Exception $e) {
+            $this->logInfo('GeoIP Error: can\'t find City DB or lookup failed: '.$e->getMessage());
 
             return null;
+        }
+    }
+
+    /**
+     * Log informational messages.
+     */
+    protected function logInfo(string $message = ''): void
+    {
+        if ($this->logger) {
+            $this->logger->info($message);
+        } else {
+            error_log($message);
         }
     }
 }

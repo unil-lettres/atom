@@ -8,6 +8,7 @@
 /config/config.php
 /config/databases.yml
 /config/propel.ini
+/config/appChallenge.yml
 /config/diacritics_mapping.yml
 
 # Internal use

@@ -456,6 +456,7 @@ EOF;
             arInstall::checkWritablePaths();
             arInstall::createDatabasesYml();
             arInstall::createPropelIni();
+            arInstall::createAppChallengeYml();
             arInstall::createSettingsYml();
             arInstall::createSfSymlink();
             arInstall::configureDatabase($options['database']);
