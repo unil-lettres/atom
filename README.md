@@ -1,141 +1,68 @@
-## AtoM Docker Configuration
-This repository provides a Docker-based development and deployment setup for AtoM (Access to Memory), enhanced with a Makefile for common admin tasks.
+## AtoM Docker Setup (UNIL Lettres)
+This repository provides a Docker-based setup for deploying [AtoM (Access to Memory)](https://www.accesstomemory.org), including UNIL Lettres customizations.
 
 ###What’s inside
 - Docker Compose for:
 
-	- PHP-FPM (with AtoM & UNIL Lettres theme)
-	- MySQL
-	- Elasticsearch
-	- Gearman
-	- Memcached (disabled at this time)
-	- nginx (dev config only)
+	- PHP-FPM container with AtoM & UNIL Lettres theme
+	- MySQL 8
+	- Elasticsearch 6.8 OSS
+	- Gearman job server
+	- Memcached (defined but disabled by default)
+	- nginx (included in dev and optional for Docker-based prod)
 
-- arLettresPlugin included as a git submodule (UNIL Lettres theme)
-
+- Environment overrides:
+	- `docker-compose.override.yml` for development
+	- `docker-compose.prod.yml` for production deployments using prebuilt Docker Hub images	
+- arLettresPlugin as a git submodule:
+	- UNIL theme built at container image build time
+	- Easily updatable via `git submodule update --remote`
+	
+- Production-ready Docker images published to:
+	- `unillett/atom`
 - Makefile with tasks for :
- - Container lifecycle (up, down, restart, logs)
- - DB export/import & status
- - Uploads export/import
- - Fresh install & post-import upgrades
+ - Container lifecycle (`up`, `down`, `restart`, `logs`)
+ - Database import/export/status/reset
+ - Uploads import/export
+ - Full reinitialization (`make fresh-install`)
+ - Elasticsearch indexing
 
-###Installation
-1. Clone the repo (with submodules)
-	
-	git clone git@github.com:unil-lettres/atom.git
+###Installation & Deployment
+####1. Clone the repository
 
-	cd atom
-	
-	git submodule update --init --recursive
+```
+git clone git@github.com:unil-lettres/atom.git
+cd atom
+git submodule update --init --recursive
+```
+To pull the latest version of the theme submodule:
 
-	Tip: After pulling, run
-	
-	git submodule update --recursive --remote
+```
+git submodule update --recursive --remote
+```
 
-	if the theme repo has moved forward upstream.
+####2. Configure environment
+Copy the example environment file and edit as needed:
 
-2. Configure environment
+```
+cp .env.example .env
+```
 
-	cp .env.example .env
+####3. Run AtoM
+Run the development environment (default):
 
-	Edit .env values as needed:
+```	
+docker compose up
+```
+Will auto-load docker-compose.yml, docker-compose.override.yml
 
-	ATOM_VERSION=2.9.0
-	
-	SITE_TITLE=Access to Memory
-	
-	SITE_DESCRIPTION=AtoM archival platform
+Site available at http://localhost:8080
 
-	SITE_URL=http://localhost:8080
+Run production:
 
-	DB_HOST=mysql
-	
-	DB_NAME=atom
-	
-	DB_USER=atom
-	
-	DB_PASS=atompass
-
-	ES_HOST=elasticsearch
-	
-	ES_PORT=9200
-
-	GEARMAND_HOST=gearman
-	
-	GEARMAND_PORT=4730
-
-	MEMCACHED_HOST=memcached
-	
-	MEMCACHED_PORT=11211
-
-3. Dev vs. Prod workflows
-
-	3.1 Development (default)
-	
-	*docker compose up* auto-loads :
-
-		docker-compose.yml
-
-		docker-compose.override.yml
-
-	(Your dev overrides: local build, mounts, nginx.dev.conf.)
-
-	Use:
-	
-	make up
-	
-	—or—
-	
-	docker compose up -d --build
-
-	The site will be at http://localhost:8080
-
-	3.2 Production
-	
-	Rename or keep your prod file as, e.g., docker-compose.prod.yml.
-	
-	Then run:
-
-	docker compose -f docker-compose.yml -f docker-compose.prod.yml
-up -d --build
-
-	This uses your prod override (images from registry, named volumes, restart policy).
-
-4. Makefile commands
-
-	4.1 System control
-	
-		make up → build & start (dev)
-
-		make down → stop & remove containers & network
-
-		make restart → teardown & rebuild
-
-		make logs → tail all logs
-
-	4.2 Database
-
-		make db-export → dump MySQL to atom_dump.sql
-
-		make db-import → import dump + run upgrade + indexing
-
-		make db-status → check if ‘object’ table exists
-
-		make fresh-install → wipe DB & re-run tools:install
-
-	4.3 Uploads & media
-
-		make uploads-export → archive uploads to uploads_backup.tar.gz
-
-		make uploads-import → restore uploads, fix perms, regenerate previews
-
-5. UNIL Lettres theme (arLettresPlugin)
-
-	- Lives as a git submodule in plugins/arLettresPlugin
-	- Compiled via LESS at container build time
-	- Registered as a Symfony plugin so it appears under Admin → Themes
-	- To update to latest upstream theme:
-		- git submodule update --remote plugins/arLettresPlugin
+```
+docker compose -f docker-compose.yml -f docker-compose.prod.yml
+```
 
 License
 MIT © UNIL-Lettres

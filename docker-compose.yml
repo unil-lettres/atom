@@ -1,7 +1,6 @@
 # docker-compose.yml
 name: atom
 services:
-  
   atom-app:
     depends_on:
       atom-mysql: {condition: service_healthy}

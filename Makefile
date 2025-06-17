@@ -15,8 +15,9 @@ export
 # CONFIGURATION
 # --------------------------------------------------------------------------
 DOCKER_COMPOSE := docker compose
-MYSQL_CONTAINER := mysql
-WEB_CONTAINER := app
+MYSQL_CONTAINER := $(DB_HOST)
+WEB_CONTAINER := atom-app
+
 
 # --------------------------------------------------------------------------
 # TARGETS

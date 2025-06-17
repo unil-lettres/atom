@@ -1,21 +1,30 @@
-# docker-compose.prod.yml
 services:
   atom-app:
     image: unillett/atom:${ATOM_VERSION}
     restart: unless-stopped
     volumes:
+      - atom_app:/usr/share/nginx/atom
       - uploads_data:/usr/share/nginx/atom/uploads
       - log_data:/usr/share/nginx/atom/log
       - cache_data:/usr/share/nginx/atom/cache
+    networks: [atom-net]
 
-  atom-mysql:
-    restart: unless-stopped
-  atom-elasticsearch:
-    restart: unless-stopped
-  atom-gearman:
-    restart: unless-stopped
+  atom-mysql:         { restart: unless-stopped }
+  atom-elasticsearch: { restart: unless-stopped }
+  atom-gearman:       { restart: unless-stopped }
+
+  atom-nginx:
+    image: nginx:1.27-alpine
+    depends_on:
+      atom-app: { condition: service_started }
+    ports: ["127.0.0.1:8080:80"]
+    volumes:
+      - atom_app:/usr/share/nginx/atom:ro
+      - ./init/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [atom-net]
 
 volumes:
+  atom_app:
   uploads_data:
   log_data:
   cache_data:

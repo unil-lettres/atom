@@ -51,7 +51,7 @@ COPY init/atom-entrypoint.sh /usr/local/bin/atom-entrypoint.sh
 COPY init/configure-memcached.sh  /init/configure-memcached.sh
 RUN chmod +x /usr/local/bin/atom-entrypoint.sh /init/configure-memcached.sh
 
-ARG ATOM_VERSION=2.9.0
+ARG ATOM_VERSION=2.9.1
 ENV ATOM_VERSION=${ATOM_VERSION}
 
 # --------------------------------------------------------
