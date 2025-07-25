@@ -441,11 +441,11 @@ import Tooltip from "bootstrap/js/dist/tooltip";
 
       // Menu dropdown header count
       var countText = this.$menuHeaderCount.data("information-object-label");
-      countText += " count: " + iosCount + "<br />";
+      countText += iosCount + "<br />";
       countText += this.$menuHeaderCount.data("actor-object-label");
-      countText += " count: " + actorsCount + "<br />";
+      countText += actorsCount + "<br />";
       countText += this.$menuHeaderCount.data("repository-object-label");
-      countText += " count: " + reposCount + "<br />";
+      countText += reposCount + "<br />";
 
       this.$menuHeaderCount.html(countText);
     }
