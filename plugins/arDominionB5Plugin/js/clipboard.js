@@ -10,12 +10,31 @@ import Tooltip from "bootstrap/js/dist/tooltip";
       this.onClipboardPage = $("body").is(".clipboard.view");
 
       this.storage = localStorage;
-      this.types = ["informationObject", "actor", "repository"];
-      this.initialItems = { informationObject: [], actor: [], repository: [] };
+      this.types = ["informationObject", "actor", "repository", "accession"];
+      this.showAccessions = this.$element.attr("data-show-accessions") == "1";
+      this.initialItems = {
+        informationObject: [],
+        actor: [],
+        repository: [],
+        accession: [],
+      };
       this.items =
         JSON.parse(this.storage.getItem("clipboard")) || this.initialItems;
       this.exportTokens =
         JSON.parse(this.storage.getItem("exportTokens")) || [];
+
+      let changed = false;
+      for (let type of this.types) {
+        if (!(type in this.items)) {
+          this.items[type] = [];
+          changed = true;
+        }
+      }
+
+      // Propagate changes to array to storage
+      if (changed) {
+        this.storage.setItem("clipboard", JSON.stringify(this.items));
+      }
 
       this.init();
     }
@@ -141,7 +160,8 @@ import Tooltip from "bootstrap/js/dist/tooltip";
       if (
         this.items["informationObject"].length === 0 &&
         this.items["actor"].length === 0 &&
-        this.items["repository"].length === 0
+        this.items["repository"].length === 0 &&
+        this.items["accession"].length === 0
       ) {
         return;
       }
@@ -169,7 +189,8 @@ import Tooltip from "bootstrap/js/dist/tooltip";
       if (
         this.items["informationObject"].length === 0 &&
         this.items["actor"].length === 0 &&
-        this.items["repository"].length === 0
+        this.items["repository"].length === 0 &&
+        this.items["accession"].length === 0
       ) {
         this.showAlert($sendButton.data("empty-message"), "alert-danger");
 
@@ -218,6 +239,15 @@ import Tooltip from "bootstrap/js/dist/tooltip";
         $form.append($repositorySlugs);
       }
 
+      if (this.showAccessions && this.items["accession"].length !== 0) {
+        let $accessionSlugs = $("<input />", {
+          type: "hidden",
+          name: "accession_slugs",
+          value: JSON.stringify(this.items["accession"]),
+        });
+        $form.append($accessionSlugs);
+      }
+
       // Show sending alert and assign it to a variable
       var $sendingAlert = this.showAlert(
         $sendButton.data("message"),
@@ -233,6 +263,15 @@ import Tooltip from "bootstrap/js/dist/tooltip";
 
       var $form = $(event.target);
       var type = $form.find("select#type").val();
+
+      if (type === "accession" && !this.showAccessions) {
+        this.showAlert(
+          this.$element.data("export-alert-message"),
+          "alert-danger"
+        );
+
+        return;
+      }
 
       // Avoid request if there are no slugs for the type
       if (this.items[type].length === 0) {
@@ -420,7 +459,11 @@ import Tooltip from "bootstrap/js/dist/tooltip";
       var iosCount = this.items["informationObject"].length;
       var actorsCount = this.items["actor"].length;
       var reposCount = this.items["repository"].length;
-      var totalCount = iosCount + actorsCount + reposCount;
+      var accessionCount = 0;
+      if (this.showAccessions) {
+        accessionCount = this.items["accession"].length;
+      }
+      var totalCount = iosCount + actorsCount + reposCount + accessionCount;
 
       // Menu button count
       var $buttonSpan = this.$element.find("> span.clipboard-count");
@@ -450,15 +493,32 @@ import Tooltip from "bootstrap/js/dist/tooltip";
         "data-repository-object-label"
       );
 
+      var accessionLabel = "";
+      if (this.showAccessions) {
+        accessionLabel = this.$menuHeaderCount.attr(
+          "data-accession-object-label"
+        );
+      }
+
       if (isRTL) {
         countText += iosCount + infoLabel + "<br />";
         countText += actorsCount + actorLabel + "<br />";
         countText += reposCount + repoLabel + "<br />";
+
+        if (this.showAccessions) {
+          countText += accessionCount + accessionLabel + "<br />";
+        }
+
         this.$menuHeaderCount.attr("dir", "ltr").html(countText);
       } else {
         countText += infoLabel + iosCount + "<br />";
         countText += actorLabel + actorsCount + "<br />";
         countText += repoLabel + reposCount + "<br />";
+
+        if (this.showAccessions) {
+          countText += accessionLabel + accessionCount + "<br />";
+        }
+
         this.$menuHeaderCount.html(countText);
       }
     }
