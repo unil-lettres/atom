@@ -153,7 +153,7 @@ class arElasticSearchPlugin extends QubitSearchEngine
      */
     public function optimize($args = [])
     {
-        return $this->client->optimizeAll($args);
+        return $this->client->forcemergeAll($args);
     }
 
     /*
