@@ -311,26 +311,51 @@ class digitalObjectLoadTask extends arBaseTask
 
     protected function validUrlOrFilePath($url_or_path, $options)
     {
-        $url_or_path = self::getPath($url_or_path, $options);
+        $candidate = trim($this->getPath($url_or_path, $options));
 
-        // Check first for a file (as this is fastest and most likely)
-        if (file_exists($url_or_path)) {
+        // Check first for local file
+        if (is_file($candidate) && is_readable($candidate)) {
             return true;
         }
 
-        // If it's not a file, assume it's a URL and dismiss if invalid
-        if (!filter_var($url_or_path, FILTER_VALIDATE_URL)) {
+        // Validate format as a URL
+        if (!filter_var($candidate, FILTER_VALIDATE_URL)) {
             return false;
         }
 
-        // Check if URL exists
-        $headers = @get_headers($url_or_path);
+        $scheme = parse_url($candidate, PHP_URL_SCHEME);
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            return false;
+        }
 
-        if ($headers && strpos($headers[0], '200')) {
+        return $this->checkUrlExistsWithCurl($candidate);
+    }
+
+    protected function checkUrlExistsWithCurl($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_NOBODY => true,           // No body content needed
+            CURLOPT_RETURNTRANSFER => true,   // No output to STDOUT
+            CURLOPT_FOLLOWLOCATION => true,   // Follow redirects
+            CURLOPT_TIMEOUT => 5,             // Timeout 5 seconds
+            CURLOPT_CONNECTTIMEOUT => 5,      // Connect timeout 5 seconds
+            CURLOPT_MAXREDIRS => 10,          // Stop after 10 redirects
+            CURLOPT_SSL_VERIFYPEER => true,   // Verify certs
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS, // Limit to HTTP/S
+            CURLOPT_USERAGENT => 'AtoM URL Validator/1.0',
+        ]);
+
+        curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlErr = curl_error($ch);
+        $ch = null;
+
+        if ($httpCode >= 200 && $httpCode < 400) {
             return true;
         }
 
-        // Not a file path or valid, existing URL
         return false;
     }
 
@@ -344,7 +369,7 @@ class digitalObjectLoadTask extends arBaseTask
             return;
         }
 
-        $path = self::getPath($path, $options);
+        $path = $this->getPath($path, $options);
         $filename = basename($path);
 
         $remainingImportCount = $this->totalObjCount - $this->skippedCount - $importedCount;
