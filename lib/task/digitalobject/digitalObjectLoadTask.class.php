@@ -51,7 +51,7 @@ class digitalObjectLoadTask extends arBaseTask
         $databaseManager = new sfDatabaseManager($this->configuration);
         $options['conn'] = $databaseManager->getDatabase('propel')->getConnection();
 
-        sfConfig::set('app_upload_dir', self::getUploadDir($options));
+        sfConfig::set('app_upload_dir', $this->getUploadDir($options));
 
         if (false === $fh = fopen($arguments['filename'], 'rb')) {
             throw new sfException('You must specify a valid filename');
@@ -79,7 +79,7 @@ class digitalObjectLoadTask extends arBaseTask
         // Get header (first) row
         $header = fgetcsv($fh, 1000);
 
-        self::validateColumns($header);
+        $this->validateColumns($header);
 
         $fileKey = array_search(self::PATH_COLUMN, $header);
 
@@ -164,7 +164,7 @@ class digitalObjectLoadTask extends arBaseTask
                 $digitalObjectName = !is_array($item) ? $item : end($item);
 
                 if (null !== $results[1]) {
-                    if (self::validUrlOrFilePath($digitalObjectName, $options)) {
+                    if ($this->validUrlOrFilePath($digitalObjectName, $options)) {
                         // get digital object and delete it.
                         if (null !== $do = QubitDigitalObject::getById($results[1])) {
                             $do->delete();
@@ -177,7 +177,7 @@ class digitalObjectLoadTask extends arBaseTask
                         continue;
                     }
                 }
-                self::addDigitalObject($results[0], $digitalObjectName, $options);
+                $this->addDigitalObject($results[0], $digitalObjectName, $options);
             }
             // If attach-only is set, the task will attach the new DO via a new
             // information obj regardless of whether there is one vs more in the
@@ -191,35 +191,35 @@ class digitalObjectLoadTask extends arBaseTask
                     continue;
                 }
 
-                if (!self::validUrlOrFilePath($item, $options)) {
+                if (!$this->validUrlOrFilePath($item, $options)) {
                     $this->log(sprintf("Couldn't read file of URL '{$item}'"));
                     ++$this->skippedCount;
 
                     continue;
                 }
 
-                self::addDigitalObject($results[0], $item, $options);
+                $this->addDigitalObject($results[0], $item, $options);
             } else {
                 if (!is_array($item)) {
-                    if (!self::validUrlOrFilePath($item, $options)) {
+                    if (!$this->validUrlOrFilePath($item, $options)) {
                         $this->log(sprintf("Couldn't read file of URL '{$item}'"));
                         ++$this->skippedCount;
 
                         continue;
                     }
 
-                    self::attachDigitalObject($item, $results[0], $options);
+                    $this->attachDigitalObject($item, $results[0], $options);
                 } else {
                     // If more than one digital object linked to this information object
                     for ($i = 0; $i < count($item); ++$i) {
-                        if (!self::validUrlOrFilePath($item[$i], $options)) {
+                        if (!$this->validUrlOrFilePath($item[$i], $options)) {
                             $this->log(sprintf("Couldn't read file of URL '{$item[$i]}'"));
                             ++$this->skippedCount;
 
                             continue;
                         }
 
-                        self::attachDigitalObject($item[$i], $results[0], $options);
+                        $this->attachDigitalObject($item[$i], $results[0], $options);
                     }
                 }
             }
@@ -281,7 +281,7 @@ class digitalObjectLoadTask extends arBaseTask
         $informationObject->disableNestedSetUpdating = $this->disableNestedSetUpdating;
         $informationObject->save($options['conn']);
 
-        self::addDigitalObject($informationObject->id, $item, $options);
+        $this->addDigitalObject($informationObject->id, $item, $options);
     }
 
     protected function validateColumns($columns)
@@ -363,7 +363,7 @@ class digitalObjectLoadTask extends arBaseTask
     {
         ++$this->curObjNum;
 
-        if (!self::validUrlOrFilePath($path, $options)) {
+        if (!$this->validUrlOrFilePath($path, $options)) {
             $this->log("Couldn't read file or URL '{$path}'");
 
             return;
