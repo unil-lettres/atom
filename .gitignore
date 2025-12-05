@@ -47,6 +47,9 @@ cypress/screenshots
 cypress/videos
 cypress.env.json
 
+# Local data dumps
+import/
+
 # IDE-specific files
 .vscode/
 *.code-workspace

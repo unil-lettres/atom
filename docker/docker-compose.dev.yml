@@ -12,6 +12,7 @@ services:
     env_file: etc/environment
     environment:
       - ATOM_COVERAGE=${ATOM_COVERAGE:-false}
+    restart: unless-stopped
     volumes:
       - composer_deps:/atom/src/vendor/composer
       - npm_deps:/atom/src/node_modules
@@ -27,7 +28,7 @@ services:
     depends_on:
       - gearmand
       - percona
-    restart: on-failure:5
+    restart: unless-stopped
     volumes:
       - composer_deps:/atom/src/vendor/composer
       - npm_deps:/atom/src/node_modules

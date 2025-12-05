@@ -35,6 +35,8 @@ class ProjectConfiguration extends sfProjectConfiguration
         $this->namespacesClassLoader();
 
         $plugins = [
+            'arLettresB5Plugin',
+            'arDominionB5Plugin',
             'qbAclPlugin',
             'qtAccessionPlugin',
             'sfDrupalPlugin',
