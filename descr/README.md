@@ -7,6 +7,18 @@ From the repo root (`/Users/jganivet/Développement/atom_docker/atom`):
 export COMPOSE_FILE="$PWD/docker/docker-compose.dev.yml:$PWD/docker/docker-compose.override.arm.yml"
 docker compose up -d
 
+## Staging login/SSO incident note (Dec 2025)
+
+Symptom: on staging the login UI was unstyled, “Ouverture de session” dead, SSO button returned 500. Root cause: OIDC was enabled on the VM while the code path expected helpers and a different authenticate signature.
+
+Final fix that worked:
+- Disabled OIDC entirely: remove/ignore `activate-oidc-plugin`, comment out the enable block in `config/ProjectConfiguration.class.php`, and rename `plugins/arOidcPlugin` to `plugins/arOidcPlugin.disabled`.
+- Clear cache and restart (`docker compose exec atom php symfony cc`, then `docker compose restart atom`), then hard-refresh the browser.
+
+Optional hardening we kept: added `parseProviderIdFromUrl()` and `validateProviderId()` to `lib/myUser.class.php` so future OIDC toggles don’t hit missing methods.
+
+Result: 500s gone; styled login works with local credentials. For future moves: either fully configure OIDC, or disable the plugin and clear cache before first start on the VM.
+
 # stop
 export COMPOSE_FILE="$PWD/docker/docker-compose.dev.yml:$PWD/docker/docker-compose.override.arm.yml"
 docker compose down
