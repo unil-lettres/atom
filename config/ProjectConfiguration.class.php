@@ -50,11 +50,11 @@ class ProjectConfiguration extends sfProjectConfiguration
             'sfPluginAdminPlugin',
         ];
 
-        // OIDC disabled by default; re-enable only when needed and fully configured.
-        // $filePath = 'activate-oidc-plugin';
-        // if (file_exists($filePath) && 0 === filesize($filePath)) {
-        //     $plugins[] = 'arOidcPlugin';
-        // }
+        // Check if the OIDC plugin should be enabled.
+//        $filePath = 'activate-oidc-plugin';
+//      if (file_exists($filePath) && 0 === filesize($filePath)) {
+//          $plugins[] = 'arOidcPlugin';
+//      }
 
         $this->enablePlugins($plugins);
 

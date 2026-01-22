@@ -69,6 +69,16 @@ class sfSessionStorage extends sfStorage
     // set session name
     $sessionName = $this->options['session_name'];
 
+    // Newer PHP versions validate session IDs more strictly (no colons).
+    // Symfony 1 stores a signed value in the cookie (sessid:signature) and
+    // PHP would reject the raw value. Strip the signature so PHP sees only
+    // the real session id.
+    if (isset($_COOKIE[$sessionName]) && false !== ($pos = strpos($_COOKIE[$sessionName], ':')))
+    {
+      $_COOKIE[$sessionName] = substr($_COOKIE[$sessionName], 0, $pos);
+      $this->options['session_id'] = $_COOKIE[$sessionName];
+    }
+
     session_name($sessionName);
 
     if (!(boolean) ini_get('session.use_cookies') && $sessionId = $this->options['session_id'])

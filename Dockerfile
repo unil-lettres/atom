@@ -7,6 +7,7 @@ ENV FOP_HOME=/usr/share/fop-2.1 \
 RUN set -xe \
     && apk add --no-cache --virtual .phpext-builddeps \
       gettext-dev \
+      icu-dev \
       libxslt-dev \
       zlib-dev \
       libmemcached-dev \
@@ -19,6 +20,7 @@ RUN set -xe \
     && docker-php-ext-install \
       calendar \
       gettext \
+      intl \
       mbstring \
       mysqli \
       opcache \
@@ -36,6 +38,7 @@ RUN set -xe \
     && docker-php-ext-enable apcu memcache pcov xdebug \
     && apk add --no-cache --virtual .phpext-rundeps \
       gettext \
+      icu-libs \
       libxslt \
       libmemcached-libs \
       libzip \

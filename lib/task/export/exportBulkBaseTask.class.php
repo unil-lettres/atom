@@ -65,10 +65,15 @@ abstract class exportBulkBaseTask extends sfBaseTask
                 $ead = new sfEadPlugin($resource, $options);
 
                 $findingAid = isset($options['findingAidVisibilitiy']) ? (bool) $options['findingAidVisibilitiy'] : false;
+                $authenticated = isset($options['public']) ? !(bool) $options['public'] : false;
+                $defTemplate = sfConfig::get('app_default_template_informationobject');
 
                 extract([
                     'resource' => $resource,
                     'findingAidVisibilitiy' => $findingAid,
+                    'findingAid' => $findingAid,
+                    'authenticated' => $authenticated,
+                    'defTemplate' => $defTemplate,
                 ]);
 
                 break;

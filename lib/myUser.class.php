@@ -289,25 +289,27 @@ class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
         return parent::isAuthenticated();
     }
 
-    public function parseProviderIdFromUrl()
-    {
-        $request = sfContext::getInstance()->getRequest();
 
-        if ($request->hasParameter('provider')) {
-            return $request->getParameter('provider');
-        }
+  public function parseProviderIdFromUrl()
+  {
+    $request = sfContext::getInstance()->getRequest();
 
-        $parts = explode('/', trim($request->getPathInfo(), '/'));
-        $idx = array_search('login', $parts);
-        if (false !== $idx && $idx > 0) {
-            return $parts[$idx - 1];
-        }
-
-        return null;
+    if ($request->hasParameter('provider')) {
+      return $request->getParameter('provider');
     }
 
-    public function validateProviderId($providerId)
+    $parts = explode('/', trim($request->getPathInfo(), '/'));
+    $idx = array_search('login', $parts);
+    if ($idx !== false && $idx > 0) {
+      return $parts[$idx - 1];
+    }
+
+    return null;
+  }
+  
+  public function validateProviderId($providerId)
     {
-        return is_string($providerId) && '' !== $providerId;
+        // Basic guard: require a non-empty string
+        return is_string($providerId) && $providerId !== '';
     }
 }

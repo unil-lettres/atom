@@ -327,16 +327,14 @@ class DebugPDO extends PropelPDO
 	 * @see        http://php.net/manual/en/pdo.query.php for a description of the possible parameters.
 	 * @return     PDOStatement
 	 */
-	#[\ReturnTypeWillChange]
-	public function query($query, mixed ...$otherArgs)
+	public function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
 	{
 		$debug	= $this->getDebugSnapshot();
-		$args   = func_get_args();
-
-		if (version_compare(PHP_VERSION, '5.3', '<')) {
-			$return = call_user_func_array(array($this, 'parent::query'), $args);
+		// Use parent signature to stay compatible with PHP 8.3
+		if (null === $fetchMode) {
+			$return = parent::query($query);
 		} else {
-			$return = call_user_func_array('parent::query', $args);
+			$return = parent::query($query, $fetchMode, ...$fetchModeArgs);
 		}
 
 		$sql = $query;
