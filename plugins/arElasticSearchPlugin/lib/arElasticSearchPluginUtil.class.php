@@ -353,13 +353,16 @@ class arElasticSearchPluginUtil
     {
         $specialChars = trim(sfConfig::get('app_escape_queries', ''));
 
-        // Return term directly if the setting is empty
+        // If the setting is empty, fall back to the default query_string reserved chars
         if (empty($specialChars)) {
-            return $term;
+            $specialChars = [
+                '\\', '+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}',
+                '[', ']', '^', '"', '~', '*', '?', ':', '/',
+            ];
+        } else {
+            // Split into array removing whitespaces
+            $specialChars = preg_split('/\s*,\s*/', $specialChars);
         }
-
-        // Split into array removing whitespaces
-        $specialChars = preg_split('/\s*,\s*/', $specialChars);
 
         // Escaping \ has to be first
         if (in_array('\\', $specialChars)) {
