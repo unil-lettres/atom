@@ -15,6 +15,13 @@ used community-driven project. Learn more at:
 You are free to copy, modify, and distribute AtoM with attribution under the
 terms of the AGPLv3 license. See the [LICENSE](LICENSE) file for details.
 
+## UNIL fork and compliance
+This repository (https://github.com/unil-lettres/atom) is a UNIL-maintained
+fork with local customizations on top of the upstream AtoM codebase. It remains
+public to comply with the AGPLv3 by making the corresponding source available
+to network users. Upstream history and releases remain in the official AtoM
+repository.
+
 ## Installation
 
 **Production installation**
