@@ -35,7 +35,24 @@ class arActorXmlExportJob extends arActorExportJob
     {
         exportBulkBaseTask::includeXmlExportClassesAndHelpers();
 
-        parent::doExport($path);
+        $search = self::findExportRecords($this->params);
+
+        $this->itemsExported = 0;
+
+        // Scroll through results then iterate through resulting IDs
+        foreach (arElasticSearchPluginUtil::getScrolledSearchResultIdentifiers($search) as $id) {
+            if (null === $resource = QubitActor::getById($id)) {
+                $this->error($this->i18n->__(
+                    'Cannot fetch actor, id: %1',
+                    ['%1' => $id]
+                ));
+
+                return;
+            }
+
+            $this->exportResource($resource, $path, $this->params);
+            $this->logExportProgress();
+        }
     }
 
     /**
