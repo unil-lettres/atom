@@ -32,7 +32,7 @@
           <?php $logoLoc = DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'arLettresB5Plugin'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'logo.png'; ?>
         <?php } ?>
         <?php if (sfConfig::get('app_toggleLogo')) { ?>
-          <?php echo image_tag($logoLoc, ['alt' => __('AtoM logo'), 'class' => 'd-inline-block my-2 me-3', 'height' => '35']); ?>
+          <?php echo image_tag($logoLoc, ['alt' => __('AtoM logo'), 'class' => 'd-inline-block my-2 me-3', 'height' => '50']); ?>
         <?php } ?>
         <?php if (sfConfig::get('app_toggleTitle') && !empty(sfConfig::get('app_siteTitle'))) { ?>
           <span class="text-wrap my-1 me-3"><?php echo esc_specialchars(sfConfig::get('app_siteTitle')); ?></span>
