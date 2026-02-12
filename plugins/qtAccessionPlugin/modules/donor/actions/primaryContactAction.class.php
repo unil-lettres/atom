@@ -24,9 +24,7 @@ class DonorPrimaryContactAction extends sfAction
         $resource = $this->getRoute()->resource;
 
         // Invalid route target: avoid calling ACL with a null resource.
-        if (null === $resource) {
-            $this->forward404();
-        }
+        $this->forward404Unless($resource);
 
         // Check user authorization
         if (!QubitAcl::check($resource, 'read')) {
