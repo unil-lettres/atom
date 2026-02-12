@@ -767,6 +767,11 @@ class QubitAcl
      */
     private static function checkAccessByClass($resource, $user, $action, $options)
     {
+        // Some routes may resolve to a missing resource: deny safely.
+        if (null === $resource) {
+            return false;
+        }
+
         switch (get_class($resource)) {
             // Allow access to editors and administrators
             case 'QubitAccession':

@@ -125,12 +125,15 @@ class arElasticSearchPluginQuery
             if ('collection' == $param) {
                 $collection = QubitInformationObject::getById($value);
 
-                $querySelf = new \Elastica\Query\MatchQuery();
-                $querySelf->setFieldQuery('slug', $collection->slug);
-
                 $queryBool = new \Elastica\Query\BoolQuery();
                 $queryBool->addShould($query);
-                $queryBool->addShould($querySelf);
+
+                // Avoid sending a null slug to Elastica match query.
+                if (null !== $collection && null !== $collection->slug) {
+                    $querySelf = new \Elastica\Query\MatchQuery();
+                    $querySelf->setFieldQuery('slug', (string) $collection->slug);
+                    $queryBool->addShould($querySelf);
+                }
 
                 $query = $queryBool;
             }

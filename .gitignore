@@ -58,5 +58,6 @@ import/
 *.tar.gz
 *.sql
 *.xlsx
+descr/
 descr/unil_logo_tmp/
 .DS_Store
