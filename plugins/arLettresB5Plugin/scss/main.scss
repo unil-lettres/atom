@@ -138,9 +138,3 @@ a:focus {
     margin: 0 0.15rem;
   }
 }
-
-// Hide the floating translation toggle from sfTranslatePlugin.
-.l10n-client,
-#l10n-client {
-  display: none !important;
-}

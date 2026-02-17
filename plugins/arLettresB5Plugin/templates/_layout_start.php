@@ -14,7 +14,7 @@
       <?php $faviconLoc = public_path('favicon.ico'); ?>
     <?php } ?>
     <link rel="shortcut icon" href="<?php echo $faviconLoc; ?>">
-    <script defer src="/dist/js/vendor.bundle.8b0cf9342420185cf286.js"></script><script defer src="/dist/js/arLettresB5Plugin.bundle.b6af110448a8e3e3c8ef.js"></script><link href="/dist/css/arLettresB5Plugin.bundle.40fd7d4b20d77bff2b3c.css" rel="stylesheet">
+    <script defer src="/dist/js/vendor.bundle.8b0cf9342420185cf286.js"></script><script defer src="/dist/js/arLettresB5Plugin.bundle.b6af110448a8e3e3c8ef.js"></script><link href="/dist/css/arLettresB5Plugin.bundle.d00801a4be2e1e88c9e0.css" rel="stylesheet">
     <?php echo get_component_slot('css'); ?>
   </head>
   <body class="d-flex flex-column min-vh-100 <?php echo $sf_context->getModuleName(); ?> <?php echo $sf_context->getActionName(); ?><?php echo sfConfig::get('app_show_tooltips') ? ' show-edit-tooltips' : ''; ?>">
