@@ -24,6 +24,35 @@ If image changed, refresh shared code volume:
 docker volume rm docker_atom_src
 docker compose up -d
 ```
+If changes still don't show, drop/recreate the code volume:
+```bash
+docker compose down
+docker volume rm docker_atom_src
+docker compose up -d
+```
+
+Default language (French) and cache clear:
+```bash
+docker compose exec -T atom sh -lc "sed -i 's/^    default_culture:.*/    default_culture:        fr/' /atom/src/apps/qubit/config/settings.yml"
+docker compose exec -T atom php /atom/src/symfony cc --env=prod
+```
+
+Logo update (theme):
+```bash
+cp /path/to/logo.png /home/deployer/atom/plugins/arLettresB5Plugin/images/logo.png
+docker compose exec -T atom php /atom/src/symfony cc --env=prod
+```
+
+Quick verify:
+```bash
+curl -s https://atom-archives-stage.unil.ch/ | head -n 5    # <html lang="fr">
+curl -I https://atom-archives-stage.unil.ch/plugins/arLettresB5Plugin/images/logo.png
+```
+
+## Test Evidence / QA Log
+- Manual QA sheet (Nam bug sheet / test plan): `descr/Plan_tests_AtoM_v2-10.xlsx` (see also CSV exports in `descr/`).
+- Policy: when tests are run during an agent-assisted session, record what was executed + results in `../../agents/projects/atom/requests/*.yaml` under `testing.*` and `tracking.test_runs`.
+- Existing record pointer: `../../agents/projects/atom/requests/2026-02-07T0000Z.reporting.atom.plan-tests-v2-10-record.yaml`.
 
 ## Ports (local + VM)
 - nginx: 63001
