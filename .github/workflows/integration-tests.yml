@@ -17,7 +17,7 @@ jobs:
       COMPOSE_FILE: ${{ github.workspace }}/docker/docker-compose.test.yml
     steps:
     - name: Check out code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Start containerized services
       run: |
         sudo sysctl -w vm.max_map_count=262144
