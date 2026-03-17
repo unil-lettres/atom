@@ -33,14 +33,14 @@ jobs:
         sudo apt update && sudo apt install php8.3-fpm
         sudo service php8.3-fpm start
     - name: Cache Composer dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.composer/cache/files
         key: 24.04-8.3-composer-${{ hashFiles('composer.lock') }}
     - name: Install Composer dependencies
       run: composer install
     - name: Cache NPM dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v5
       with:
         path: |
           ~/.npm
