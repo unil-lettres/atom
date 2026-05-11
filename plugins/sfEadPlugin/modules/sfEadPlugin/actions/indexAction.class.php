@@ -31,9 +31,11 @@ class sfEadPluginIndexAction extends InformationObjectIndexAction
         // run the core informationObject show action commands
         parent::execute($request);
 
+        $public = !$this->context->user->isAuthenticated();
+
         $this->ead = new sfEadPlugin(
             $this->resource,
-            ['public' => !$this->context->user->isAuthenticated()]
+            ['public' => $public]
         );
 
         // Variables for hidden elements
@@ -49,6 +51,6 @@ class sfEadPluginIndexAction extends InformationObjectIndexAction
 
         // Set array with valid EAD level values (see ead.dtd line 2220)
         $this->eadLevels = ['class', 'collection', 'file', 'fonds', 'item', 'otherlevel', 'recordgrp', 'series', 'subfonds', 'subgrp', 'subseries'];
-        $this->options = ['current-level-only' => false];
+        $this->options = ['current-level-only' => false, 'public' => $public];
     }
 }

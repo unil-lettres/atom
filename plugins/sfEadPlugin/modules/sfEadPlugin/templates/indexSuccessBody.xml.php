@@ -263,14 +263,16 @@
   <?php } ?>
 
   <?php $archivistsNotes = $resource->getNotesByType(['noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID]); ?>
-  <?php if (0 < strlen($value = $resource->getRevisionHistory(['cultureFallback' => true])) || 0 < count($archivistsNotes)) { ?>
-    <?php 'isad' == $template ? $datesOfCreation = 'app_element_visibility_isad_control_dates' : $datesOfCreation = 'app_element_visibility_rad_control_dates'; ?>
+  <?php 'isad' == $template ? $datesOfCreation = 'app_element_visibility_isad_control_dates' : $datesOfCreation = 'app_element_visibility_rad_control_dates'; ?>
+  <?php $revisionHistoryVisible = 0 < strlen($value = $resource->getRevisionHistory(['cultureFallback' => true])) && ($authenticated || (1 == sfConfig::get($datesOfCreation) && !$findingAid)); ?>
+  <?php $archivistsNotesVisible = 0 < count($archivistsNotes) && ($authenticated || 1 == sfConfig::get('app_element_visibility_isad_control_archivists_notes')); ?>
+  <?php if ($revisionHistoryVisible || $archivistsNotesVisible) { ?>
     <processinfo>
-      <?php if ($value && ($authenticated || (1 == sfConfig::get($datesOfCreation) && !$findingAid))) { ?>
+      <?php if ($revisionHistoryVisible) { ?>
         <p><date><?php echo escape_dc(esc_specialchars($value)); ?></date></p>
       <?php } ?>
 
-      <?php if (0 < count($archivistsNotes) && ($authenticated || 1 == sfConfig::get('app_element_visibility_isad_control_archivists_notes'))) { ?>
+      <?php if ($archivistsNotesVisible) { ?>
         <?php foreach ($archivistsNotes as $note) { ?>
           <p><?php echo escape_dc(esc_specialchars($note->getContent(['cultureFallback' => true]))); ?></p>
         <?php } ?>
@@ -414,11 +416,11 @@
         <custodhist encodinganalog="<?php echo $ead->getMetadataParameter('custodhist'); ?>"><p><?php echo escape_dc(esc_specialchars($value)); ?></p></custodhist>
       <?php } ?>
 
-      <?php if (0 < strlen($value = $descendant->getRevisionHistory(['cultureFallback' => true]) ?? '')) { ?>
+      <?php if (0 < strlen($value = $descendant->getRevisionHistory(['cultureFallback' => true]) ?? '') && ($authenticated || (1 == sfConfig::get($datesOfCreation) && !$findingAid))) { ?>
         <processinfo><p><date><?php echo escape_dc(esc_specialchars($value)); ?></date></p></processinfo>
       <?php } ?>
 
-      <?php if (0 < count($archivistsNotes = $descendant->getNotesByType(['noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID]))) { ?>
+      <?php if (0 < count($archivistsNotes = $descendant->getNotesByType(['noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID])) && ($authenticated || 1 == sfConfig::get('app_element_visibility_isad_control_archivists_notes'))) { ?>
         <?php foreach ($archivistsNotes as $note) { ?>
           <processinfo><p><?php echo escape_dc(esc_specialchars($note->getContent(['cultureFallback' => true]))); ?></p></processinfo>
         <?php } ?>
