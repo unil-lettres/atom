@@ -5,6 +5,10 @@ on:
     branches:
     - qa/**
     - stable/**
+
+permissions:
+  contents: read
+
 jobs:
   unit-tests:
     runs-on: ubuntu-24.04
@@ -24,13 +28,16 @@ jobs:
         php-version: 8.3
         coverage: none
         extensions: apcu
+        tools: composer:2.9.8
     - name: Cache dependencies
       uses: actions/cache@v5
       with:
         path: ~/.composer/cache/files
         key: 24.04-8.3-composer-${{ hashFiles('composer.lock') }}
     - name: Install dependencies
-      run: composer install
+      run: |
+        composer --version
+        composer install
     - name: Wait for containerized services
       run: sleep 10
     - name: Run the installer
@@ -47,4 +54,6 @@ jobs:
           --demo \
           --no-confirmation
     - name: Run tests
-      run: composer test
+      run: |
+        composer --version
+        composer test

@@ -5,6 +5,10 @@ on:
     branches:
     - qa/**
     - stable/**
+
+permissions:
+  contents: read
+
 jobs:
   integration-tests:
     runs-on: ubuntu-24.04
@@ -28,6 +32,7 @@ jobs:
         php-version: 8.3
         coverage: none
         extensions: apcu, opcache
+        tools: composer:2.9.8
     - name: Setup PHP-FPM
       run: |
         sudo apt update && sudo apt install php8.3-fpm
@@ -38,7 +43,9 @@ jobs:
         path: ~/.composer/cache/files
         key: 24.04-8.3-composer-${{ hashFiles('composer.lock') }}
     - name: Install Composer dependencies
-      run: composer install
+      run: |
+        composer --version
+        composer install
     - name: Cache NPM dependencies
       uses: actions/cache@v5
       with:

@@ -1,3 +1,5 @@
+FROM composer:2.9.8@sha256:b09bccd91a78fe8a9ab4b33d707b862e8fe54fec17782e32683ad2a69c46867d AS composer
+
 FROM php:8.3-fpm-alpine
 
 ENV FOP_HOME=/usr/share/fop-2.1 \
@@ -60,11 +62,13 @@ RUN set -xe \
     && ln -sf /usr/share/fop-2.1/fop /usr/local/bin/fop \
     && echo "extension=ldap.so" > /usr/local/etc/php/conf.d/docker-php-ext-ldap.ini
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY composer.* /atom/build/
 
-RUN set -xe && composer install -d /atom/build
+RUN set -xe \
+    && composer --version \
+    && composer install -d /atom/build
 
 COPY package* /atom/build/
 
