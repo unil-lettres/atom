@@ -755,6 +755,34 @@ CREATE TABLE `oai_repository`
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
+#-- oai_deleted_record
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `oai_deleted_record`;
+
+
+CREATE TABLE `oai_deleted_record`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`oai_local_identifier` INTEGER  NOT NULL,
+	`oai_identifier` VARCHAR(1024)  NOT NULL,
+	`metadata_prefix` VARCHAR(32)  NOT NULL,
+	`datestamp` DATETIME  NOT NULL,
+	`set_spec` VARCHAR(1024),
+	`is_top_level` TINYINT default 0 NOT NULL,
+	`reason` VARCHAR(32)  NOT NULL,
+	`active` TINYINT default 1 NOT NULL,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`restored_at` DATETIME,
+	`serial_number` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `oai_deleted_record_identifier_prefix` (`oai_local_identifier`, `metadata_prefix`),
+	KEY `oai_deleted_record_active_datestamp`(`active`, `datestamp`),
+	KEY `oai_deleted_record_set_prefix_active`(`set_spec`(255), `metadata_prefix`, `active`)
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
 #-- object
 #-----------------------------------------------------------------------------
 

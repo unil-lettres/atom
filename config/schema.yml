@@ -253,6 +253,7 @@ propel:
       oai_deleted_record_identifier_prefix: [oai_local_identifier, metadata_prefix]
     _indexes:
       oai_deleted_record_active_datestamp: [active, datestamp]
+      oai_deleted_record_set_prefix_active: [set_spec(255), metadata_prefix, active]
 
   object:
     class_name: varchar(255)
