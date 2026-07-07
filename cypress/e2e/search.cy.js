@@ -48,7 +48,7 @@ describe('Search', () => {
 
     cy.get('input[name=query]').clear()
     .type('"department of medical imaging"{enter}')
-    cy.get('.multiline-header').contains('Showing 1 result')
+    cy.get('.multiline-header').contains('Showing 3 results')
   })
 
   it('Doesn\'t find "to be or not to be"', () => {
