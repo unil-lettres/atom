@@ -37,6 +37,10 @@ class arOaiPluginListRecordsComponent extends arOaiPluginComponent
         $this->identifiersWithMissingCacheFiles = [];
         if ('oai_ead' == $request->metadataPrefix && count($this->publishedRecords)) {
             foreach ($this->publishedRecords as $resource) {
+                if (arOaiPluginComponent::isDeletedRecord($resource)) {
+                    continue;
+                }
+
                 if (!arOaiPluginComponent::cachedMetadataExists($resource, 'oai_ead')) {
                     array_push($this->identifiersWithMissingCacheFiles, $resource->getOaiIdentifier());
                 }

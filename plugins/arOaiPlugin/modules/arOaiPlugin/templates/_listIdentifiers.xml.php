@@ -3,10 +3,10 @@
 <?php } else { ?>
   <ListIdentifiers>
 <?php foreach ($publishedRecords as $record) { ?>
-    <header>
+    <header<?php echo arOaiPluginComponent::isDeletedRecord($record) ? ' status="deleted"' : ''; ?>>
       <identifier><?php echo $record->getOaiIdentifier(); ?></identifier>
       <datestamp><?php echo QubitOai::getDate($record->getUpdatedAt()); ?></datestamp>
-      <setSpec><?php echo $record->getCollectionRoot()->getOaiIdentifier(); ?></setSpec>
+      <setSpec><?php echo arOaiPluginComponent::getRecordSetSpec($record); ?></setSpec>
     </header>
 <?php } ?>
   <?php if ($remaining > 0) { ?>

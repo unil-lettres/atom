@@ -35,7 +35,7 @@ class arOaiPluginIdentifyComponent extends arOaiPluginComponent
 
         $this->baseUrl = QubitSetting::getByName('siteBaseUrl')->getValue(['sourceCulture' => true]);
         $this->granularity = 'YYYY-MM-DDThh:mm:ssZ';
-        $this->deletedRecord = 'no';
+        $this->deletedRecord = 'persistent';
         $this->compression = 'gzip';
 
         $this->setRequestAttributes($request);

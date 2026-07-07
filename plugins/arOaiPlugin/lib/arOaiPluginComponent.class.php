@@ -96,12 +96,14 @@ abstract class arOaiPluginComponent extends sfComponent
         // Get set if one has been named
         if ('' != $this->set) {
             $presetOptions['set'] = QubitOai::getMatchingOaiSet($this->set);
+            $presetOptions['setSpec'] = $this->set;
         }
 
         $options = array_merge($presetOptions, $options);
+        $options['metadataPrefix'] = $this->metadataPrefix;
 
         // Get the records according to the limit dates and collection
-        $update = QubitInformationObject::getUpdatedRecords($options);
+        $update = QubitOaiDeletedRecord::getRecords($options);
 
         $this->publishedRecords = $update['data'];
         $this->remaining = $update['remaining'];
@@ -154,5 +156,19 @@ abstract class arOaiPluginComponent extends sfComponent
         $format = self::parseXmlFormatFromMetadataPrefix($metadataPrefix);
 
         include QubitInformationObjectXmlCache::resourceExportFilePath($resource, $format, true);
+    }
+
+    public static function isDeletedRecord($record)
+    {
+        return is_object($record) && method_exists($record, 'isDeleted') && $record->isDeleted();
+    }
+
+    public static function getRecordSetSpec($record)
+    {
+        if (self::isDeletedRecord($record)) {
+            return $record->getSetSpec();
+        }
+
+        return $record->getCollectionRoot()->getOaiIdentifier();
     }
 }

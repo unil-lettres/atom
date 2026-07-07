@@ -30,8 +30,17 @@ class arOaiPluginGetRecordComponent extends arOaiPluginComponent
         $oaiLocalIdentifierId = QubitOai::getOaiIdNumber($request->identifier);
         $this->record = QubitInformationObject::getRecordByOaiID($oaiLocalIdentifierId);
 
+        if (
+            !isset($this->record)
+            || !isset($this->record->parent)
+            || QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID != $this->record->getPublicationStatus()->statusId
+            || !QubitAcl::check($this->record, 'read')
+        ) {
+            $this->record = QubitOaiDeletedRecord::getActiveByOaiLocalIdentifier($oaiLocalIdentifierId, $request->metadataPrefix);
+        }
+
         // If metadata requested is EAD and file doesn't exist, redirect to error response as EAD can take a long time to dynamically generate
-        if ('oai_ead' == $request->metadataPrefix && !arOaiPluginComponent::cachedMetadataExists($this->record, $request->metadataPrefix)) {
+        if (!arOaiPluginComponent::isDeletedRecord($this->record) && 'oai_ead' == $request->metadataPrefix && !arOaiPluginComponent::cachedMetadataExists($this->record, $request->metadataPrefix)) {
             $this->errorCode = 'cannotDisseminateFormat';
             $this->errorMsg = 'The metadata format identified by the value given for the metadataPrefix argument is not supported by the item or by the repository.';
         } else {

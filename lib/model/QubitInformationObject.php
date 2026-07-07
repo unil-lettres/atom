@@ -321,6 +321,8 @@ class QubitInformationObject extends BaseInformationObject
      */
     public function delete($connection = null)
     {
+        QubitOaiDeletedRecord::recordDeletionForTree($this);
+
         // Delete related digitalObjects
         foreach ($this->digitalObjectsRelatedByobjectId as $digitalObject) {
             // Set IO to null to avoid ES document update
@@ -2301,6 +2303,8 @@ class QubitInformationObject extends BaseInformationObject
 
     public function setPublicationStatus($value)
     {
+        QubitOaiDeletedRecord::recordVisibilityChange($this, $value);
+
         return $this->setStatus($options = ['statusId' => $value, 'typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID]);
     }
 

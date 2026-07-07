@@ -142,10 +142,17 @@ class arOaiPluginIndexAction extends sfAction
                     || QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID != $resource->getPublicationStatus()->statusId
                     || !QubitAcl::check($resource, 'read')
                 ) {
-                    $request->setParameter('errorCode', 'idDoesNotExist');
-                    $request->setParameter('errorMsg', 'The value of the identifier argument is unknown or illegal in this repository.');
+                    $deletedRecord = QubitOaiDeletedRecord::getActiveByOaiLocalIdentifier(
+                        QubitOai::getOaiIdNumber($this->request->identifier),
+                        $this->request->metadataPrefix ?: null
+                    );
 
-                    $this->forward('arOaiPlugin', 'error');
+                    if (null === $deletedRecord) {
+                        $request->setParameter('errorCode', 'idDoesNotExist');
+                        $request->setParameter('errorMsg', 'The value of the identifier argument is unknown or illegal in this repository.');
+
+                        $this->forward('arOaiPlugin', 'error');
+                    }
                 }
             }
 
