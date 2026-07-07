@@ -2,7 +2,7 @@
 bootstrap.memory_lock=true
 cluster.routing.allocation.disk.threshold_enabled=false
 discovery.type=single-node
-ES_JAVA_OPTS=-Xms640m -Xmx640m
+ES_JAVA_OPTS=-Xms640m -Xmx640m -Dlog4j2.formatMsgNoLookups=true
 bootstrap.system_call_filter=false
 
 # MySQL
