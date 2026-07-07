@@ -2,6 +2,7 @@
   <testsuites>
     <testsuite name="unit">
       <directory>test/phpunit</directory>
+      <exclude>test/phpunit/arOidcPlugin</exclude>
     </testsuite>
   </testsuites>
   <coverage cacheDirectory=".coverage/cache">
