@@ -81,7 +81,7 @@ docker compose exec -T atom php /atom/src/symfony cc --env=prod
 
 Force HTTPS base URL in DB settings (prevents mixed-content download links):
 ```bash
-docker compose exec -T percona sh -lc 'MYSQL_PWD=atom_12345 mysql -uatom atom -e "update setting_i18n si join setting s on s.id=si.id set si.value=\"https://atom-archives-stage.unil.ch\" where s.name=\"siteBaseUrl\" and si.culture in (\"en\",\"fr\");"'
+docker compose exec -T percona sh -lc 'MYSQL_PWD="$MYSQL_PASSWORD" mysql -u"$MYSQL_USER" "$MYSQL_DATABASE" -e "update setting_i18n si join setting s on s.id=si.id set si.value=\"https://atom-archives-stage.unil.ch\" where s.name=\"siteBaseUrl\" and si.culture in (\"en\",\"fr\");"'
 docker compose exec -T atom php /atom/src/symfony cc --env=prod
 ```
 
