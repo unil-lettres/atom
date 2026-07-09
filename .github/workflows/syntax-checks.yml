@@ -1,0 +1,54 @@
+name: Syntax checks
+on:
+  pull_request:
+  push:
+    branches:
+    - qa/**
+    - stable/**
+
+permissions:
+  contents: read
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-24.04
+    name: PHP CS Fixer
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+    - name: Setup PHP 8.3
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3
+        coverage: none
+        tools: composer:2.9.8
+    - name: Cache dependencies
+      uses: actions/cache@v5
+      with:
+        path: ~/.composer/cache/files
+        key: syntax-checks-${{ hashFiles('composer.lock') }}
+    - name: Install dependencies
+      run: |
+        composer --version
+        composer install
+    - name: Run php-cs-fixer
+      run: |
+        composer --version
+        composer php-cs-fixer -- fix --dry-run -v
+  prettier:
+    runs-on: ubuntu-24.04
+    name: Prettier
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+    - name: Cache dependencies
+      uses: actions/cache@v5
+      with:
+        path: |
+          ~/.npm
+          ~/.cache/Cypress
+        key: npm-${{ hashFiles('package-lock.json') }}
+    - name: Install dependencies
+      run: sudo npm install -g npm && npm ci
+    - name: Run Prettier
+      run: npm run check-format

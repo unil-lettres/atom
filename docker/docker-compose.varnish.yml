@@ -1,0 +1,9 @@
+---
+services:
+
+  varnish:
+    image: varnish:6.5.1
+    volumes:
+      - ./etc/varnish/default.vcl:/etc/varnish/default.vcl:ro
+    ports:
+      - "127.0.0.1:63007:80"
