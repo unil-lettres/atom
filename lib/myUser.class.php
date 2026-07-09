@@ -74,7 +74,7 @@ class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
 
         // Allow reverse proxies to know, via the "atom_authenticated" cookie, if a user
         // is authenticated and should be able to bypass the cache
-        if (!isset($_COOKIE['atom_authenticated']) || $_COOKIE['atom_authenticated'] != $isAuthenticated) {
+        if (!isset($_COOKIE['atom_authenticated']) || $isAuthenticated != $_COOKIE['atom_authenticated']) {
             setcookie('atom_authenticated', $isAuthenticated, ['path' => '/', 'secure' => true, 'samesite' => 'strict']);
         }
 
@@ -289,27 +289,26 @@ class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
         return parent::isAuthenticated();
     }
 
+    public function parseProviderIdFromUrl()
+    {
+        $request = sfContext::getInstance()->getRequest();
 
-  public function parseProviderIdFromUrl()
-  {
-    $request = sfContext::getInstance()->getRequest();
+        if ($request->hasParameter('provider')) {
+            return $request->getParameter('provider');
+        }
 
-    if ($request->hasParameter('provider')) {
-      return $request->getParameter('provider');
+        $parts = explode('/', trim($request->getPathInfo(), '/'));
+        $idx = array_search('login', $parts);
+        if (false !== $idx && 0 < $idx) {
+            return $parts[$idx - 1];
+        }
+
+        return null;
     }
 
-    $parts = explode('/', trim($request->getPathInfo(), '/'));
-    $idx = array_search('login', $parts);
-    if ($idx !== false && $idx > 0) {
-      return $parts[$idx - 1];
-    }
-
-    return null;
-  }
-  
-  public function validateProviderId($providerId)
+    public function validateProviderId($providerId)
     {
         // Basic guard: require a non-empty string
-        return is_string($providerId) && $providerId !== '';
+        return is_string($providerId) && '' !== $providerId;
     }
 }

@@ -3,12 +3,20 @@
 <?php } else { ?>
   <ListRecords>
   <?php foreach ($publishedRecords as $record) { ?>
-    <?php if (QubitAcl::check($record, 'read') && false === array_search($record->getOaiIdentifier(), $identifiersWithMissingCacheFiles)) { ?>
+    <?php if (arOaiPluginComponent::isDeletedRecord($record)) { ?>
+      <record>
+        <header status="deleted">
+          <identifier><?php echo $record->getOaiIdentifier(); ?></identifier>
+          <datestamp><?php echo QubitOai::getDate($record->getUpdatedAt()); ?></datestamp>
+          <setSpec><?php echo arOaiPluginComponent::getRecordSetSpec($record); ?></setSpec>
+        </header>
+      </record>
+    <?php } elseif (QubitAcl::check($record, 'read') && false === array_search($record->getOaiIdentifier(), $identifiersWithMissingCacheFiles)) { ?>
       <record>
         <header>
           <identifier><?php echo $record->getOaiIdentifier(); ?></identifier>
           <datestamp><?php echo QubitOai::getDate($record->getUpdatedAt()); ?></datestamp>
-          <setSpec><?php echo $record->getCollectionRoot()->getOaiIdentifier(); ?></setSpec>
+          <setSpec><?php echo arOaiPluginComponent::getRecordSetSpec($record); ?></setSpec>
         </header>
         <metadata>
           <?php if ('oai_dc' == $metadataPrefix && !arOaiPluginComponent::checkDisplayCachedMetadata($record, $metadataPrefix)) { ?>

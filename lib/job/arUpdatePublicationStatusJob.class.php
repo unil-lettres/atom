@@ -67,6 +67,8 @@ class arUpdatePublicationStatusJob extends arBaseJob
             ':rgt' => $resource->rgt,
         ];
 
+        QubitOaiDeletedRecord::recordVisibilityChangeForDescendants($resource, $publicationStatus->id);
+
         $descriptionsUpdated = QubitPdo::modify(
             $sql,
             $params

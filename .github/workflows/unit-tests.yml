@@ -47,7 +47,7 @@ jobs:
           --database-port=63003 \
           --database-name=atom \
           --database-user=atom \
-          --database-password=atom_12345 \
+          --database-password=__LOCAL_DEV_ATOM_PASSWORD__ \
           --search-host=127.0.0.1 \
           --search-port=63002 \
           --search-index=atom \

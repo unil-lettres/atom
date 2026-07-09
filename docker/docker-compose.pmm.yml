@@ -34,4 +34,4 @@ services:
       - DB_HOST=percona
       - DB_PORT=3306
       - DB_USER=root
-      - DB_PASSWORD=my-secret-pw
+      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD:-__LOCAL_DEV_ROOT_PASSWORD__}

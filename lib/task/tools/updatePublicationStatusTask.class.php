@@ -158,6 +158,8 @@ EOF;
             ':rgt' => $resource->rgt,
         ];
 
+        QubitOaiDeletedRecord::recordVisibilityChangeForDescendants($resource, $publicationStatus->id);
+
         $descriptionsUpdated = QubitPdo::modify($sql, $params);
 
         // Use updateByQuery to update publication status in ES for resource.

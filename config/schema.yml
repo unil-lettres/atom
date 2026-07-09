@@ -236,6 +236,25 @@ propel:
     created_at:
     updated_at:
 
+  oai_deleted_record:
+    id:
+    oai_local_identifier: { type: integer, required: true }
+    oai_identifier: { type: varchar(1024), required: true }
+    metadata_prefix: { type: varchar(32), required: true }
+    datestamp: { type: timestamp, required: true }
+    set_spec: varchar(1024)
+    is_top_level: { type: boolean, default: false, required: true }
+    reason: { type: varchar(32), required: true }
+    active: { type: boolean, default: true, required: true }
+    created_at:
+    updated_at:
+    restored_at: timestamp
+    _uniques:
+      oai_deleted_record_identifier_prefix: [oai_local_identifier, metadata_prefix]
+    _indexes:
+      oai_deleted_record_active_datestamp: [active, datestamp]
+      oai_deleted_record_set_prefix_active: [set_spec(255), metadata_prefix, active]
+
   object:
     class_name: varchar(255)
     created_at:

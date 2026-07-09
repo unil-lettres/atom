@@ -2,14 +2,16 @@
 bootstrap.memory_lock=true
 cluster.routing.allocation.disk.threshold_enabled=false
 discovery.type=single-node
-ES_JAVA_OPTS=-Xms640m -Xmx640m
+ES_JAVA_OPTS=-Xms640m -Xmx640m -Dlog4j2.formatMsgNoLookups=true
 bootstrap.system_call_filter=false
 
 # MySQL
-MYSQL_ROOT_PASSWORD=my-secret-pw
+# Local development placeholders only. Do not copy this file to staging/prod
+# without replacing the MySQL passwords in the target runtime environment.
+MYSQL_ROOT_PASSWORD=__LOCAL_DEV_ROOT_PASSWORD__
 MYSQL_DATABASE=atom
 MYSQL_USER=atom
-MYSQL_PASSWORD=atom_12345
+MYSQL_PASSWORD=__LOCAL_DEV_ATOM_PASSWORD__
 
 # AtoM and AtoM worker
 ATOM_DEVELOPMENT_MODE=on
@@ -18,5 +20,5 @@ ATOM_MEMCACHED_HOST=memcached
 ATOM_GEARMAND_HOST=gearmand
 ATOM_MYSQL_DSN=mysql:host=percona;port=3306;dbname=atom;charset=utf8mb4
 ATOM_MYSQL_USERNAME=atom
-ATOM_MYSQL_PASSWORD=atom_12345
+ATOM_MYSQL_PASSWORD=__LOCAL_DEV_ATOM_PASSWORD__
 NODE_ENV=development
