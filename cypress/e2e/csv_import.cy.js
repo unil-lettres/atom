@@ -65,5 +65,29 @@ describe('CSV import', () => {
     cy.get('li.jstree-node').each(($li, index) =>
       cy.wrap($li).contains(orderedTitles[index])
     )
+
+    // A failed partial load must fall back to normal browser navigation
+    // instead of leaving the newly selected node above stale page content.
+    cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+      .invoke('attr', 'href')
+      .then(href => {
+        let requests = 0
+
+        cy.intercept('GET', href, request => {
+          requests++
+
+          if (1 === requests) {
+            request.reply({statusCode: 503, body: 'Temporary failure'})
+          } else {
+            request.continue()
+          }
+        }).as('treeviewNavigation')
+
+        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1').click()
+        cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 503)
+        cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 200)
+        cy.location('pathname').should('eq', href)
+        cy.get('#main-column > h1').should('contain.text', 'SA Item 1')
+      })
   })
 })

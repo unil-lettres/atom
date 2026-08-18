@@ -340,6 +340,11 @@
 
         // Update the url, TODO save the state
         window.history.pushState(null, null, url);
+      }).fail(function () {
+        // Fall back to a regular page load when the partial AJAX navigation
+        // fails, instead of leaving the selected tree node out of sync with
+        // the description still displayed below it.
+        window.location.assign(url);
       });
     };
 
