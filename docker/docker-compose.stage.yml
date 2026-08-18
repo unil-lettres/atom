@@ -25,6 +25,7 @@ services:
     env_file: etc/environment
     environment:
       - ATOM_COVERAGE=${ATOM_COVERAGE:-false}
+      - XDEBUG_MODE=off
     depends_on:
       - gearmand
       - percona
