@@ -1,6 +1,15 @@
 .coverage
+.dockerignore
 .git
 .gitignore
+.github
+AGENTS.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+Dockerfile
+README.md
+SECURITY.md
 cache
+descr
 node_modules
 vendor/composer
