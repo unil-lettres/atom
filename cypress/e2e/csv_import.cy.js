@@ -65,5 +65,43 @@ describe('CSV import', () => {
     cy.get('li.jstree-node').each(($li, index) =>
       cy.wrap($li).contains(orderedTitles[index])
     )
+
+    // A failed partial load must fall back to normal browser navigation
+    // instead of leaving the newly selected node above stale page content.
+    cy.intercept(
+      'GET',
+      '**/informationobject/fullWidthTreeViewSync'
+    ).as('treeviewSync')
+
+    cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+      .invoke('attr', 'href')
+      .then(href => {
+        const pathname = new URL(href, Cypress.config('baseUrl')).pathname
+        let requests = 0
+
+        cy.intercept({method: 'GET', pathname}, request => {
+          requests++
+
+          if ('XMLHttpRequest' === request.headers['x-requested-with']) {
+            request.reply({statusCode: 503, body: 'Temporary failure'})
+          } else {
+            request.continue()
+          }
+        }).as('treeviewNavigation')
+
+        // Authenticated users trigger a hierarchy synchronization on hover.
+        // Wait until it has re-enabled the node before clicking it.
+        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+          .trigger('mouseover')
+        cy.wait('@treeviewSync').its('response.statusCode').should('eq', 200)
+        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+          .should('not.have.class', 'jstree-disabled')
+          .click()
+        cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 503)
+        cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 200)
+        cy.location('pathname').should('eq', pathname)
+        cy.wrap(null).should(() => expect(requests).to.equal(2))
+        cy.get('#main-column > h1').should('contain.text', 'SA Item 1')
+      })
   })
 })
