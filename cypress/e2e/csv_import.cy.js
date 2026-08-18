@@ -71,12 +71,13 @@ describe('CSV import', () => {
     cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
       .invoke('attr', 'href')
       .then(href => {
+        const pathname = new URL(href, Cypress.config('baseUrl')).pathname
         let requests = 0
 
-        cy.intercept('GET', href, request => {
+        cy.intercept({method: 'GET', pathname}, request => {
           requests++
 
-          if (1 === requests) {
+          if ('XMLHttpRequest' === request.headers['x-requested-with']) {
             request.reply({statusCode: 503, body: 'Temporary failure'})
           } else {
             request.continue()
@@ -86,7 +87,8 @@ describe('CSV import', () => {
         cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1').click()
         cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 503)
         cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 200)
-        cy.location('pathname').should('eq', href)
+        cy.location('pathname').should('eq', pathname)
+        cy.wrap(null).should(() => expect(requests).to.equal(2))
         cy.get('#main-column > h1').should('contain.text', 'SA Item 1')
       })
   })
