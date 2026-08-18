@@ -92,7 +92,7 @@ describe('CSV import', () => {
         // Authenticated users trigger a hierarchy synchronization on hover.
         // Wait until it has re-enabled the node before clicking it.
         cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
-          .trigger('mouseenter')
+          .trigger('mouseover')
         cy.wait('@treeviewSync').its('response.statusCode').should('eq', 200)
         cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
           .should('not.have.class', 'jstree-disabled')
