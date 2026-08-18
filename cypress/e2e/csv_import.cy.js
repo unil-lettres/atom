@@ -68,6 +68,11 @@ describe('CSV import', () => {
 
     // A failed partial load must fall back to normal browser navigation
     // instead of leaving the newly selected node above stale page content.
+    cy.intercept(
+      'GET',
+      '**/informationobject/fullWidthTreeViewSync'
+    ).as('treeviewSync')
+
     cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
       .invoke('attr', 'href')
       .then(href => {
@@ -84,7 +89,14 @@ describe('CSV import', () => {
           }
         }).as('treeviewNavigation')
 
-        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1').click()
+        // Authenticated users trigger a hierarchy synchronization on hover.
+        // Wait until it has re-enabled the node before clicking it.
+        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+          .trigger('mouseenter')
+        cy.wait('@treeviewSync').its('response.statusCode').should('eq', 200)
+        cy.contains('#fullwidth-treeview .jstree-anchor', 'SA Item 1')
+          .should('not.have.class', 'jstree-disabled')
+          .click()
         cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 503)
         cy.wait('@treeviewNavigation').its('response.statusCode').should('eq', 200)
         cy.location('pathname').should('eq', pathname)
