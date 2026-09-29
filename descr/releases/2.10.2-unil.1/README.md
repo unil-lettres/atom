@@ -3,6 +3,40 @@
 Technical release dossier linked to unil-ops Operations #1, #7 and #2.
 Task lifecycle and timing remain in Operations.
 
+## Current qualification boundary
+
+The real Dockerfile image from commit 15aa7e0a4 (image b6c001474351) was built
+and tested after the initial cached-runtime qualification described below.
+Its final visual review found an inherited read-ACL inconsistency: anonymous
+browse/print exposed a read-denied published synthetic record's metadata.
+It is not an accepted release artifact.
+
+The subsequent local correction makes the shared search filter resolve both
+read and viewDraft through the existing ACL engine, including object/ancestor,
+repository, user and group precedence. It partitions subtrees at permission and
+repository boundaries before pagination, totals and facets, rather than hiding
+rendered rows. The same regions protect SQL sidebar navigation; full-width tree
+queries and authenticated autocomplete also enforce read access. New CSV/EAD
+jobs filter selection and recheck individual records. EAD jobs regenerate XML
+for the requesting user rather than reusing a shared cached document.
+
+See the dated `acl-follow-through/` evidence under the unil-ops release report
+for the exact tested source/image, parity matrix, browser and export results.
+There is no persistent ACL query cache and permission edits do not require
+reindexing. The existing search index must still accurately represent hierarchy
+and repository inheritance; concurrent/stale hierarchy changes are not certified.
+The regional-query approach assumes the current QubitAclConditionalAssert read
+conditions depend only on the inherited repository. Any extension of those
+conditions requires revalidating the partition model. Large permission inventories
+have not been load-tested.
+
+Previously generated download ZIPs remain static bearer-link files. Revoking
+permission after a ZIP was generated does not revoke that file, nor does it
+revoke an already downloaded copy. Their retention/revocation and delivery
+policy requires explicit disposition before claiming complete access-control
+acceptance. This correction does not retrofit a download authorization service.
+No production exposure, data inspection, publication or deployment is claimed.
+
 ## Source identity
 
 Candidate release identifier: **2.10.2-unil.1-rc1**. AtoM's numeric VERSION stays

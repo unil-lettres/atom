@@ -23,7 +23,7 @@
     <div class="resource-hierarchy">
       <ul>
       <?php foreach ($items[0]['resource']->getAncestors()->orderBy('lft') as $ancestor) { ?>
-        <?php if (QubitInformationObject::ROOT_ID != intval($ancestor->id)) { ?>
+        <?php if (QubitInformationObject::ROOT_ID != intval($ancestor->id) && QubitAcl::check($ancestor, 'read')) { ?>
         <li><?php echo QubitInformationObject::getStandardsBasedInstance($ancestor)->__toString(); ?></li>
         <?php } ?>
       <?php } ?>

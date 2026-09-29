@@ -2297,17 +2297,14 @@ class QubitInformationObject extends BaseInformationObject
         $criteria = new Criteria();
         $criteria->add(QubitInformationObject::PARENT_ID, $this->id);
 
-        // If not authenticated, restrict access to published descriptions
-        if (!sfContext::getInstance()->user->isAuthenticated()) {
-            $criteria->addJoin(QubitInformationObject::ID, QubitStatus::OBJECT_ID);
-            $criteria->add(QubitStatus::STATUS_ID, QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID);
-        }
+        QubitAclSearch::addReadCriteria($criteria);
 
         $criteria = QubitInformationObject::addTreeViewSortCriteria($criteria);
 
         $firstChild = QubitInformationObject::getOne($criteria);
 
         $items = [];
+        $hasNextSiblings = false;
         if (isset($firstChild)) {
             $firstChildSiblings = $firstChild->getTreeViewSiblings(
                 ['limit' => $numberOfPreviousOrNextSiblings + 1, 'position' => 'next'],
@@ -2443,11 +2440,7 @@ class QubitInformationObject extends BaseInformationObject
                     }
             }
 
-            // If not authenticated, restrict access to published descriptions
-            if (!sfContext::getInstance()->user->isAuthenticated()) {
-                $criteria->addJoin(QubitInformationObject::ID, QubitStatus::OBJECT_ID);
-                $criteria->add(QubitStatus::STATUS_ID, QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID);
-            }
+            QubitAclSearch::addReadCriteria($criteria);
 
             // This is the number of items we were asked for.
             $rows = QubitInformationObject::get($criteria);

@@ -1,3 +1,9 @@
+<?php
+$readableCollectionRoot = $resource->getCollectionRoot();
+if (!QubitAcl::check($readableCollectionRoot, 'read')) {
+    $readableCollectionRoot = $resource;
+}
+?>
 <ul class="nav nav-tabs border-0" id="treeview-menu" role="tablist">
 
   <?php if ('sidebar' == $treeviewType) { ?>
@@ -40,7 +46,7 @@
       <ul class="list-group rounded-0">
 
         <?php foreach ($ancestors as $ancestor) { ?>
-          <?php if (QubitInformationObject::ROOT_ID == $ancestor->id) { ?>
+          <?php if (QubitInformationObject::ROOT_ID == $ancestor->id || !QubitAcl::check($ancestor, 'read')) { ?>
             <?php continue; ?>
           <?php } ?>
 
@@ -123,7 +129,7 @@
       <input type="button" id="fullwidth-treeview-reset-button" class="btn btn-sm atom-btn-white" value="<?php echo __('Reset'); ?>" />
       <span
         id="fullwidth-treeview-configuration"
-        data-collection-url="<?php echo url_for([$resource->getCollectionRoot(), 'module' => 'informationobject']); ?>"
+        data-collection-url="<?php echo url_for([$readableCollectionRoot, 'module' => 'informationobject']); ?>"
         data-collapse-enabled="<?php echo $collapsible; ?>"
         data-opened-text="<?php echo sfConfig::get('app_ui_label_fullTreeviewCollapseOpenedButtonText'); ?>"
         data-closed-text="<?php echo sfConfig::get('app_ui_label_fullTreeviewCollapseClosedButtonText'); ?>"
@@ -135,7 +141,7 @@
 
   <div class="tab-pane fade<?php echo ('sidebar' != $treeviewType) ? ' show active' : ''; ?>" id="treeview-search" role="tabpanel" aria-labelledby="treeview-search-tab">
 
-    <form method="get" role="search" class="p-2 bg-white border" action="<?php echo url_for(['module' => 'search', 'action' => 'index', 'collection' => $resource->getCollectionRoot()->id]); ?>" data-not-found="<?php echo __('No results found.'); ?>">
+    <form method="get" role="search" class="p-2 bg-white border" action="<?php echo url_for(['module' => 'search', 'action' => 'index', 'collection' => $readableCollectionRoot->id]); ?>" data-not-found="<?php echo __('No results found.'); ?>">
       <div class="input-group">
         <input type="text" name="query" class="form-control" aria-label="<?php echo __('Search hierarchy'); ?>" placeholder="<?php echo __('Search hierarchy'); ?>" aria-describedby="treeview-search-submit-button" required>
         <button class="btn atom-btn-white" type="submit" id="treeview-search-submit-button">

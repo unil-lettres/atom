@@ -38,7 +38,9 @@ class arInformationObjectXmlExportJob extends arInformationObjectExportJob
     {
         exportBulkBaseTask::includeXmlExportClassesAndHelpers();
 
-        $this->xmlCachingEnabled = sfConfig::get('app_cache_xml_on_save', false);
+        // Shared cached XML may contain descendants visible to another user.
+        // Generate this requester-specific package with current ACLs instead.
+        $this->xmlCachingEnabled = false;
 
         parent::doExport($path);
     }

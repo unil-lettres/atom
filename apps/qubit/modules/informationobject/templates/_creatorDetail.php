@@ -6,7 +6,7 @@
       <div class="<?php echo render_b5_show_value_css_classes(); ?>">
 
         <div class="creator">
-          <?php if (0 < count($resource->getCreators())) { ?>
+          <?php if (0 < count($resource->getCreators()) || !QubitAcl::check($ancestor, 'read')) { ?>
             <?php echo link_to(render_title($item), [$item]); ?>
           <?php } else { ?>
             <?php echo link_to(render_title($item), [$item], ['title' => __('Inherited from %1%', ['%1%' => $ancestor])]); ?>

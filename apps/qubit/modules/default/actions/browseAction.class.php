@@ -194,6 +194,10 @@ class DefaultBrowseAction extends sfAction
         foreach ($this->filterTags as $name => $config) {
             if (isset($config['model'])) {
                 $this->filterTags[$name]['object'] = $config['model']::getById($request->{$name});
+                if ('QubitInformationObject' === $config['model']
+                    && !QubitAcl::check($this->filterTags[$name]['object'], 'read')) {
+                    $this->filterTags[$name]['object'] = null;
+                }
             }
         }
     }

@@ -72,6 +72,14 @@ class DefaultFullTreeViewAction extends sfAction
 
         // Get the collection root data (don't get it's siblings)
         $result = $this->getElasticSearchResult($this->collectionRootId, $options);
+        // An explicitly allowed child may have a denied collection ancestor.
+        // Start at the selected readable record instead of exposing that ancestor.
+        if (null === $result) {
+            $result = $this->getElasticSearchResult($this->resource->id, $options);
+        }
+        if (null === $result) {
+            return ['nodes' => [], 'total' => 0];
+        }
 
         // Format collection root data for the treeview, and recursively add its
         // children until we get to the $this->resource and it's siblings
@@ -145,14 +153,7 @@ class DefaultFullTreeViewAction extends sfAction
         // Add search term
         $query->queryBool->addMust($term);
 
-        // Filter drafts
-        if (!$this->getUser()->isAuthenticated()) {
-            $query->queryBool->addMust(
-                new \Elastica\Query\Term(
-                    ['publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID]
-                )
-            );
-        }
+        QubitAclSearch::filterReadable($query->queryBool);
 
         return $query;
     }
