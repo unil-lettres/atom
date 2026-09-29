@@ -31,6 +31,13 @@ $pagination-border-radius: 0;
   background-color: #fff !important;
   border-bottom: 1px solid #e6e6e6;
 
+  // Keep the logo sizing in the stylesheet so CSP can reject inline styles.
+  .navbar-brand .unil-header-logo {
+    height: 50px;
+    width: auto;
+    max-height: none;
+  }
+
   .navbar-nav .nav-link {
     color: $secondary;
 

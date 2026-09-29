@@ -18,5 +18,14 @@
     "real_cli_as_www_data": "passed twice, log preserved",
     "generated_unil_assets": "3 references verified",
     "basis": "cached PHP8.3.32 runtime; new lockfile dependencies and rebuilt assets; not a published deployment image"
+  },
+  "qualification_follow_through": {
+    "source_fixes": [
+      "CSP-compliant UNIL logo sizing in compiled stylesheet",
+      "OAI ListIdentifiers ACL for live records, preserving deletion headers"
+    ],
+    "build_context": "Clean git archive; host env and generated PHP config excluded",
+    "evidence": "unil-ops/docs/reports/atom-release-preparation-2026-09-29/",
+    "deployment": "No image publication or VM deployment authorized by this local preparation"
   }
 }

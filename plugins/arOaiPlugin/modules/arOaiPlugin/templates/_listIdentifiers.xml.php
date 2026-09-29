@@ -3,11 +3,13 @@
 <?php } else { ?>
   <ListIdentifiers>
 <?php foreach ($publishedRecords as $record) { ?>
+<?php if (arOaiPluginComponent::isDeletedRecord($record) || QubitAcl::check($record, 'read')) { ?>
     <header<?php echo arOaiPluginComponent::isDeletedRecord($record) ? ' status="deleted"' : ''; ?>>
       <identifier><?php echo $record->getOaiIdentifier(); ?></identifier>
       <datestamp><?php echo QubitOai::getDate($record->getUpdatedAt()); ?></datestamp>
       <setSpec><?php echo arOaiPluginComponent::getRecordSetSpec($record); ?></setSpec>
     </header>
+<?php } ?>
 <?php } ?>
   <?php if ($remaining > 0) { ?>
     <resumptionToken><?php echo $resumptionToken; ?></resumptionToken>

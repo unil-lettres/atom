@@ -63,8 +63,11 @@ The local qualification image replaces all source and Composer/npm dependencies
 on cached PHP8.3.32 runtime e2a03acf8150, then rebuilds assets from lockfiles.
 It is not a fresh build of the moving upstream PHP/PECL base and is not published.
 
-Tests run on task-owned disposable Percona8.0/Elasticsearch/cache/queue, internal
-network, no public ports, no original source/data mounts. Config is generated
+Initial unit tests ran on task-owned disposable Percona8.0/Elasticsearch/cache/queue,
+with an internal network and no public ports or original source/data mounts.
+The HTTP/browser follow-through uses a separate synthetic stack and an HTTPS
+port bound only to127.0.0.1; the staging hostname is mapped inside its owned
+browser only. No machine DNS or remote application is changed. Config is generated
 inside disposable containers only, so no test credentials enter this worktree.
 The installer needs a2GiB CLI ceiling for initial multilingual fixture import;
 this is a QA-only setting, not a change to production PHP limits.
@@ -76,8 +79,9 @@ contains an extra quote in href; it was not introduced by this merge and require
 browser observation, not a claim of a new UNIL fix. Elasticsearch replacement
 #4, OS maintenance and credential rotation #5 remain separate scopes.
 
-A release image must use a reviewed clean build context: the current .dockerignore
-does not exclude all generated config/data. This worktree has never been booted
+A release image must use a reviewed clean Git archive as build context. The
+.dockerignore now excludes docker/etc/environment, docker/.env and config/config.php;
+it is not a general guarantee against arbitrary data introduced in other paths. This worktree has never been booted
 against real data; do not later build from a QA-populated directory unchecked.
 
 No server deployment or new wiki publication in this preparation. Future changes
@@ -92,3 +96,23 @@ assertions passed. Independent culture allowlist:4 tests,8 assertions. PHP lint:
 Real search:status as www-data passes twice across repeated startup and retains
 a marker in qubit_cli.log. PHP-FPM configuration validates; all3 generated UNIL
 asset references exist. These checks do not establish browser/deployment acceptance.
+
+## HTTP/browser qualification follow-through
+
+Two pre-existing issues were exposed while exercising the preservation matrix:
+
+- The UNIL header logo had an inline style rejected by upstream's nonce CSP. Its
+  unchanged50px sizing now lives in the theme stylesheet. CSP is not loosened.
+- OAI ListIdentifiers exposed headers for an ACL-restricted published fixture,
+  whereas GetRecord and ListRecords correctly withheld its metadata. Both DC and
+  EAD pagination reproduced the leak. The template now applies read permission
+  to live records while preserving genuine tombstones and pagination cursors.
+  This was present in both the published UNIL parent and upstream, not introduced
+  by the merge. Date/set identifiers were exposed, not the notice title or body.
+
+Real Gearman CSV/EAD exports, French actor EAC, and absence of private archivist
+notes/revision history/processinfo from public EAD have passed on synthetic data.
+HTTP, browser and fresh-image final results are maintained with exact artifacts
+in the linked unil-ops evidence directory; source changes alone do not constitute
+release acceptance. The browser stubs the external Gravatar image explicitly;
+no claim is made about live external avatar availability.
