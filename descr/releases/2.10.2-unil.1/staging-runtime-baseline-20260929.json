@@ -1,0 +1,261 @@
+{
+  "observed_at": "2026-09-29T07:01:12.987647+00:00",
+  "scope": "filtered metadata only; no environment values or command lines",
+  "containers": [
+    {
+      "name": "/docker-atom_worker-1",
+      "service": "atom_worker",
+      "image_id": "sha256:53181e8219a84eb7256802c1932cec9ea1cc5571d7b2ed875f859e5987d83d6b",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "docker_atom_src",
+          "Source": "/var/lib/docker/volumes/docker_atom_src/_data",
+          "Destination": "/atom/src",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/uploads",
+          "Destination": "/atom/src/uploads",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/downloads",
+          "Destination": "/atom/src/downloads",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/data",
+          "Destination": "/atom/src/data",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/cache",
+          "Destination": "/atom/src/cache",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "name": "/docker-percona-1",
+      "service": "percona",
+      "image_id": "sha256:4deb75c12e0d73da96f17d8f3de909c266734844255dcde301f4b3ade2e770de",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "docker_percona_data",
+          "Source": "/var/lib/docker/volumes/docker_percona_data/_data",
+          "Destination": "/var/lib/mysql",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/docker/etc/mysql/mysqld.cnf",
+          "Destination": "/etc/my.cnf.d/mysqld.cnf",
+          "RW": false
+        },
+        {
+          "Type": "volume",
+          "Name": "f45aab90c1cba2cfd10f78f61015db76b919f5b56c8fe0302d58e97c2d98af51",
+          "Source": "/var/lib/docker/volumes/f45aab90c1cba2cfd10f78f61015db76b919f5b56c8fe0302d58e97c2d98af51/_data",
+          "Destination": "/var/log/mysql",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "name": "/docker-elasticsearch-1",
+      "service": "elasticsearch",
+      "image_id": "sha256:b313026e6fbdbf01894ef8c67d558d3c7d89c70214d4c9e2a147ba10540a7738",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "docker_elasticsearch_data",
+          "Source": "/var/lib/docker/volumes/docker_elasticsearch_data/_data",
+          "Destination": "/usr/share/elasticsearch/data",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "name": "/docker-memcached-1",
+      "service": "memcached",
+      "image_id": "sha256:a38251b773d15614da3036dd0d756bbf4a7d16d27fe1c52023517a419372b245",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": []
+    },
+    {
+      "name": "/docker-atom-1",
+      "service": "atom",
+      "image_id": "sha256:53181e8219a84eb7256802c1932cec9ea1cc5571d7b2ed875f859e5987d83d6b",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": [
+        {
+          "Type": "volume",
+          "Name": "docker_atom_src",
+          "Source": "/var/lib/docker/volumes/docker_atom_src/_data",
+          "Destination": "/atom/src",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/uploads",
+          "Destination": "/atom/src/uploads",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/downloads",
+          "Destination": "/atom/src/downloads",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/data",
+          "Destination": "/atom/src/data",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/cache",
+          "Destination": "/atom/src/cache",
+          "RW": true
+        }
+      ]
+    },
+    {
+      "name": "/docker-nginx-1",
+      "service": "nginx",
+      "image_id": "sha256:4af177a024eb8a1e43f4fb6c66735bb8260115cb5925a64f51673219bd97c144",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": [
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/docker/etc/nginx/nginx.conf",
+          "Destination": "/etc/nginx/nginx.conf",
+          "RW": false
+        },
+        {
+          "Type": "volume",
+          "Name": "docker_atom_src",
+          "Source": "/var/lib/docker/volumes/docker_atom_src/_data",
+          "Destination": "/atom/src",
+          "RW": true
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/uploads",
+          "Destination": "/atom/src/uploads",
+          "RW": false
+        },
+        {
+          "Type": "bind",
+          "Name": null,
+          "Source": "/home/deployer/atom/downloads",
+          "Destination": "/atom/src/downloads",
+          "RW": false
+        }
+      ]
+    },
+    {
+      "name": "/docker-gearmand-1",
+      "service": "gearmand",
+      "image_id": "sha256:2aa3b14fc89ab8c2d0df5e8e4ace96157df74d7dd9482085485cb69a63b051ee",
+      "compose_files": "/home/deployer/atom/docker/docker-compose.stage.yml",
+      "restart_policy": "unless-stopped",
+      "mounts": []
+    }
+  ],
+  "files": {
+    "/home/deployer/atom/docker/docker-compose.stage.yml": {
+      "sha256": "c1da2e956928ab1c25491f0418e59ba008a0ee25e503f413c347bcaa16e25ee2",
+      "bytes": 2114
+    },
+    "/home/deployer/atom/docker/etc/mysql/mysqld.cnf": {
+      "sha256": "6ce56bdd0c85b244470915340dcc69a8eed0ec770191e9e5de610cfc591eda52",
+      "bytes": 390
+    },
+    "/home/deployer/atom/docker/etc/nginx/nginx.conf": {
+      "sha256": "8e88fda499c1f2ac61cc0050517ff84a81a64cbe100ea10ba0e4d9a588e3e542",
+      "bytes": 8030
+    }
+  },
+  "images": [
+    {
+      "id": "sha256:2aa3b14fc89ab8c2d0df5e8e4ace96157df74d7dd9482085485cb69a63b051ee",
+      "digests": [
+        "artefactual/gearmand@sha256:177b0d13adb6cd3d70e4c8f19cf606cd9188df8905315d87d3534a6c009671f4"
+      ],
+      "architecture": "amd64",
+      "created": "2026-01-03T06:34:51.592392335Z"
+    },
+    {
+      "id": "sha256:4af177a024eb8a1e43f4fb6c66735bb8260115cb5925a64f51673219bd97c144",
+      "digests": [
+        "nginx@sha256:c881927c4077710ac4b1da63b83aa163937fb47457950c267d92f7e4dedf4aec"
+      ],
+      "architecture": "amd64",
+      "created": "2026-01-13T01:22:57.074358457Z"
+    },
+    {
+      "id": "sha256:4deb75c12e0d73da96f17d8f3de909c266734844255dcde301f4b3ade2e770de",
+      "digests": [
+        "percona@sha256:cf498cdd6d91afae7f3d238069268aebbbae16f0f6116aa8f667541bef592a90"
+      ],
+      "architecture": "amd64",
+      "created": "2026-01-26T22:04:28.223891384Z"
+    },
+    {
+      "id": "sha256:53181e8219a84eb7256802c1932cec9ea1cc5571d7b2ed875f859e5987d83d6b",
+      "digests": [
+        "unillett/atom@sha256:150a6e271e05601367c3b75f8f45c48daf10064f3af0d7fabbff38dd9a5c9377"
+      ],
+      "architecture": "amd64",
+      "created": "2026-08-18T13:14:52.620999401Z"
+    },
+    {
+      "id": "sha256:a38251b773d15614da3036dd0d756bbf4a7d16d27fe1c52023517a419372b245",
+      "digests": [
+        "memcached@sha256:e4e5eca37e4334f9579f10fcdd88a58c4eb9d0a8eacedde6ec49d4ea4391637a"
+      ],
+      "architecture": "amd64",
+      "created": "2026-01-13T01:25:18.797538371Z"
+    },
+    {
+      "id": "sha256:b313026e6fbdbf01894ef8c67d558d3c7d89c70214d4c9e2a147ba10540a7738",
+      "digests": [
+        "docker.elastic.co/elasticsearch/elasticsearch-oss@sha256:2c257b68f361872e13bdd476cba152e232a314ec61b0eedfc1f71b628ba39432"
+      ],
+      "architecture": "amd64",
+      "created": "2021-01-13T00:50:26.159590014Z"
+    }
+  ],
+  "compose_validation": {
+    "exit": 0,
+    "stderr_present": false
+  }
+}

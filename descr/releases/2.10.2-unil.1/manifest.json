@@ -1,0 +1,22 @@
+{
+  "release": "2.10.2-unil.1-rc1",
+  "upstream": "v2.10.2",
+  "upstream_commit": "02a70b8a4b23a805256abd0a14cd0f93e311a581",
+  "unil_base": "1bda7391fd5ec8efabed6f83dd22dd2903c3f012",
+  "schema": "Preserve existing UNIL migration198; candidate runtime compatibility not yet qualified",
+  "operations": [
+    "#1",
+    "#7",
+    "#2"
+  ],
+  "deployment": "not deployed",
+  "local_validation": {
+    "phpunit_tests": 362,
+    "phpunit_assertions": 917,
+    "culture_allowlist_tests": 4,
+    "oai_regression_tests_in_suite": 2,
+    "real_cli_as_www_data": "passed twice, log preserved",
+    "generated_unil_assets": "3 references verified",
+    "basis": "cached PHP8.3.32 runtime; new lockfile dependencies and rebuilt assets; not a published deployment image"
+  }
+}
