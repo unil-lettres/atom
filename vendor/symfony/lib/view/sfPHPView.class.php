@@ -184,7 +184,7 @@ class sfPHPView extends sfView
       // render template file
       $content = $this->renderFile($this->getDirectory().'/'.$this->getTemplate());
 
-      if (sfConfig::get('sf_cache') && null !== $uri)
+      if (sfConfig::get('sf_cache') && null !== $uri && $this->context->getResponse()->getStatusCode() < 400)
       {
         $content = $viewCache->setActionCache($uri, $content, $this->isDecorator() ? $this->getDecoratorDirectory().'/'.$this->getDecoratorTemplate() : false);
       }

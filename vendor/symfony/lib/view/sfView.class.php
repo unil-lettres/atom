@@ -347,17 +347,38 @@ abstract class sfView
       throw new sfRenderException('A template has not been set.');
     }
 
-    if (!is_readable($this->directory.'/'.$this->template))
+    if (!is_file($this->directory.'/'.$this->template) || !is_readable($this->directory.'/'.$this->template))
     {
-      // 404?
-      if ('404' == $this->context->getResponse()->getStatusCode())
+      $response = $this->context->getResponse();
+      $request = $this->context->getRequest();
+      $format = $request->getRequestFormat();
+      $code = $response->getStatusCode();
+
+      // A missing representation is not an application failure. Preserve an
+      // existing 404, and leave missing HTML templates as rendering errors.
+      if (404 == $code || ($code >= 200 && $code < 300 && $format && 'html' !== $format))
       {
-        // use default exception templates
-        $this->template = sfException::getTemplatePathForError($this->context->getRequest()->getRequestFormat(), false);
-        $this->directory = dirname($this->template);
-        $this->template = basename($this->template);
-        $this->setAttribute('code', '404');
-        $this->setAttribute('text', 'Not Found');
+        if (404 != $code)
+        {
+          $response->setStatusCode(406);
+        }
+
+        $template = sfException::getTemplatePathForError($format ?: 'html', false);
+        if (!$template)
+        {
+          $template = sfException::getTemplatePathForError('txt', false);
+          $response->setContentType('text/plain');
+        }
+        if (!$template)
+        {
+          throw new sfRenderException('No safe error template is available.');
+        }
+
+        $this->directory = dirname($template);
+        $this->template = basename($template);
+        $this->setDecorator(false);
+        $this->setAttribute('code', $response->getStatusCode());
+        $this->setAttribute('text', $response->getStatusText());
       }
       else
       {

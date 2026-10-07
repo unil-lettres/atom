@@ -202,11 +202,32 @@ class sfException extends Exception
     // send an error 500 if not in debug mode
     if (!sfConfig::get('sf_debug'))
     {
-      if ($template = self::getTemplatePathForError($format, false))
+      $template = self::getTemplatePathForError($format, false);
+      if (!$template)
+      {
+        // An unknown format must never fall through to a debug template.
+        if ($response)
+        {
+          $response->setContentType('text/plain');
+        }
+        else if (!sfConfig::get('sf_test'))
+        {
+          header('Content-Type: text/plain; charset=utf-8');
+        }
+      }
+      if ($response && !sfConfig::get('sf_test'))
+      {
+        $response->sendHttpHeaders();
+      }
+      if ($template)
       {
         include $template;
-        return;
       }
+      else
+      {
+        echo $code.' '.$text;
+      }
+      return;
     }
 
     // when using CLI, we force the format to be TXT. Compare exactly to
@@ -277,18 +298,27 @@ class sfException extends Exception
       __DIR__.'/data',
     );
 
-    $filename = $debug ? 'exception' : 'error';
-    if (sfConfig::get('app_b5_theme', false) && !$debug)
+    // Formats come from the request; do not interpret them as paths.
+    if (!is_string($format) || !preg_match('/\A[a-zA-Z0-9_-]+\z/', $format))
     {
-      $filename .= 'B5';
+      return false;
     }
 
-    $template = sprintf('%s.%s.php', $filename, $format);
-    foreach ($templatePaths as $path)
+    $filenames = array($debug ? 'exception' : 'error');
+    if ('html' === $format && sfConfig::get('app_b5_theme', false) && !$debug)
     {
-      if (null !== $path && is_readable($file = $path.'/'.$template))
+      array_unshift($filenames, 'errorB5');
+    }
+
+    foreach ($filenames as $filename)
+    {
+      $template = sprintf('%s.%s.php', $filename, $format);
+      foreach ($templatePaths as $path)
       {
-        return $file;
+        if (null !== $path && is_file($file = $path.'/'.$template) && is_readable($file))
+        {
+          return $file;
+        }
       }
     }
 
