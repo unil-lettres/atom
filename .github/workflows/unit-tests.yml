@@ -28,6 +28,7 @@ jobs:
         php-version: 8.3
         coverage: none
         extensions: apcu
+        ini-values: apc.enable_cli=1
         tools: composer:2.9.8
     - name: Cache dependencies
       uses: actions/cache@v5
