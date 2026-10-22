@@ -1,0 +1,38 @@
+{
+  "release": "2.10.2-unil.1-rc1",
+  "upstream": "v2.10.2",
+  "upstream_commit": "02a70b8a4b23a805256abd0a14cd0f93e311a581",
+  "unil_base": "1bda7391fd5ec8efabed6f83dd22dd2903c3f012",
+  "schema": "Unchanged from UNIL baseline; migration198/tombstones preserved; only synthetic fresh-install qualification performed",
+  "operations": [
+    "#1",
+    "#7",
+    "#2"
+  ],
+  "deployment": "not deployed",
+  "local_validation": {
+    "phpunit_tests": 362,
+    "phpunit_assertions": 917,
+    "culture_allowlist_tests": 4,
+    "oai_regression_tests_in_suite": 2,
+    "real_cli_as_www_data": "passed twice, log preserved",
+    "generated_unil_assets": "3 references verified",
+    "basis": "Initial qualification; superseded by dated real-image and ACL follow-through evidence"
+  },
+  "qualification_follow_through": {
+    "source_fixes": [
+      "CSP-compliant UNIL logo sizing in compiled stylesheet",
+      "OAI ListIdentifiers ACL for live records, preserving deletion headers"
+    ],
+    "build_context": "Clean git archive; host env and generated PHP config excluded",
+    "evidence": "unil-ops/docs/reports/atom-release-preparation-2026-09-29/",
+    "deployment": "No image publication or VM deployment authorized by this local preparation"
+  },
+  "acl_follow_through": {
+    "evidence": "unil-ops/docs/reports/atom-release-preparation-2026-09-29/acl-follow-through/",
+    "scope": "Shared SQL/Elasticsearch read and draft visibility; query counts/facets/pagination, autocomplete, tree navigation and newly generated requester-specific exports",
+    "phpunit_tests": 365,
+    "phpunit_assertions": 929,
+    "release_acceptance": "Still requires final artifact qualification and disposition of static previously generated downloads; no VM deployment"
+  }
+}

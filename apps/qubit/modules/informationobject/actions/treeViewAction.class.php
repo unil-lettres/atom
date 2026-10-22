@@ -22,6 +22,9 @@ class InformationObjectTreeViewAction extends sfAction
     public function execute($request)
     {
         $this->resource = $this->getRoute()->resource;
+        if (!QubitAcl::check($this->resource, 'read')) {
+            QubitAcl::forwardUnauthorized();
+        }
 
         // Number of siblings that we are showing above and below the current node
         // It's good to keep this number small since getTreeViewSiblings can be very

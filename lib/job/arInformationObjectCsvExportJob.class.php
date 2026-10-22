@@ -73,6 +73,10 @@ class arInformationObjectCsvExportJob extends arInformationObjectExportJob
      */
     protected function exportDataAndDigitalObject($resource, $path)
     {
+        if (!QubitAcl::check($resource, 'read')) {
+            return;
+        }
+
         $cultures = array_keys(DefaultTranslationLinksComponent::getOtherCulturesAvailable($resource->informationObjectI18ns, 'title', $resource->getTitle(['sourceCulture' => true])));
 
         foreach ($cultures as $culture) {

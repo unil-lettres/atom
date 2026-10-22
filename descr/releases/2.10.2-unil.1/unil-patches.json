@@ -1,0 +1,1035 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-29",
+  "purpose": "Source-level disposition of all37 original UNIL commits and local overlays for2.10.2-unil candidate; technical release evidence, not a task backlog.",
+  "source_manifest": "unil-ops/docs/reports/atom-release-preparation-2026-09-29/source-manifest.json",
+  "source_manifest_sha256": "5d1122a1dd59e82ec793f97db700fc05b3d33fab79888f6d5e10e0ba2ee9a293",
+  "original_unil_head": "563f14893f7608e4dc9791a5cf5acac09c7522eb",
+  "upstream_commit": "02a70b8a4b23a805256abd0a14cd0f93e311a581",
+  "common_base": "f7f5a638e5cd7b040de4f3e0da8fa47ccb117553",
+  "candidate_unil_base": "1bda7391fd5ec8efabed6f83dd22dd2903c3f012",
+  "history_note": "Original manifest enumerates37 local commits. Candidate starts from reconciled published UNIL baseline1bda7391; the final hierarchy sequence is represented by its squash, not necessarily identical commit ancestry. Byte equality of final js/fullWidthTreeView.js and cypress/e2e/csv_import.cy.js was checked against original checkout.",
+  "definitions": {
+    "retain": "Keep cumulative intended behavior/source in candidate, merging later and upstream changes; not a claim that every intermediate patch should be reapplied or that runtime has passed.",
+    "superseded": "Original intermediate code replaced by identified later/upstream final form; original behavior purpose accounted for.",
+    "preparation": "History, tooling or guidance retained/referenced without application runtime feature or execution claim."
+  },
+  "counts": {
+    "commits": 37,
+    "overlap_reviews": 7,
+    "local_overlays": 3
+  },
+  "commits": [
+    {
+      "index": 1,
+      "commit": "168f451fdfbec261a71a48572fa5e11a6733fe9c",
+      "subject": "Add UNIL plugins and stabilize dev stack",
+      "functional_group": "theme-and-packaging",
+      "disposition": "retain",
+      "rationale": "Preserve the UNIL Lettres B5 theme, plugin enablement and dev-stack fixes in their cumulative final form. The original arLettresPlugin gitlink was replaced by vendored files in72688e875; deleted private descr files must not be resurrected.",
+      "manifest_paths": [
+        ".gitignore",
+        "config/ProjectConfiguration.class.php",
+        "descr/Plan_tests_AtoM_v2-10.csv",
+        "descr/Plan_tests_AtoM_v2-10.xlsx",
+        "descr/README.md",
+        "docker/docker-compose.dev.yml",
+        "docker/etc/nginx/nginx.conf",
+        "plugins/arLettresB5Plugin/config/arLettresB5PluginConfiguration.class.php",
+        "plugins/arLettresB5Plugin/images/logo.png",
+        "plugins/arLettresB5Plugin/images/logo.svg",
+        "plugins/arLettresB5Plugin/js/main.js",
+        "plugins/arLettresB5Plugin/scss/main.scss",
+        "plugins/arLettresB5Plugin/templates/_header.php",
+        "plugins/arLettresB5Plugin/templates/_layout_start.php",
+        "plugins/arLettresB5Plugin/templates/_layout_start_webpack.php",
+        "plugins/arLettresB5Plugin/templates/layout.php",
+        "plugins/arLettresB5Plugin/webpack.entry.js",
+        "plugins/arLettresPlugin"
+      ],
+      "review_focus_paths": [
+        "plugins/arLettresB5Plugin/config/arLettresB5PluginConfiguration.class.php",
+        "config/ProjectConfiguration.class.php",
+        "docker/docker-compose.dev.yml"
+      ],
+      "overlap_review_refs": [
+        "overlap-3"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 2,
+      "commit": "72688e8753d408a30b922fcf475079c750599ceb",
+      "subject": "Vendor arLettresPlugin instead of submodule",
+      "functional_group": "theme-and-packaging",
+      "disposition": "retain",
+      "rationale": "Keep arLettresPlugin vendored so deployments do not depend on a submodule checkout; preserve the later legacy-plugin adjustments.",
+      "manifest_paths": [
+        "plugins/arLettresPlugin",
+        "plugins/arLettresPlugin/.gitignore",
+        "plugins/arLettresPlugin/Makefile",
+        "plugins/arLettresPlugin/README.md",
+        "plugins/arLettresPlugin/config/arLettresPluginConfiguration.class.php",
+        "plugins/arLettresPlugin/css/main.less",
+        "plugins/arLettresPlugin/favicon.ico",
+        "plugins/arLettresPlugin/images/image.png",
+        "plugins/arLettresPlugin/images/logo.png",
+        "plugins/arLettresPlugin/images/logo.svg",
+        "plugins/arLettresPlugin/templates/_header.php"
+      ],
+      "review_focus_paths": [
+        "plugins/arLettresPlugin/config/arLettresPluginConfiguration.class.php",
+        "plugins/arLettresPlugin/templates/_header.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 3,
+      "commit": "0dab4ae9418a1a62728b4abfea19e1910e375d87",
+      "subject": "Disable OIDC by default and add login helpers",
+      "functional_group": "authentication-and-session",
+      "disposition": "retain",
+      "rationale": "Keep OIDC disabled by default and the provider parsing/validation helpers; merge the upstream culture-header fix instead of restoring its old unrestricted path.",
+      "manifest_paths": [
+        "config/ProjectConfiguration.class.php",
+        "descr/README.md",
+        "lib/myUser.class.php"
+      ],
+      "review_focus_paths": [
+        "config/ProjectConfiguration.class.php",
+        "lib/myUser.class.php"
+      ],
+      "overlap_review_refs": [
+        "overlap-5"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 4,
+      "commit": "e68e70b98947c49b689ed020fec273ec80ac7b60",
+      "subject": "Sync staging fixes and add DockerHub workflow",
+      "functional_group": "runtime-compatibility-and-authentication",
+      "disposition": "retain",
+      "rationale": "Retain PHP8.3/session compatibility, menu array guard, export task fixes, Docker bootstrap and deployment workflow. DebugPDO signature patch is superseded by upstream removal of DebugPDO; unchanged renamed OIDC user-menu template follows upstream removal. Do not re-enable OIDC.",
+      "manifest_paths": [
+        ".github/workflows/docker.yml",
+        "Dockerfile",
+        "config/ProjectConfiguration.class.php",
+        "docker/bootstrap.php",
+        "docker/etc/nginx/nginx.conf",
+        "lib/model/QubitMenu.php",
+        "lib/myUser.class.php",
+        "lib/task/export/exportBulkBaseTask.class.php",
+        "plugins/arOidcPlugin.disabled/config/app.yml",
+        "plugins/arOidcPlugin.disabled/config/arOidcPluginConfiguration.class.php",
+        "plugins/arOidcPlugin.disabled/i18n/af/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/am/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ar/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/bs/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ca/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ca@valencia/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/cs/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/cy/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/de/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/el/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/es/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/et/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/eu/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/fa/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/fil/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/fr/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ga/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/gl/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/he/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/hr/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/hu/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/id/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/is/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/it/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ja/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ka/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ko/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/mk/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/nb/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/nl/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/pl/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/pt/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ro/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ru/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/sk/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/sl/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/sq/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/sr/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/sv/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ta/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/th/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/tn/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/tr/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/uk/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/ur/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/uz/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/vi/messages.xml",
+        "plugins/arOidcPlugin.disabled/i18n/zh/messages.xml",
+        "plugins/arOidcPlugin.disabled/lib/arOidc.class.php",
+        "plugins/arOidcPlugin.disabled/lib/oidcUser.class.php",
+        "plugins/arOidcPlugin.disabled/modules/menu/templates/_userMenu.php",
+        "plugins/arOidcPlugin.disabled/modules/oidc/actions/loginAction.class.php",
+        "plugins/arOidcPlugin.disabled/modules/oidc/actions/logoutAction.class.php",
+        "plugins/arOidcPlugin.disabled/modules/oidc/config/security.yml",
+        "plugins/arOidcPlugin.disabled/modules/user/actions/editAction.class.php",
+        "plugins/arOidcPlugin.disabled/modules/user/templates/_showActions.php",
+        "plugins/arOidcPlugin.disabled/modules/user/templates/editSuccess.php",
+        "plugins/arOidcPlugin.disabled/modules/user/templates/indexSuccess.php",
+        "plugins/arOidcPlugin.disabled/modules/user/templates/listSuccess.php",
+        "plugins/arOidcPlugin.disabled/modules/user/templates/loginSuccess.php",
+        "plugins/arOidcPlugin/config/app.yml",
+        "plugins/arOidcPlugin/config/arOidcPluginConfiguration.class.php",
+        "plugins/arOidcPlugin/i18n/af/messages.xml",
+        "plugins/arOidcPlugin/i18n/am/messages.xml",
+        "plugins/arOidcPlugin/i18n/ar/messages.xml",
+        "plugins/arOidcPlugin/i18n/bs/messages.xml",
+        "plugins/arOidcPlugin/i18n/ca/messages.xml",
+        "plugins/arOidcPlugin/i18n/ca@valencia/messages.xml",
+        "plugins/arOidcPlugin/i18n/cs/messages.xml",
+        "plugins/arOidcPlugin/i18n/cy/messages.xml",
+        "plugins/arOidcPlugin/i18n/de/messages.xml",
+        "plugins/arOidcPlugin/i18n/el/messages.xml",
+        "plugins/arOidcPlugin/i18n/es/messages.xml",
+        "plugins/arOidcPlugin/i18n/et/messages.xml",
+        "plugins/arOidcPlugin/i18n/eu/messages.xml",
+        "plugins/arOidcPlugin/i18n/fa/messages.xml",
+        "plugins/arOidcPlugin/i18n/fil/messages.xml",
+        "plugins/arOidcPlugin/i18n/fr/messages.xml",
+        "plugins/arOidcPlugin/i18n/ga/messages.xml",
+        "plugins/arOidcPlugin/i18n/gl/messages.xml",
+        "plugins/arOidcPlugin/i18n/he/messages.xml",
+        "plugins/arOidcPlugin/i18n/hr/messages.xml",
+        "plugins/arOidcPlugin/i18n/hu/messages.xml",
+        "plugins/arOidcPlugin/i18n/id/messages.xml",
+        "plugins/arOidcPlugin/i18n/is/messages.xml",
+        "plugins/arOidcPlugin/i18n/it/messages.xml",
+        "plugins/arOidcPlugin/i18n/ja/messages.xml",
+        "plugins/arOidcPlugin/i18n/ka/messages.xml",
+        "plugins/arOidcPlugin/i18n/ko/messages.xml",
+        "plugins/arOidcPlugin/i18n/mk/messages.xml",
+        "plugins/arOidcPlugin/i18n/nb/messages.xml",
+        "plugins/arOidcPlugin/i18n/nl/messages.xml",
+        "plugins/arOidcPlugin/i18n/pl/messages.xml",
+        "plugins/arOidcPlugin/i18n/pt/messages.xml",
+        "plugins/arOidcPlugin/i18n/ro/messages.xml",
+        "plugins/arOidcPlugin/i18n/ru/messages.xml",
+        "plugins/arOidcPlugin/i18n/sk/messages.xml",
+        "plugins/arOidcPlugin/i18n/sl/messages.xml",
+        "plugins/arOidcPlugin/i18n/sq/messages.xml",
+        "plugins/arOidcPlugin/i18n/sr/messages.xml",
+        "plugins/arOidcPlugin/i18n/sv/messages.xml",
+        "plugins/arOidcPlugin/i18n/ta/messages.xml",
+        "plugins/arOidcPlugin/i18n/th/messages.xml",
+        "plugins/arOidcPlugin/i18n/tn/messages.xml",
+        "plugins/arOidcPlugin/i18n/tr/messages.xml",
+        "plugins/arOidcPlugin/i18n/uk/messages.xml",
+        "plugins/arOidcPlugin/i18n/ur/messages.xml",
+        "plugins/arOidcPlugin/i18n/uz/messages.xml",
+        "plugins/arOidcPlugin/i18n/vi/messages.xml",
+        "plugins/arOidcPlugin/i18n/zh/messages.xml",
+        "plugins/arOidcPlugin/lib/arOidc.class.php",
+        "plugins/arOidcPlugin/lib/oidcUser.class.php",
+        "plugins/arOidcPlugin/modules/menu/templates/_userMenu.php",
+        "plugins/arOidcPlugin/modules/oidc/actions/loginAction.class.php",
+        "plugins/arOidcPlugin/modules/oidc/actions/logoutAction.class.php",
+        "plugins/arOidcPlugin/modules/oidc/config/security.yml",
+        "plugins/arOidcPlugin/modules/user/actions/editAction.class.php",
+        "plugins/arOidcPlugin/modules/user/templates/_showActions.php",
+        "plugins/arOidcPlugin/modules/user/templates/editSuccess.php",
+        "plugins/arOidcPlugin/modules/user/templates/indexSuccess.php",
+        "plugins/arOidcPlugin/modules/user/templates/listSuccess.php",
+        "plugins/arOidcPlugin/modules/user/templates/loginSuccess.php",
+        "vendor/symfony/lib/plugins/sfPropelPlugin/lib/vendor/propel/util/DebugPDO.php",
+        "vendor/symfony/lib/storage/sfSessionStorage.class.php"
+      ],
+      "review_focus_paths": [
+        "docker/bootstrap.php",
+        "lib/model/QubitMenu.php",
+        "lib/myUser.class.php",
+        "lib/task/export/exportBulkBaseTask.class.php",
+        "vendor/symfony/lib/storage/sfSessionStorage.class.php"
+      ],
+      "overlap_review_refs": [
+        "overlap-5",
+        "overlap-7"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review",
+      "superseded_parts": [
+        {
+          "path": "vendor/symfony/lib/plugins/sfPropelPlugin/lib/vendor/propel/util/DebugPDO.php",
+          "disposition": "superseded",
+          "reason": "Upstream v2.10.2 removes DebugPDO and its integration; keep deletion rather than restoring a PHP8.3 signature patch to removed infrastructure.",
+          "overlap_review_ref": "overlap-7"
+        },
+        {
+          "path": "plugins/arOidcPlugin.disabled/modules/menu/templates/_userMenu.php",
+          "disposition": "superseded",
+          "reason": "Renamed disabled-plugin file is byte-identical to common-base active-plugin menu. Upstream deletes that menu override; candidate deletion preserves upstream removal without losing a UNIL code delta.",
+          "identity_check": "git show563f14893:plugins/arOidcPlugin.disabled/modules/menu/templates/_userMenu.php equals git showf7f5a638:plugins/arOidcPlugin/modules/menu/templates/_userMenu.php"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "commit": "8da6b4020bef82578fa4f41c266e7186cce29bec",
+      "subject": "Trigger DockerHub build",
+      "functional_group": "build-and-ci",
+      "disposition": "preparation",
+      "rationale": "Empty build-trigger commit has no source paths or feature to reapply. Preserve provenance only; it is not an instruction to trigger/push an image.",
+      "manifest_paths": [],
+      "review_focus_paths": [],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 6,
+      "commit": "aa4c7d6c3bc4b4b17e065cdd3dd9116c01c3437f",
+      "subject": "Fix special-char search and document staging compose",
+      "functional_group": "search",
+      "disposition": "retain",
+      "rationale": "Retain fallback escaping of Elasticsearch query_string reserved characters when app_escape_queries is empty, plus staging recipe. Upstream overlap in utility is a documentation change; runtime replacement remains outside this release.",
+      "manifest_paths": [
+        "descr/README.md",
+        "docker/docker-compose.stage.yml",
+        "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginUtil.class.php"
+      ],
+      "review_focus_paths": [
+        "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginUtil.class.php",
+        "docker/docker-compose.stage.yml"
+      ],
+      "overlap_review_refs": [
+        "overlap-6"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 7,
+      "commit": "f093bac86e82e2238621418ca7820c7a26971d4b",
+      "subject": "Update UNIL branding and docs; add local dump ignores",
+      "functional_group": "theme-and-documentation",
+      "disposition": "retain",
+      "rationale": "Keep cumulative UNIL branding, local dump ignores and current project guidance. Private migration descriptions later removed by e7f136b2 remain absent; do not resurrect superseded logo bytes or historical instructions.",
+      "manifest_paths": [
+        ".gitignore",
+        "AGENTS.md",
+        "README.md",
+        "descr/migration-2.6-to-2.10.md",
+        "descr/prod-vm-notes.md",
+        "plugins/arLettresB5Plugin/images/logo.png"
+      ],
+      "review_focus_paths": [
+        ".gitignore",
+        "plugins/arLettresB5Plugin/images/logo.png"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 8,
+      "commit": "999c9cf4a20a5920cf0daac3704d80432116befb",
+      "subject": "Fix actor XML clipboard export",
+      "functional_group": "exports",
+      "disposition": "retain",
+      "rationale": "Preserve actor clipboard XML export correction; test generated actor XML and queued download behavior.",
+      "manifest_paths": [
+        "lib/job/arActorXmlExportJob.class.php"
+      ],
+      "review_focus_paths": [
+        "lib/job/arActorXmlExportJob.class.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 9,
+      "commit": "f25730abb5474cbf13345c8895937cc2fe8635d3",
+      "subject": "Increase header logo size",
+      "functional_group": "theme-and-packaging",
+      "disposition": "superseded",
+      "rationale": "Historical bare height50 header change was superseded by later branding/header changes, ending in2b9e2fac6 explicit50px/auto-width/max-height styling. Preserve final header rather than replaying this intermediate diff.",
+      "manifest_paths": [
+        "plugins/arLettresB5Plugin/templates/_header.php"
+      ],
+      "review_focus_paths": [
+        "plugins/arLettresB5Plugin/templates/_header.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 10,
+      "commit": "e7f136b2e417e6005c719bdd615fb7d2fa5c2708",
+      "subject": "Harden prod stack and remove private migration notes from repo",
+      "functional_group": "security-and-production-recipe",
+      "disposition": "retain",
+      "rationale": "Retain hardened production recipe and environment template, timezone and safe null guards for search/ACL/donor routes; donor guard final form follows b5006c94. Maintain removal of private migration/test documents from tracked source.",
+      "manifest_paths": [
+        ".gitignore",
+        "descr/Plan_tests_AtoM_v2-10.csv",
+        "descr/Plan_tests_AtoM_v2-10.xlsx",
+        "descr/README.md",
+        "descr/migration-2.6-to-2.10.md",
+        "descr/prod-vm-notes.md",
+        "docker/docker-compose.prod.yml",
+        "docker/etc/environment.prod.tmpl",
+        "docker/etc/php/timezone.ini",
+        "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginQuery.class.php",
+        "plugins/arLettresB5Plugin/templates/_header.php",
+        "plugins/qbAclPlugin/lib/QubitAcl.class.php",
+        "plugins/qtAccessionPlugin/modules/donor/actions/primaryContactAction.class.php"
+      ],
+      "review_focus_paths": [
+        "docker/docker-compose.prod.yml",
+        "docker/etc/environment.prod.tmpl",
+        "docker/etc/php/timezone.ini",
+        "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginQuery.class.php",
+        "plugins/qbAclPlugin/lib/QubitAcl.class.php",
+        "plugins/qtAccessionPlugin/modules/donor/actions/primaryContactAction.class.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 11,
+      "commit": "b5006c94df030639329577d330d1c9de76f598f6",
+      "subject": "Align donor null guard with forward404Unless",
+      "functional_group": "security-and-production-recipe",
+      "disposition": "retain",
+      "rationale": "Preserve final forward404Unless donor null-resource guard, superseding the intermediate guard from e7f136b2.",
+      "manifest_paths": [
+        "plugins/qtAccessionPlugin/modules/donor/actions/primaryContactAction.class.php"
+      ],
+      "review_focus_paths": [
+        "plugins/qtAccessionPlugin/modules/donor/actions/primaryContactAction.class.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 12,
+      "commit": "413bc9cbe456e77a60bd0d63a6843ad0f32b2bef",
+      "subject": "fix(ui): re-enable sfTranslate panel in arLettresB5 theme",
+      "functional_group": "theme-and-packaging",
+      "disposition": "retain",
+      "rationale": "Preserve sfTranslate panel availability in UNIL B5 layout and its styling.",
+      "manifest_paths": [
+        "plugins/arLettresB5Plugin/scss/main.scss",
+        "plugins/arLettresB5Plugin/templates/_layout_start.php"
+      ],
+      "review_focus_paths": [
+        "plugins/arLettresB5Plugin/scss/main.scss",
+        "plugins/arLettresB5Plugin/templates/_layout_start.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 13,
+      "commit": "2b9e2fac60561594fb19937fd954b5c9abc93a8d",
+      "subject": "Update UNIL Lettres logo and header logo sizing",
+      "functional_group": "theme-and-packaging",
+      "disposition": "retain",
+      "rationale": "Preserve current UNIL logo and explicit header sizing; supersedes earlier logo/header assets and heights.",
+      "manifest_paths": [
+        "AGENTS.md",
+        "images/logo.png",
+        "plugins/arLettresB5Plugin/images/logo.png",
+        "plugins/arLettresB5Plugin/templates/_header.php"
+      ],
+      "review_focus_paths": [
+        "images/logo.png",
+        "plugins/arLettresB5Plugin/images/logo.png",
+        "plugins/arLettresB5Plugin/templates/_header.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 14,
+      "commit": "ac1b71cc0970f5585e59ead11d7d3149e44d6e85",
+      "subject": "Fix FR default culture template and clipboard HTTPS-safe download links",
+      "functional_group": "localization-and-exports",
+      "disposition": "retain",
+      "rationale": "Preserve French settings template and root-relative clipboard download URL so the public HTTPS origin is used. Combine with upstream delegated refresh markup/script behavior.",
+      "manifest_paths": [
+        "AGENTS.md",
+        "apps/qubit/config/settings.yml.tmpl",
+        "apps/qubit/modules/clipboard/actions/exportCheckAction.class.php"
+      ],
+      "review_focus_paths": [
+        "apps/qubit/config/settings.yml.tmpl",
+        "apps/qubit/modules/clipboard/actions/exportCheckAction.class.php"
+      ],
+      "overlap_review_refs": [
+        "overlap-2"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 15,
+      "commit": "a67ce32d1faac8776dd2df376cdaea01dbfcbf95",
+      "subject": "ops: add prod health check script for AtoM VM",
+      "functional_group": "operational-tooling",
+      "disposition": "preparation",
+      "rationale": "Retain production health-check script as reviewed tooling; do not execute it or infer current production health from its presence in the candidate.",
+      "manifest_paths": [
+        "scripts/prod_health_check.sh"
+      ],
+      "review_focus_paths": [
+        "scripts/prod_health_check.sh"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 16,
+      "commit": "99181e7e3e14ebbd6225a062d3a7db637b87be6e",
+      "subject": "Update action versions in workflow files to latest stable releases",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Preserve cumulative Docker metadata/build/push/login and artifact action upgrades. Workflow content is retained; no registry push or DependencyTrack upload is authorized by source merge.",
+      "manifest_paths": [
+        ".github/workflows/docker.yml",
+        ".github/workflows/generate-sbom.yml",
+        ".github/workflows/integration-tests.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/docker.yml",
+        ".github/workflows/generate-sbom.yml",
+        ".github/workflows/integration-tests.yml"
+      ],
+      "overlap_review_refs": [
+        "overlap-1"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 17,
+      "commit": "600e85404e0bfda16a94831dd5beb94274f418cd",
+      "subject": "Update actions/checkout to v5 in workflow files",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Keep checkoutv5 in SBOM/integration jobs; Docker checkoutv5 portion is superseded by9c9304397 checkoutv7. Do not downgrade final cumulative versions.",
+      "manifest_paths": [
+        ".github/workflows/docker.yml",
+        ".github/workflows/generate-sbom.yml",
+        ".github/workflows/integration-tests.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/docker.yml",
+        ".github/workflows/generate-sbom.yml",
+        ".github/workflows/integration-tests.yml"
+      ],
+      "overlap_review_refs": [
+        "overlap-1"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 18,
+      "commit": "4442f15ff4e8de64fd7bf7be23a92f8ccb7da6d5",
+      "subject": "Upgrade GitHub Actions to checkout@v5 and cache@v5",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Keep checkoutv5/cachev5 unit workflow adaptations.",
+      "manifest_paths": [
+        ".github/workflows/unit-tests.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/unit-tests.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 19,
+      "commit": "5e1900b4f8af3c77d4c6207e21a0d00b12892705",
+      "subject": "Upgrade GitHub Actions to v5 for checkout and cache",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Keep checkoutv5/cachev5 syntax workflow adaptations.",
+      "manifest_paths": [
+        ".github/workflows/syntax-checks.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/syntax-checks.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 20,
+      "commit": "36c78071848e15528e0f0c2a6c8b349d728c33b6",
+      "subject": "Upgrade cache actions to version 5",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Keep cachev5 integration workflow adaptation.",
+      "manifest_paths": [
+        ".github/workflows/integration-tests.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/integration-tests.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 21,
+      "commit": "00b910ad3bf8b652da064ba1bb49d5a0a5b43ccf",
+      "subject": "Update cache action to version 5",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Keep cachev5 SBOM workflow while adding upstream pinned Trivy image.",
+      "manifest_paths": [
+        ".github/workflows/generate-sbom.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/generate-sbom.yml"
+      ],
+      "overlap_review_refs": [
+        "overlap-1"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 22,
+      "commit": "de5f93a712944faca5579f6afb24e883c69a181f",
+      "subject": "Harden production nginx crawler and buffering controls",
+      "functional_group": "edge-and-performance",
+      "disposition": "retain",
+      "rationale": "Preserve cumulative nginx crawler and buffering controls, augmented by later print/build-metadata and local bot-filter changes.",
+      "manifest_paths": [
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "review_focus_paths": [
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 23,
+      "commit": "f719c6cb1af649092d3b82f54235c52e62fbd5de",
+      "subject": "Prevent hidden notes in public EAD exports",
+      "functional_group": "public-export-confidentiality",
+      "disposition": "retain",
+      "rationale": "Preserve filtering of hidden notes from public EAD while retaining permitted metadata; verify synthetic private notes are absent from real export.",
+      "manifest_paths": [
+        "plugins/sfEadPlugin/modules/sfEadPlugin/actions/indexAction.class.php",
+        "plugins/sfEadPlugin/modules/sfEadPlugin/templates/indexSuccessBody.xml.php"
+      ],
+      "review_focus_paths": [
+        "plugins/sfEadPlugin/modules/sfEadPlugin/actions/indexAction.class.php",
+        "plugins/sfEadPlugin/modules/sfEadPlugin/templates/indexSuccessBody.xml.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 24,
+      "commit": "a2f56a5bd51ec2075c09c363ba9e87a88a931179",
+      "subject": "Remove processinfo from public EAD exports",
+      "functional_group": "public-export-confidentiality",
+      "disposition": "retain",
+      "rationale": "Preserve exclusion of processinfo from public EAD; test public/export-permission boundary with fixtures.",
+      "manifest_paths": [
+        "plugins/sfEadPlugin/modules/sfEadPlugin/templates/indexSuccessBody.xml.php"
+      ],
+      "review_focus_paths": [
+        "plugins/sfEadPlugin/modules/sfEadPlugin/templates/indexSuccessBody.xml.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 25,
+      "commit": "8a3dd9ee30a563e8e870128b39cbd852dab34572",
+      "subject": "Pin Composer to fixed 2.9.8 image",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Preserve Composer2.9.8 pin in Dockerfile and CI setup. Fresh dependency resolution must use reviewed lockfiles, not composer update.",
+      "manifest_paths": [
+        ".github/workflows/integration-tests.yml",
+        ".github/workflows/syntax-checks.yml",
+        ".github/workflows/unit-tests.yml",
+        "Dockerfile"
+      ],
+      "review_focus_paths": [
+        "Dockerfile",
+        ".github/workflows/integration-tests.yml",
+        ".github/workflows/syntax-checks.yml",
+        ".github/workflows/unit-tests.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 26,
+      "commit": "df2c576b6ee5eee92fe85c851f4f78801f635812",
+      "subject": "Raise prod PHP-FPM worker capacity",
+      "functional_group": "edge-and-performance",
+      "disposition": "retain",
+      "rationale": "Preserve generated FPM capacity pm.max_children14 and other effective settings; source presence alone does not validate resource sizing on a VM.",
+      "manifest_paths": [
+        "docker/bootstrap.php"
+      ],
+      "review_focus_paths": [
+        "docker/bootstrap.php"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 27,
+      "commit": "9c9304397a3a5cbca4a1714864a0cf1c87400989",
+      "subject": "Update actions/checkout to v7",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Preserve checkoutv7 in Docker workflow; supersedes checkoutv5 portion of600e85404 in this file only.",
+      "manifest_paths": [
+        ".github/workflows/docker.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/docker.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 28,
+      "commit": "ac36b7d41be8476773dfa6c48894fe1363fe85cd",
+      "subject": "Add persistent OAI-PMH deleted records (#4)",
+      "functional_group": "persistent-oai-and-operational-support",
+      "disposition": "retain",
+      "rationale": "Preserve persistent OAI tombstone schema/migration198, model hooks, publish/unpublish task/job and OAI response handling. Retain associated existing tooling/config/test adjustments with their own original scope. No DB upgrade or production acceptance is implied; real deletion/paging/export validation uses disposable fixtures.",
+      "manifest_paths": [
+        ".github/workflows/integration-tests.yml",
+        ".github/workflows/unit-tests.yml",
+        "AGENTS.md",
+        "config/schema.yml",
+        "cypress/e2e/search.cy.js",
+        "cypress/support/e2e.js",
+        "data/sql/lib.model.schema.sql",
+        "docker/docker-compose.pmm.yml",
+        "docker/etc/environment",
+        "docker/etc/environment.prod.tmpl",
+        "docker/etc/nginx/nginx.conf",
+        "lib/job/arUpdatePublicationStatusJob.class.php",
+        "lib/model/QubitInformationObject.php",
+        "lib/myUser.class.php",
+        "lib/oai/QubitOaiDeletedRecord.class.php",
+        "lib/task/migrate/migrations/arMigration0198.class.php",
+        "lib/task/tools/updatePublicationStatusTask.class.php",
+        "phpunit.xml",
+        "plugins/arLettresPlugin/config/arLettresPluginConfiguration.class.php",
+        "plugins/arLettresPlugin/templates/_header.php",
+        "plugins/arOaiPlugin/lib/arOaiPluginComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/getRecordComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/identifyComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/indexAction.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/listRecordsComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/templates/_getRecord.xml.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/templates/_listIdentifiers.xml.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/templates/_listRecords.xml.php",
+        "scripts/atom_db_schema_snapshot.sh",
+        "scripts/atom_nginx_traffic_stats.py",
+        "scripts/prod_host_legacy_package_cleanup_20260702.sh",
+        "scripts/prod_host_nginx_crawler_hardening_20260430.sh",
+        "scripts/prod_host_nginx_print_browse_guard_20260624.sh",
+        "scripts/prod_host_nginx_security_headers_20260430.sh",
+        "scripts/prod_host_nginx_unil_rate_limit_cleanup_20260519.sh"
+      ],
+      "review_focus_paths": [
+        "config/schema.yml",
+        "data/sql/lib.model.schema.sql",
+        "lib/task/migrate/migrations/arMigration0198.class.php",
+        "lib/model/QubitInformationObject.php",
+        "lib/oai/QubitOaiDeletedRecord.class.php",
+        "lib/job/arUpdatePublicationStatusJob.class.php",
+        "lib/task/tools/updatePublicationStatusTask.class.php",
+        "plugins/arOaiPlugin/lib/arOaiPluginComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/getRecordComponent.class.php",
+        "plugins/arOaiPlugin/modules/arOaiPlugin/actions/listRecordsComponent.class.php"
+      ],
+      "overlap_review_refs": [
+        "overlap-4",
+        "overlap-5"
+      ],
+      "runtime_acceptance": "not_asserted_by_this_source_review",
+      "preparation_only_paths": [
+        "scripts/atom_db_schema_snapshot.sh",
+        "scripts/atom_nginx_traffic_stats.py",
+        "scripts/prod_host_legacy_package_cleanup_20260702.sh",
+        "scripts/prod_host_nginx_crawler_hardening_20260430.sh",
+        "scripts/prod_host_nginx_print_browse_guard_20260624.sh",
+        "scripts/prod_host_nginx_security_headers_20260430.sh",
+        "scripts/prod_host_nginx_unil_rate_limit_cleanup_20260519.sh"
+      ]
+    },
+    {
+      "index": 29,
+      "commit": "d41f62ec554f3bb11d055b3118850861908af164",
+      "subject": "Ensure staging services restart unless stopped",
+      "functional_group": "runtime-restart-policy",
+      "disposition": "retain",
+      "rationale": "Preserve restart-unless-stopped for staging services; retention does not authorize starting or restarting staging.",
+      "manifest_paths": [
+        "docker/docker-compose.stage.yml"
+      ],
+      "review_focus_paths": [
+        "docker/docker-compose.stage.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 30,
+      "commit": "53fd8b42482c62f287bd3265746e0016cbeb2e7c",
+      "subject": "Make Cypress CI installation explicit (#6)",
+      "functional_group": "build-and-ci",
+      "disposition": "retain",
+      "rationale": "Preserve explicit Cypress install and verify steps; qualify upgraded upstream Cypress with current lockfile.",
+      "manifest_paths": [
+        ".github/workflows/integration-tests.yml"
+      ],
+      "review_focus_paths": [
+        ".github/workflows/integration-tests.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 31,
+      "commit": "df99350067643b5fb4a45abb7408632f6d7d2f64",
+      "subject": "Block public build metadata (#5)",
+      "functional_group": "public-file-protection",
+      "disposition": "retain",
+      "rationale": "Preserve image/build context exclusions and nginx denial of public build/internal metadata. Review clean build context separately because generated QA config/data are not comprehensively covered by historical dockerignore.",
+      "manifest_paths": [
+        ".dockerignore",
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "review_focus_paths": [
+        ".dockerignore",
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 32,
+      "commit": "eb30274d3e4d3093940715314abc06f1431cfc4a",
+      "subject": "Disable Xdebug in the staging worker (#7)",
+      "functional_group": "runtime-debug-containment",
+      "disposition": "retain",
+      "rationale": "Preserve XDEBUG_MODEoff for staging worker without silently changing web debug configuration; test queued jobs.",
+      "manifest_paths": [
+        "docker/docker-compose.stage.yml"
+      ],
+      "review_focus_paths": [
+        "docker/docker-compose.stage.yml"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 33,
+      "commit": "5a8d5abca4323cad3e5fef7e096c3de993427abb",
+      "subject": "Allow same-origin public print preview (#8)",
+      "functional_group": "print-and-edge-policy",
+      "disposition": "retain",
+      "rationale": "Preserve same-origin public print preview and accepted restrictions, including bot-filter compatibility.",
+      "manifest_paths": [
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "review_focus_paths": [
+        "docker/etc/nginx/nginx.conf"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 34,
+      "commit": "5c78674238a230cbe1e01daf17a3b8ada2c6d340",
+      "subject": "Add hierarchy navigation fallback",
+      "functional_group": "hierarchy-navigation",
+      "disposition": "retain",
+      "rationale": "Preserve fallback to full navigation when hierarchy AJAX fails; final implementation/test is also contained in candidate baseline squash1bda7391.",
+      "manifest_paths": [
+        "cypress/e2e/csv_import.cy.js",
+        "js/fullWidthTreeView.js"
+      ],
+      "review_focus_paths": [
+        "js/fullWidthTreeView.js",
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 35,
+      "commit": "e56102909c1c233f79c2c09cb29e476ee2ef75cd",
+      "subject": "Fix hierarchy fallback test matching",
+      "functional_group": "hierarchy-navigation-tests",
+      "disposition": "retain",
+      "rationale": "Keep cumulative test route matching refinement through final source; do not replay older failing intercept logic. Candidate test bytes match original checkout.",
+      "manifest_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "review_focus_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 36,
+      "commit": "0ce079ec767c32904e16e157d827accfe394d956",
+      "subject": "Stabilize hierarchy fallback test",
+      "functional_group": "hierarchy-navigation-tests",
+      "disposition": "retain",
+      "rationale": "Keep cumulative browser-test synchronization refinement through final source; candidate test bytes match original checkout.",
+      "manifest_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "review_focus_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "index": 37,
+      "commit": "563f14893f7608e4dc9791a5cf5acac09c7522eb",
+      "subject": "Trigger delegated hierarchy hover in test",
+      "functional_group": "hierarchy-navigation-tests",
+      "disposition": "retain",
+      "rationale": "Keep delegated hover trigger and wait for hierarchy synchronization before click; candidate test bytes match original checkout.",
+      "manifest_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "review_focus_paths": [
+        "cypress/e2e/csv_import.cy.js"
+      ],
+      "overlap_review_refs": [],
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    }
+  ],
+  "overlap_reviews": [
+    {
+      "id": "overlap-1",
+      "original_path": ".github/workflows/generate-sbom.yml",
+      "resolution": "Preserve UNIL upgraded actions plus upstream Trivy digest pin; do not execute upload job.",
+      "related_paths": [
+        ".github/workflows/generate-sbom.yml"
+      ],
+      "acceptance_boundary": "Inspect YAML and image digest; workflow upload behavior not executed.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-2",
+      "original_path": "apps/qubit/modules/clipboard/actions/exportCheckAction.class.php",
+      "resolution": "Preserve root-relative downloadHref and upstream CSP-compatible delegated refresh link.",
+      "related_paths": [
+        "apps/qubit/modules/clipboard/actions/exportCheckAction.class.php",
+        "js/clipboard.js",
+        "js/windowReload.js"
+      ],
+      "acceptance_boundary": "Browser clipboard creation/polling/download/refresh still requires acceptance. Upstream extra quote after href=# is retained source behavior, separately noted.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-3",
+      "original_path": "docker/docker-compose.dev.yml",
+      "resolution": "Explicitly keep Percona8.0; corresponding test Compose also remains8.0. No DB engine migration.",
+      "related_paths": [
+        "docker/docker-compose.dev.yml",
+        "docker/docker-compose.test.yml",
+        "docker/etc/mysql/mysqld.cnf"
+      ],
+      "acceptance_boundary": "Verify effective Compose isolation/images before any start; disposable8.0 fixture tests do not authorize8.4.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-4",
+      "original_path": "lib/model/QubitInformationObject.php",
+      "resolution": "Preserve UNIL tombstone hooks alongside upstream array-return and inherited repository lookup changes.",
+      "related_paths": [
+        "lib/model/QubitInformationObject.php",
+        "lib/oai/QubitOaiDeletedRecord.class.php",
+        "test/phpunit/QubitInformationObjectTest.php"
+      ],
+      "acceptance_boundary": "Need repository-match tests plus real tombstone publication/deletion and pagination, not merely source preservation.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-5",
+      "original_path": "lib/myUser.class.php",
+      "resolution": "Preserve local provider helpers; remove unrestricted culture assignment in myUser and use new upstream allowlisted culture filter.",
+      "related_paths": [
+        "lib/myUser.class.php",
+        "lib/filter/QubitCultureHeaderFilter.class.php",
+        "apps/qubit/config/filters.yml"
+      ],
+      "acceptance_boundary": "Allowlist unit checks do not establish login/OIDC/cache-cookie/request-cycle acceptance.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-6",
+      "original_path": "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginUtil.class.php",
+      "resolution": "Preserve UNIL special-character fallback escaping; accept upstream comment change.",
+      "related_paths": [
+        "plugins/arElasticSearchPlugin/lib/arElasticSearchPluginUtil.class.php"
+      ],
+      "acceptance_boundary": "Search queries with accents and reserved characters require real search/index acceptance.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    },
+    {
+      "id": "overlap-7",
+      "original_path": "vendor/symfony/lib/plugins/sfPropelPlugin/lib/vendor/propel/util/DebugPDO.php",
+      "resolution": "Accept upstream removal of DebugPDO; local PHP8.3 query-signature patch is superseded.",
+      "related_paths": [
+        "vendor/symfony/lib/plugins/sfPropelPlugin/lib/vendor/propel/util/DebugPDO.php"
+      ],
+      "acceptance_boundary": "Check no remaining active references require removed class; do not restore removed upstream debug integration.",
+      "review_method": "Manifest path inventory plus local candidate diff against UNIL baseline and upstream v2.10.2; runtime acceptance not inferred"
+    }
+  ],
+  "local_overlays": [
+    {
+      "path": "AGENTS.md",
+      "source_sha256": "4e50aa81ca2f36c7e5f11975461adfb9e58954eb63ae49c9a4f1680b9a714582",
+      "disposition": "preparation",
+      "reason": "Unrelated local agent guidance remains in original checkout; not an application feature or release payload. Do not overwrite operator changes.",
+      "included_in_candidate_application": false
+    },
+    {
+      "path": "docker/entrypoint.sh",
+      "source_sha256": "0018291eec8bcc97830b5307d9a2eae43e2a5057b9d3796ed6ecb73609b62951",
+      "candidate_sha256": "0018291eec8bcc97830b5307d9a2eae43e2a5057b9d3796ed6ecb73609b62951",
+      "disposition": "retain",
+      "source_identity_verified": true,
+      "operation": "#2",
+      "reason": "Preserve prepared CLI log path ownership and permissions, existing content, idempotent startup and symlink refusal; this source copy does not establish deployed acceptance.",
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    },
+    {
+      "path": "docker/etc/nginx/nginx.conf",
+      "source_sha256": "8e88fda499c1f2ac61cc0050517ff84a81a64cbe100ea10ba0e4d9a588e3e542",
+      "candidate_sha256": "8e88fda499c1f2ac61cc0050517ff84a81a64cbe100ea10ba0e4d9a588e3e542",
+      "disposition": "retain",
+      "source_identity_verified": true,
+      "operation": "#195",
+      "reason": "Preserve accepted PerplexityBot/ShapBot filter and existing nginx protections in future artifact; source identity does not replace candidate legitimate-route acceptance.",
+      "runtime_acceptance": "not_asserted_by_this_source_review"
+    }
+  ],
+  "partial_supersession_note": "A mixed commit can be retained overall while specific removed paths are superseded; see e68e70b98 and later incremental workflow/header adaptations.",
+  "validation_boundary": "This document records source disposition and selected byte comparisons only. Qualification results, full test failures, browser journeys, deployability and VM acceptance belong to separately dated release evidence. No server, DB, registry, workflow or application deployment is asserted."
+}

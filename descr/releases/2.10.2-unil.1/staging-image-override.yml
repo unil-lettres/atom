@@ -1,0 +1,8 @@
+# Candidate overlay only; use with the reviewed on-VM staging recipe.
+# ATOM_CANDIDATE_IMAGE must be an accepted repository@sha256:... reference.
+# Do not activate this preparation file automatically.
+services:
+  atom:
+    image: ${ATOM_CANDIDATE_IMAGE:?An accepted immutable candidate digest is required}
+  atom_worker:
+    image: ${ATOM_CANDIDATE_IMAGE:?An accepted immutable candidate digest is required}

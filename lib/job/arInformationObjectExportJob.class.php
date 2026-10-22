@@ -65,7 +65,7 @@ class arInformationObjectExportJob extends arExportJob
         return QubitSearch::getInstance()
             ->index
             ->getIndex('QubitInformationObject')
-            ->createSearch($query->getQuery(false, false));
+            ->createSearch($query->getQuery(false, true));
     }
 
     /**
@@ -125,8 +125,8 @@ class arInformationObjectExportJob extends arExportJob
         foreach (arElasticSearchPluginUtil::getScrolledSearchResultIdentifiers($search) as $id) {
             $resource = QubitInformationObject::getById($id);
 
-            // Skip if ElasticSearch document is stale (no corresponding MySQL data)
-            if (null == $resource) {
+            // Recheck current read access before serializing an indexed selection.
+            if (null == $resource || !QubitAcl::check($resource, 'read')) {
                 continue;
             }
 

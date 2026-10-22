@@ -72,6 +72,14 @@ class DefaultFullTreeViewAction extends sfAction
 
         // Get the collection root data (don't get it's siblings)
         $result = $this->getElasticSearchResult($this->collectionRootId, $options);
+        // An explicitly allowed child may have a denied collection ancestor.
+        // Start at the selected readable record instead of exposing that ancestor.
+        if (null === $result) {
+            $result = $this->getElasticSearchResult($this->resource->id, $options);
+        }
+        if (null === $result) {
+            return ['nodes' => [], 'total' => 0];
+        }
 
         // Format collection root data for the treeview, and recursively add its
         // children until we get to the $this->resource and it's siblings
@@ -145,14 +153,7 @@ class DefaultFullTreeViewAction extends sfAction
         // Add search term
         $query->queryBool->addMust($term);
 
-        // Filter drafts
-        if (!$this->getUser()->isAuthenticated()) {
-            $query->queryBool->addMust(
-                new \Elastica\Query\Term(
-                    ['publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID]
-                )
-            );
-        }
+        QubitAclSearch::filterReadable($query->queryBool);
 
         return $query;
     }
@@ -242,6 +243,55 @@ class DefaultFullTreeViewAction extends sfAction
     }
 
     /**
+     * Count readable children in bounded batches, using the same ACL query as
+     * countChildren(). Counts belong only to this result page and request;
+     * recursive pages receive their own map. Never use unfiltered descendants.
+     *
+     * @param mixed $results
+     */
+    protected function countChildrenForResults($results)
+    {
+        $counts = [];
+        foreach ($results as $result) {
+            $counts[$result->getId()] = 0;
+        }
+
+        foreach (array_chunk(array_keys($counts), 500) as $ids) {
+            $query = $this->getElasticSearchQuery(
+                new \Elastica\Query\Terms('parentId', $ids)
+            );
+            $query->query->setSize(0);
+            $query->query->setFrom(0);
+            $query->query->setParam('track_total_hits', false);
+            $aggregation = new \Elastica\Aggregation\Terms('readable_children');
+            $aggregation->setField('parentId');
+            $aggregation->setSize(count($ids));
+            $aggregation->setParam('shard_size', count($ids));
+            $aggregation->setOrder('_key', 'asc');
+            $query->query->addAggregation($aggregation);
+            $result = QubitSearch::getInstance()->index
+                ->getIndex('QubitInformationObject')
+                ->search($query->getQuery(false, false));
+            $response = $result->getResponse()->getData();
+            if (!empty($response['timed_out']) || !empty($response['_shards']['failed'])) {
+                throw new RuntimeException('Incomplete tree child-count response.');
+            }
+            $data = $result->getAggregation('readable_children');
+            if (!isset($data['buckets']) || !empty($data['sum_other_doc_count'])
+                || !empty($data['doc_count_error_upper_bound'])) {
+                throw new RuntimeException('Incomplete tree child-count aggregation.');
+            }
+            foreach ($data['buckets'] as $bucket) {
+                if (array_key_exists($bucket['key'], $counts)) {
+                    $counts[$bucket['key']] = (int) $bucket['doc_count'];
+                }
+            }
+        }
+
+        return $counts;
+    }
+
+    /**
      * Format Elasticsearch results data for treeview javascript.
      *
      * @param \Elastica\ResultSet $results Elasticsearch results
@@ -252,6 +302,7 @@ class DefaultFullTreeViewAction extends sfAction
     protected function formatResultsData($results, $options)
     {
         $data = [];
+        $options['readableChildCounts'] = $this->countChildrenForResults($results);
 
         foreach ($results as $result) {
             // Append node to $data array
@@ -312,7 +363,10 @@ class DefaultFullTreeViewAction extends sfAction
         );
 
         // If node has children
-        if ($this->countChildren($node['id']) > 0) {
+        $childCount = isset($options['readableChildCounts'][$node['id']])
+            ? $options['readableChildCounts'][$node['id']]
+            : $this->countChildren($node['id']);
+        if ($childCount > 0) {
             // Set children to default of true for lazy loading
             $node['children'] = true;
 

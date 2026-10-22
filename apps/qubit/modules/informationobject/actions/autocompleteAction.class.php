@@ -87,10 +87,8 @@ class InformationObjectAutocompleteAction extends sfAction
             $this->queryBool->addMust($queryTerm);
         }
 
-        // Filter drafts
-        if (isset($request->filterDrafts) && $request->filterDrafts) {
-            QubitAclSearch::filterDrafts($this->queryBool);
-        }
+        // Authentication alone does not grant access to every description.
+        QubitAclSearch::filterReadable($this->queryBool);
 
         $this->query->setQuery($this->queryBool);
 

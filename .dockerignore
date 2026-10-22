@@ -13,3 +13,8 @@ cache
 descr
 node_modules
 vendor/composer
+
+# Host configuration is supplied at runtime, never embedded in an image.
+docker/etc/environment
+docker/.env
+config/config.php

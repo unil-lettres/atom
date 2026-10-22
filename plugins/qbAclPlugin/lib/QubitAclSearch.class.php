@@ -141,71 +141,140 @@ class QubitAclSearch
     }
 
     /**
-     * Filter search query by resource specific ACL.
-     *
-     * @param \Elastica\Query\BoolQuery $queryBool Search query object
+     * Historical entry point: visibility requires read AND, for drafts, viewDraft.
+     * Apply this inside the query, before totals, facets and pagination.
      */
     public static function filterDrafts(Elastica\Query\BoolQuery $queryBool)
     {
+        self::filterReadable($queryBool);
+    }
+
+    public static function filterReadable(Elastica\Query\BoolQuery $queryBool)
+    {
+        $allowed = new \Elastica\Query\BoolQuery();
+        $allowed->setMinimumShouldMatch(1);
+        $count = 0;
+
+        foreach (self::getReadRegions() as $region) {
+            if (!$region['read']) {
+                continue;
+            }
+
+            $scope = self::subtreeQuery($region['id']);
+            foreach ($region['exclude'] as $id) {
+                $scope->addMustNot(self::subtreeQuery($id));
+            }
+            if (!$region['viewDraft']) {
+                $scope->addMust(new \Elastica\Query\Term([
+                    'publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID,
+                ]));
+            }
+            $allowed->addShould($scope);
+            ++$count;
+        }
+
+        // An empty bool query means match-all in Elasticsearch: deny explicitly.
+        if (0 === $count) {
+            $queryBool->addMustNot(new \Elastica\Query\MatchAll());
+        } else {
+            $queryBool->addFilter($allowed);
+        }
+    }
+
+    /**
+     * Partition the hierarchy only where effective ACLs can change: explicit
+     * read/viewDraft/all-action permissions and repository assignments when
+     * conditional permissions exist. Let the existing Zend ACL resolve grants,
+     * denials, user/group precedence and repository conditions on real resources.
+     * No per-record ID whitelist, persistent permission cache or index migration.
+     *
+     * Regions include their root and descendants, excluding child regions with
+     * different access. A child grant can therefore override an ancestor denial.
+     * All permission owners are included when finding boundaries; irrelevant
+     * rules merely create redundant boundaries, which are folded below.
+     */
+    public static function getReadRegions()
+    {
         $user = sfContext::getInstance()->user;
+        $conditional = (bool) QubitPdo::fetchColumn(
+            'SELECT COUNT(*) FROM acl_permission WHERE conditional IS NOT NULL'
+            ." AND (action IN ('read', 'viewDraft') OR action IS NULL)"
+        );
+        $sql = 'SELECT io.id, io.lft, io.rgt FROM information_object io WHERE io.id = ?'
+            .' OR EXISTS (SELECT 1 FROM acl_permission ap WHERE ap.object_id = io.id'
+            ." AND (ap.action IN ('read', 'viewDraft') OR ap.action IS NULL))";
+        if ($conditional) {
+            $sql .= ' OR io.repository_id IS NOT NULL';
+        }
+        $sql .= ' ORDER BY io.lft';
+        $nodes = QubitPdo::fetchAll($sql, [QubitInformationObject::ROOT_ID]);
+        $regions = $stack = [];
 
-        // Get granted viewDraft permissions by description
-        $permissions = QubitAcl::getUserPermissionsByAction($user, 'QubitInformationObject', 'viewDraft');
-        $allowedDraftIds = [];
-        foreach ($permissions as $permission) {
-            $resource = is_numeric($permission->objectId)
-                ? QubitInformationObject::getById($permission->objectId)
-                : null;
-
-            if (
-                $resource
-                && QubitAcl::check($resource, 'viewDraft', ['user' => $user])
-            ) {
-                $allowedDraftIds[] = (string) $resource->id;
+        foreach ($nodes as $node) {
+            while ($stack && $regions[end($stack)]['rgt'] < (int) $node->lft) {
+                array_pop($stack);
             }
+            $resource = QubitInformationObject::getById($node->id);
+            $read = QubitAcl::isAllowed($user, $resource, 'read');
+            $draft = $read && QubitAcl::isAllowed($user, $resource, 'viewDraft');
+            if ($stack) {
+                $parent = end($stack);
+                if ($regions[$parent]['read'] === $read && $regions[$parent]['viewDraft'] === $draft) {
+                    continue;
+                }
+                $regions[$parent]['exclude'][] = (int) $node->id;
+            }
+            $regions[] = [
+                'id' => (int) $node->id, 'lft' => (int) $node->lft,
+                'rgt' => (int) $node->rgt, 'read' => $read,
+                'viewDraft' => $draft, 'exclude' => [],
+            ];
+            $stack[] = count($regions) - 1;
         }
 
-        // Filter out 'draft' items by repository
-        $repositoryViewDrafts = QubitAcl::getRepositoryAccess('viewDraft');
-        if (1 !== count($repositoryViewDrafts)) {
-            // Get last rule in list, it will be the global rule with the opposite
-            // access of the preceeding rules (e.g. if last rule is "DENY ALL" then
-            // preceeding rules will be "ALLOW" rules)
-            $globalRule = array_pop($repositoryViewDrafts);
+        return $regions;
+    }
 
-            $query = new \Elastica\Query\BoolQuery();
-
-            while ($repo = array_shift($repositoryViewDrafts)) {
-                $query->addShould(new \Elastica\Query\Term(['repository.id' => (int) $repo['id']]));
-            }
-
-            $query->addShould(new \Elastica\Query\Term(['publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID]));
-
-            // Does this ever happen in AtoM?
-            if (QubitAcl::GRANT == $globalRule['access']) {
-                $queryBool->addMustNot($query);
-            } else {
-                $queryBool->addMust($query);
-            }
+    /** Apply the same readable regions to SQL tree navigation before LIMIT/count. */
+    public static function addReadCriteria(Criteria $criteria)
+    {
+        $regions = self::getReadRegions();
+        $byId = [];
+        foreach ($regions as $region) {
+            $byId[$region['id']] = $region;
         }
-
-        // Filter out 'draft' items by repository and descriptions
-        if (QubitAcl::DENY == $repositoryViewDrafts[0]['access']) {
-            if (count($permissions) > 0) {
-                $query = new \Elastica\Query\BoolQuery();
-
-                // Always include published items
-                $query->addShould(new \Elastica\Query\Term(['publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID]));
-
-                // Allow permitted drafts
-                $allowedDraftQuery = new \Elastica\Query\Terms('ancestors', $allowedDraftIds);
-                $query->addShould($allowedDraftQuery);
-
-                $queryBool->addMust($query);
-            } else {
-                // Don't show *any* draft info objects
-                $queryBool->addMust(new \Elastica\Query\Term(['publicationStatusId' => QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID]));
+        $allowed = [];
+        foreach ($regions as $region) {
+            if (!$region['read']) {
+                continue;
             }
+            $parts = [sprintf('(information_object.lft BETWEEN %d AND %d)', $region['lft'], $region['rgt'])];
+            foreach ($region['exclude'] as $id) {
+                $child = $byId[$id];
+                $parts[] = sprintf('(information_object.lft NOT BETWEEN %d AND %d)', $child['lft'], $child['rgt']);
+            }
+            if (!$region['viewDraft']) {
+                $parts[] = sprintf(
+                    'EXISTS (SELECT 1 FROM status acl_status WHERE acl_status.object_id = information_object.id'
+                    .' AND acl_status.type_id = %d AND acl_status.status_id = %d)',
+                    QubitTerm::STATUS_TYPE_PUBLICATION_ID,
+                    QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID
+                );
+            }
+            $allowed[] = '('.implode(' AND ', $parts).')';
         }
+        $criteria->addAnd('', $allowed ? '('.implode(' OR ', $allowed).')' : '1 = 0', Criteria::CUSTOM);
+
+        return $criteria;
+    }
+
+    private static function subtreeQuery($id)
+    {
+        $scope = new \Elastica\Query\BoolQuery();
+        $scope->setMinimumShouldMatch(1);
+        $scope->addShould(new \Elastica\Query\Ids([(string) $id]));
+        $scope->addShould(new \Elastica\Query\Term(['ancestors' => $id]));
+
+        return $scope;
     }
 }

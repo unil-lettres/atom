@@ -1,0 +1,24 @@
+# Append to the full environment-specific Compose file set, project docker.
+# Do not use alone. No worker, database, image or data-volume changes.
+services:
+  atom:
+    volumes:
+      - type: bind
+        source: ./etc/php-fpm/zz-atom-capacity.conf
+        target: /usr/local/etc/atom-capacity.conf
+        read_only: true
+      - type: bind
+        source: ./etc/php-fpm/php-fpm.capacity.conf
+        target: /usr/local/etc/php-fpm.conf
+        read_only: true
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+  nginx:
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"

@@ -113,7 +113,7 @@
           <?php } ?>
         </div>
 
-        <?php if (isset($doc['partOf'])) { ?>
+        <?php if (isset($doc['partOf']['id']) && QubitAcl::check(QubitInformationObject::getById($doc['partOf']['id']), 'read')) { ?>
           <span class="text-muted">
             <?php echo __('Part of '); ?>
             <?php echo link_to(

@@ -7,7 +7,7 @@ volumes:
 services:
 
   atom:
-    image: unillett/atom:development
+    image: ${ATOM_IMAGE:?Set ATOM_IMAGE to the reviewed PHP 8.3.36 release}
     env_file: etc/environment
     environment:
       - ATOM_COVERAGE=${ATOM_COVERAGE:-false}
@@ -20,7 +20,7 @@ services:
       - ../cache:/atom/src/cache:rw
 
   atom_worker:
-    image: unillett/atom:development
+    image: ${ATOM_IMAGE:?Set ATOM_IMAGE to the reviewed PHP 8.3.36 release}
     command: worker
     env_file: etc/environment
     environment:
