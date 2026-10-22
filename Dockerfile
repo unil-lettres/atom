@@ -1,6 +1,7 @@
 FROM composer:2.9.8@sha256:b09bccd91a78fe8a9ab4b33d707b862e8fe54fec17782e32683ad2a69c46867d AS composer
 
-FROM php:8.3-fpm-alpine
+FROM php:8.3.36-fpm-alpine@sha256:81cb692948e6de4275f7e107c50a34e963a440660f2c5b8502d11071f7d30338
+RUN php -r 'exit(PHP_VERSION === "8.3.36" ? 0 : 1);'
 
 ENV FOP_HOME=/usr/share/fop-2.1 \
     COMPOSER_ALLOW_SUPERUSER=1 \
