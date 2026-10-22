@@ -7,6 +7,7 @@ use AccessToMemory\test\TransactionTestCase;
  * fixture also exercises counts, facets, pagination and generated ZIP files.
  *
  * @internal
+ *
  * @covers \QubitAclSearch
  */
 class QubitAclSearchTest extends TransactionTestCase

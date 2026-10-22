@@ -246,6 +246,8 @@ class DefaultFullTreeViewAction extends sfAction
      * Count readable children in bounded batches, using the same ACL query as
      * countChildren(). Counts belong only to this result page and request;
      * recursive pages receive their own map. Never use unfiltered descendants.
+     *
+     * @param mixed $results
      */
     protected function countChildrenForResults($results)
     {

@@ -197,11 +197,11 @@ class QubitAclSearch
     {
         $user = sfContext::getInstance()->user;
         $conditional = (bool) QubitPdo::fetchColumn(
-            "SELECT COUNT(*) FROM acl_permission WHERE conditional IS NOT NULL"
+            'SELECT COUNT(*) FROM acl_permission WHERE conditional IS NOT NULL'
             ." AND (action IN ('read', 'viewDraft') OR action IS NULL)"
         );
-        $sql = "SELECT io.id, io.lft, io.rgt FROM information_object io WHERE io.id = ?"
-            ." OR EXISTS (SELECT 1 FROM acl_permission ap WHERE ap.object_id = io.id"
+        $sql = 'SELECT io.id, io.lft, io.rgt FROM information_object io WHERE io.id = ?'
+            .' OR EXISTS (SELECT 1 FROM acl_permission ap WHERE ap.object_id = io.id'
             ." AND (ap.action IN ('read', 'viewDraft') OR ap.action IS NULL))";
         if ($conditional) {
             $sql .= ' OR io.repository_id IS NOT NULL';

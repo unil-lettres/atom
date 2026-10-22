@@ -3,8 +3,10 @@
 // Standalone framework regression: no application bootstrap, database or network.
 require_once __DIR__.'/../../vendor/symfony/lib/config/sfConfig.class.php';
 sfConfig::set('sf_symfony_lib_dir', realpath(__DIR__.'/../../vendor/symfony/lib'));
+
 require_once sfConfig::get('sf_symfony_lib_dir').'/autoload/sfCoreAutoload.class.php';
 sfCoreAutoload::register();
+
 require_once sfConfig::get('sf_symfony_lib_dir').'/helper/EscapingHelper.php';
 
 class sfContext
@@ -14,37 +16,84 @@ class sfContext
     public $response;
     public $dispatcher;
     public $cache;
-    public static function hasInstance() { return null !== self::$instance; }
-    public static function getInstance() { return self::$instance; }
-    public function getRequest() { return $this->request; }
-    public function getResponse() { return $this->response; }
-    public function getEventDispatcher() { return $this->dispatcher; }
-    public function getUser() { return null; }
-    public function getViewCacheManager() { return $this->cache; }
+
+    public static function hasInstance()
+    {
+    return null !== self::$instance;
+    }
+
+    public static function getInstance()
+    {
+    return self::$instance;
+    }
+
+    public function getRequest()
+    {
+    return $this->request;
+    }
+
+    public function getResponse()
+    {
+    return $this->response;
+    }
+
+    public function getEventDispatcher()
+    {
+    return $this->dispatcher;
+    }
+
+    public function getUser()
+    {
+    return null;
+    }
+
+    public function getViewCacheManager()
+    {
+    return $this->cache;
+    }
 }
 
 class ErrorRepresentationCache
 {
     public $writes = 0;
-    public function getCurrentCacheKey() { return 'fixture'; }
-    public function getActionCache($uri) { return array(null, false); }
-    public function setActionCache($uri, $content, $decorator) { ++$this->writes; return $content; }
+
+    public function getCurrentCacheKey()
+    {
+    return 'fixture';
+    }
+
+    public function getActionCache($uri)
+    {
+    return [null, false];
+    }
+
+    public function setActionCache($uri, $content, $decorator)
+    {
+    ++$this->writes;
+
+    return $content;
+    }
 }
 
 class ErrorRepresentationView extends sfPHPView
 {
     public static $fixtureDirectory;
+
     public function configure()
     {
         $this->directory = self::$fixtureDirectory;
         $this->template = 'indexSuccess'.$this->getExtension();
     }
+
     protected function loadCoreAndStandardHelpers() {}
 }
 
 class ErrorRepresentationException extends sfException
 {
-    public static function output($exception) { parent::outputStackTrace($exception); }
+    public static function output($exception)
+    {
+    parent::outputStackTrace($exception);
+    }
 }
 
 $fixture = sys_get_temp_dir().'/atom-error-representation-'.getmypid();
@@ -53,50 +102,65 @@ mkdir($fixture.'/views', 0700);
 file_put_contents($fixture.'/error/errorB5.html.php', '<html>B5 <?php echo $code; ?></html>');
 file_put_contents($fixture.'/views/indexSuccess.php', '<html>fixture page</html>');
 ErrorRepresentationView::$fixtureDirectory = $fixture.'/views';
-sfConfig::add(array(
+sfConfig::add([
     'sf_test' => true, 'sf_debug' => false, 'sf_logging_enabled' => false,
     'sf_cache' => false, 'sf_charset' => 'UTF-8', 'sf_escaping_strategy' => false,
     'sf_app_config_dir' => $fixture, 'sf_config_dir' => $fixture,
     'sf_root_dir' => dirname(__DIR__, 2), 'app_b5_theme' => true,
-));
+]);
 $assertions = 0;
-$failures = array();
+$failures = [];
 function check($condition, $label)
 {
     global $assertions, $failures;
     ++$assertions;
-    if (!$condition) { $failures[] = $label; }
+    if (!$condition) {
+    $failures[] = $label;
+    }
 }
 function contextFor($format, $status = 200)
 {
     $context = new sfContext();
     $context->dispatcher = new sfEventDispatcher();
     $context->request = new sfWebRequest($context->dispatcher);
-    foreach (array('html' => 'text/html', 'xml' => 'text/xml', 'json' => 'application/json', 'txt' => 'text/plain') as $name => $mime) {
+    foreach (['html' => 'text/html', 'xml' => 'text/xml', 'json' => 'application/json', 'txt' => 'text/plain'] as $name => $mime) {
         $context->request->setFormat($name, $mime);
     }
     $context->request->setRequestFormat($format);
-    $context->response = new sfWebResponse($context->dispatcher, array('send_http_headers' => false));
+    $context->response = new sfWebResponse($context->dispatcher, ['send_http_headers' => false]);
     $context->response->setStatusCode($status);
     $context->cache = new ErrorRepresentationCache();
     sfContext::$instance = $context;
+
     return $context;
 }
 function safely($label, $callback)
 {
     $level = ob_get_level();
-    try { $callback(); }
-    catch (Throwable $error) { check(false, $label.': '.get_class($error).' '.$error->getMessage()); }
-    finally { while (ob_get_level() > $level) { ob_end_clean(); } }
-}
 
+    try {
+    $callback();
+    } catch (Throwable $error) {
+    check(false, $label.': '.get_class($error).' '.$error->getMessage());
+    } finally {
+    while (ob_get_level() > $level) {
+    ob_end_clean();
+    }
+    }
+}
 
 // The HTTP runner exercises the same framework classes with real PHP headers.
 if ('cli-server' === PHP_SAPI) {
     register_shutdown_function(function () use ($fixture) {
-        foreach (glob($fixture.'/error/*') as $file) { unlink($file); }
-        foreach (glob($fixture.'/views/*') as $file) { unlink($file); }
-        rmdir($fixture.'/error'); rmdir($fixture.'/views'); rmdir($fixture);
+        foreach (glob($fixture.'/error/*') as $file) {
+        unlink($file);
+        }
+        foreach (glob($fixture.'/views/*') as $file) {
+        unlink($file);
+        }
+        rmdir($fixture.'/error');
+        rmdir($fixture.'/views');
+        rmdir($fixture);
     });
     sfConfig::set('sf_test', false);
     sfConfig::set('sf_debug', isset($_GET['debug']));
@@ -116,6 +180,7 @@ if ('cli-server' === PHP_SAPI) {
     if ('missing' === $case && 'html' === $format) {
         $view->setTemplate($fixture.'/views/absent.php');
     }
+
     try {
         $body = $view->render();
         $context->response->sendHttpHeaders();
@@ -123,25 +188,26 @@ if ('cli-server' === PHP_SAPI) {
     } catch (Throwable $error) {
         sfException::createFromException($error)->printStackTrace();
     }
+
     return;
 }
 
 try {
-    foreach (array(false, true) as $b5) {
+    foreach ([false, true] as $b5) {
         sfConfig::set('app_b5_theme', $b5);
-        foreach (array('xml', 'json', 'txt', 'atom', 'rdf', 'css', 'js') as $format) {
+        foreach (['xml', 'json', 'txt', 'atom', 'rdf', 'css', 'js'] as $format) {
             $path = sfException::getTemplatePathForError($format, false);
             check(is_string($path) && is_file($path), 'safe '.$format.' template with B5='.(int) $b5);
         }
     }
     sfConfig::set('app_b5_theme', true);
-    check(basename(sfException::getTemplatePathForError('html', false)) === 'errorB5.html.php', 'B5 HTML retained');
-    foreach (array('335545696', '../xml', 'xml/../../secret', array('xml')) as $format) {
+    check('errorB5.html.php' === basename(sfException::getTemplatePathForError('html', false)), 'B5 HTML retained');
+    foreach (['335545696', '../xml', 'xml/../../secret', ['xml']] as $format) {
         check(false === sfException::getTemplatePathForError($format, false), 'invalid/unknown format has no file selection');
     }
 
-    foreach (array('xml', 'json', '335545696') as $format) {
-        foreach (array(404, 200) as $status) {
+    foreach (['xml', 'json', '335545696'] as $format) {
+        foreach ([404, 200] as $status) {
             safely('view '.$format.' '.$status, function () use ($format, $status) {
                 $context = contextFor($format, $status);
                 sfConfig::set('sf_cache', true);
@@ -164,7 +230,7 @@ try {
         }
     }
 
-    foreach (array('xml', 'json', '335545696') as $format) {
+    foreach (['xml', 'json', '335545696'] as $format) {
         safely('exception '.$format, function () use ($format) {
             $context = contextFor($format);
             ob_start();
@@ -193,10 +259,15 @@ try {
         $context = contextFor('html');
         $view = new ErrorRepresentationView($context, 'fixture', 'index', 'Success');
         $view->setTemplate(ErrorRepresentationView::$fixtureDirectory.'/absent.php');
-        try { $view->render(); check(false, 'missing HTML must throw'); }
-        catch (sfRenderException $expected) { check(true, 'missing HTML remains rendering error'); }
+
+        try {
+        $view->render();
+        check(false, 'missing HTML must throw');
+        } catch (sfRenderException $expected) {
+        check(true, 'missing HTML remains rendering error');
+        }
     });
-    foreach (array('ead', 'dc', 'eac', 'oai') as $root) {
+    foreach (['ead', 'dc', 'eac', 'oai'] as $root) {
         safely('valid XML '.$root, function () use ($fixture, $root) {
             $body = '<?xml version="1.0"?><'.$root.'>fixture data</'.$root.'>';
             file_put_contents($fixture.'/views/indexSuccess.xml.php', '<?php echo '.var_export($body, true).';');
@@ -216,9 +287,16 @@ try {
         check(false !== strpos($body, 'DEBUG_CANARY_195'), 'debug exception diagnostics preserved');
     });
 } finally {
-    foreach (glob($fixture.'/error/*') as $file) { unlink($file); }
-    foreach (glob($fixture.'/views/*') as $file) { unlink($file); }
-    rmdir($fixture.'/error'); rmdir($fixture.'/views'); rmdir($fixture);
+    foreach (glob($fixture.'/error/*') as $file) {
+    unlink($file);
+    }
+    foreach (glob($fixture.'/views/*') as $file) {
+    unlink($file);
+    }
+    rmdir($fixture.'/error');
+    rmdir($fixture.'/views');
+    rmdir($fixture);
 }
-echo json_encode(array('assertions' => $assertions, 'failures' => $failures), JSON_PRETTY_PRINT)."\n";
+echo json_encode(['assertions' => $assertions, 'failures' => $failures], JSON_PRETTY_PRINT)."\n";
+
 exit(count($failures) ? 1 : 0);
