@@ -27,3 +27,16 @@ hierarchy batching changes through 70d985659. The opt-in capacity Compose/nginx
 configuration was reconciled by exact hash against the accepted deployment.
 Web and worker code/cache compatibility and controlled startup order remain
 required; PHP image replacement alone does not refresh mounted code.
+
+## Commit provenance
+
+GitHub rejected the original commit email as private. Only the operator email
+metadata and dependent commit IDs were rewritten in this publication branch;
+file trees were verified identical. Original deployment identifiers remain
+authoritative in Operations. Equivalent source trees in this repository:
+
+| Recorded source | Published equivalent |
+| --- | --- |
+| `455049ec210d10266ea439fc07deed311d234ad2` | `09bf2932ca8920918bea936d5e2f26470bc9651b` |
+| `57df495c346b680bb46cdfef2c31d88a89a31816` | `d2e9a5efa491d89dc852b1f34259bb630acd9440` |
+| `70d9856593ee113ca61d530959664534a5460dc2` | `5cda38c9d20361698c284ab3d72d7bd787d13abd` |
