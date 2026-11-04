@@ -141,7 +141,7 @@ curl -sI https://atom-archives.unil.ch/plugins/arLettresB5Plugin/images/logo.png
 
 ## Test Evidence / QA Log
 - Manual QA sheet (Nam bug sheet / test plan): `descr/Plan_tests_AtoM_v2-10.xlsx` (see also CSV exports in `descr/`).
-- Policy: when tests are run during an agent-assisted session, record what was executed + results in `../../agents/projects/atom/requests/*.yaml` under `testing.*` and `tracking.test_runs`.
+- Record test evidence in the owning project document or exact selected request; never choose a wildcard request. Link results from the existing unil-ops operation. Task status, next actions and dates belong only to Operations.
 - Existing record pointer: `../../agents/projects/atom/requests/2026-02-07T0000Z.reporting.atom.plan-tests-v2-10-record.yaml`.
 
 ## Local backup refresh policy
@@ -151,6 +151,10 @@ curl -sI https://atom-archives.unil.ch/plugins/arLettresB5Plugin/images/logo.png
 - Ops runbook: `/Users/jganivet/Développement/unil-ops/docs/runbooks/vms/atom-archives.md`.
 - When refreshing the local prod backup, include the latest existing DB dump, VM recovery/config files, and refreshed media archives (`uploads`, `downloads`, `data`) unless explicitly told otherwise.
 - Keep prod read-only for ad hoc local backup refreshes: copy existing dumps and stream tar output over SSH; do not generate new dumps or create archives on the VM.
+- The canonical local layout is category-first: `db/scheduled`, `db/events`, timestamped `media`, `config` and `runtime` generations, `docker-images`, active `_manifests`, and superseded `_history`. Do not place backup payloads loose at the root.
+- Follow the project’s private `LOCAL-BACKUP-PROCEDURE.md` for every full refresh. After the refreshed set validates, recalculate scheduled DB retention as 7 daily + 4 completed weekly + 3 completed monthly from the newest copied dump; keep manual/event dumps separate with an explicit review date.
+- Keep current plus one previous validated media/configuration/runtime generation. Retain Docker archives by actual image ID: current and previous application images plus one required base-image set; reuse unchanged IDs instead of archiving duplicates. Retain manifests and restore checklists.
+- Before local cleanup, write an exact name/size report, validate every retained payload, move only the authorized matching set to recoverable Trash/quarantine, then validate again and record disposition. This policy never authorizes production deletion.
 
 ## Ports (local + VM)
 - nginx: 63001
@@ -174,13 +178,13 @@ See `descr/migration-2.6-to-2.10.md` for export/import playbook.
 - Default culture set to French (`fr`) in `apps/qubit/config/settings.yml`.
 - English remains enabled; FR is the default for public users.
 
-## Prod health baseline (2026-03-09)
+## Historical prod health observation (2026-03-09)
 - Health checks passed on `atom-archives.unil.ch`: home `200`, `<html lang="fr">`, logo endpoint `200`, `siteBaseUrl` en/fr forced to HTTPS.
 - Stack status healthy (`atom`, `atom_worker`, `nginx`, `percona`, `elasticsearch`, `memcached`, `gearmand` all up).
 - PHP-FPM capacity tuned in generator (`/atom/src/docker/bootstrap.php`) and applied via bootstrap + restart:
   - `pm.max_children` increased from `5` to `14` to avoid recurrent saturation warnings.
   - Active runtime config confirmed at `/usr/local/etc/php-fpm.d/atom.conf`.
-- Operational follow-up required: backup share `/home/deployer/dumps` reached ~95% usage; run retention cleanup before next backup cycle.
+- Historical observation: backup share `/home/deployer/dumps` was ~95% used. This is not a current cleanup instruction or deletion authorization. Revalidate current capacity and the exact operation before any retention proposal.
 
 ## Quick prod health check command
 On prod VM (`/home/deployer/atom`):
@@ -192,6 +196,12 @@ Notes:
 - Exit code `0`: no blocking failure detected (`warnings` may still be present).
 - Exit code `1`: at least one blocking failure (service down, stale/missing backup, or critical disk usage).
 
-## Backlog pointer (hardening/perf)
-- Follow-up planning backlog (2026-03-11): `../../agents/projects/atom/requests/2026-03-11T0914Z.planning.atom.prod-hardening-and-performance-followups.yaml`
+## Historical hardening/performance specification
+- Historical planning reference (2026-03-11): `../../agents/projects/atom/requests/2026-03-11T0914Z.planning.atom.prod-hardening-and-performance-followups.yaml`
 - Scope: VM edge security headers, server banner hardening, crawler control refinement, and nginx buffering/performance tuning.
+
+Current tasks and holds come from mapped unil-ops Operations, not these dated
+examples. In particular, reading this file does not resume held upstream work
+or authorize cleanup, code-volume removal, deployment or database changes.
+Deployment examples require current image/configuration and recovery review;
+preserve database, uploads/downloads/data and the previous validated recovery.
